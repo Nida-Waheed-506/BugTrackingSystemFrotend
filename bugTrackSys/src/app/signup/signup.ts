@@ -1,26 +1,17 @@
-import { Component } from '@angular/core';
-import { Img } from '../shared/img/img';
-import { MatCardContent } from '@angular/material/card';
-import { RouterLink } from '@angular/router';
-import { FormsModule, NgForm } from '@angular/forms';
-
+import { Component } from "@angular/core";
+import { Img } from "../shared/img/img";
+import { RouterLink } from "@angular/router";
+import { FormsModule, NgForm } from "@angular/forms";
+import { Data } from "../services/data";
 @Component({
-  selector: 'app-signup',
-  imports: [Img, MatCardContent, RouterLink, FormsModule],
-  templateUrl: './signup.html',
-  styleUrl: './signup.scss',
+  selector: "app-signup",
+  imports: [Img, RouterLink, FormsModule],
+  templateUrl: "./signup.html",
+  styleUrl: "./signup.scss",
 })
 export class Signup {
-  name: string = '';
-  mobile_number: string = '';
-  email: string = '';
-  password: string = '';
-
-  onSubmitSignUpForm(val: NgForm) {
-    console.log(val);
-    console.log(this.name);
-    console.log(this.mobile_number);
-    console.log(this.email);
-    console.log(this.password);
+  constructor(private Data: Data) {}
+  onSubmitSignUpForm(val: any) {
+    this.Data.addUser(val.name, val.mobile_number, val.email, val.password);
   }
 }

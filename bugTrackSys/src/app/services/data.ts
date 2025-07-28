@@ -1,0 +1,73 @@
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { ToastrService } from 'ngx-toastr';
+import { Router } from "@angular/router";
+
+@Injectable({
+  providedIn: "root",
+})
+export class Data {
+  user_type: string = "";
+  data : any = "";
+  constructor(private http: HttpClient , private ToastrService:ToastrService , private Router: Router) {}
+
+  // sign up the user
+
+  addUser(
+    name: string,
+    mobile_number: string,
+    email: string,
+    password: string
+  ) {
+    const reqBody = {
+      name: name,
+      mobile_number: mobile_number,
+      email: email,
+      password: password,
+      user_type: this.user_type,
+    };
+    // api call made
+  this.http.post("http://localhost:8000/signup", reqBody).subscribe({
+  next: (response:any) => {
+   
+    this.ToastrService.success(  response.message   , 'Success');
+    this.Router.navigate(['/project']);
+
+  },
+  error: (err) => {
+   
+    this.ToastrService.error( err.error.error, 'Error');
+  },
+ 
+});
+  }
+
+
+
+  // sign in the user
+
+  getUser(email:string , password : string){
+    console.log(email , password);
+    const reqBody = {
+      email : email,
+      password:password
+    }
+    this.http.post("http://localhost:8000/login" , reqBody).subscribe({
+      next: (response:any)=>{
+       
+       this.data = response.data;
+       this.ToastrService.success(response.message , "Success");
+       this.Router.navigate(['/project']);
+      },
+      error:(err)=>{
+        this.ToastrService.error(err.error.error , 'Error');
+      }
+    });
+  }
+}
+
+
+
+// // WRONG: Logging the observable object
+// const data$ = this.http.get('/api/data');
+// console.log(data$); // <-- just shows Observable2 {...}, no request executed
