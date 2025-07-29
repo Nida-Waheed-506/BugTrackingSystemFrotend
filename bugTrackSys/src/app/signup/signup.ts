@@ -3,6 +3,7 @@ import { Img } from "../shared/img/img";
 import { RouterLink } from "@angular/router";
 import { FormsModule, NgForm } from "@angular/forms";
 import { Data } from "../services/data";
+
 @Component({
   selector: "app-signup",
   imports: [Img, RouterLink, FormsModule],

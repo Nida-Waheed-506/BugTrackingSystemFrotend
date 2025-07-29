@@ -4,13 +4,15 @@ import { Signup } from "./signup/signup";
 import { Login } from "./login/login";
 import { PageNotFound } from "./page-not-found/page-not-found";
 import {Project} from "./project/project";
+import { Bug } from "./bug/bug";
 
 // +++++++++++++++++++++++++++ imports ends ++++++++++++++++++++++++++++++
 
 export const routes: Routes = [
-  { path: "", component: HomePage },
+  { path: "", component: HomePage  },
   { path: "signup", component: Signup },
   { path: "login", component: Login },
-  {path: "project" , component:Project},
+  {path: "projects" , component:Project },
+   {path:"projects/:id/bugs" , component: Bug},
   { path: "**", component: PageNotFound },
 ];
