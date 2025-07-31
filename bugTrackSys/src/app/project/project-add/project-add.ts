@@ -5,7 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { MatIconModule } from "@angular/material/icon";
 import { FormsModule} from "@angular/forms";
 import { Data } from "../../services/data";
-
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: "app-project-add",
@@ -16,7 +16,7 @@ import { Data } from "../../services/data";
 export class ProjectAdd {
   selectedFile: File | "" = "";
   preview = "";
-  constructor(private ToastrService: ToastrService , private Data: Data) {
+  constructor(private ToastrService: ToastrService , private Data: Data , public dialogRef : MatDialogRef<ProjectAdd>) {
    
   }
   @ViewChild("fileInput") fileInput!: ElementRef;
@@ -48,6 +48,7 @@ export class ProjectAdd {
 
         reader.readAsDataURL(this.selectedFile); // after read file event call automatically by browser reader.onload
         event.target.value = "";
+        
       }
     }
   }
@@ -62,13 +63,18 @@ export class ProjectAdd {
  onSubmit(value: any){
     // console.log(this.selectedFile);
     // console.log(value);
-   
+    
     const formData = new FormData();
     formData.append('projectName' , value.projectName);
     formData.append('projectDes' , value.projectDes);
     formData.append('image' , this.selectedFile);
     this.Data.addProject(formData);
    
+  }
+
+  // on close the dialog 
+  onCloseDialog(){
+    this.dialogRef.close('Add project dialog close');
   }
 
 }

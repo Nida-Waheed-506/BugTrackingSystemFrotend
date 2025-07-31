@@ -141,13 +141,18 @@ getUsersByName(searchingName:any){
 
   // assign project
 
-  assignUserToProject(email:string , project_id:string){
+  assignUserToProject(email:string , project_id:any){
     const reqBody = {email};
-    this.http.post(`http://localhost:8000/projects/${project_id}/assign` , reqBody , {withCredentials:true});
+   return this.http.post(`http://localhost:8000/projects/${project_id}/assign` , reqBody , {withCredentials:true});
   }
 
 
-   
+  //  get top 4 developers in a project
+
+  getTopDevelopers(){
+
+  }
+
   
 
 

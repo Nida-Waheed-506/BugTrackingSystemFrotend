@@ -6,6 +6,7 @@ import { AddBug } from './add-bug/add-bug';
 import { ActivatedRoute , ParamMap } from '@angular/router';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-bug',
   imports: [Navbar  ],
@@ -14,7 +15,9 @@ import { Router } from '@angular/router';
 })
 export class Bug {
 project_id  : string | null = null;
-constructor(public dialog: MatDialog , private route:ActivatedRoute , private router:Router) {}
+constructor( public dialog: MatDialog , private route:ActivatedRoute , private router:Router) {
+
+}
 
 ngOnInit(){
  this.route.paramMap.subscribe((params:ParamMap)=>{
@@ -25,10 +28,13 @@ ngOnInit(){
 })
 }
 openAddMembersToProjectDialog(){
-  this.router.navigate([`/projects/${this.project_id}/assign`]);
+  
   const dialogRef = this.dialog.open(AssignedProjectMembers, {
     backdropClass: "popup",
-    autoFocus: false
+    autoFocus: false,
+    data: {
+      projectId: this.project_id 
+    }
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -39,7 +45,10 @@ openAddMembersToProjectDialog(){
 openAddBugDialog(){
  const dialogRef = this.dialog.open(AddBug, {
       backdropClass: "popup",
-      autoFocus: false
+      autoFocus: false,
+       data: {
+      projectId: this.project_id 
+    }
     });
 
     dialogRef.afterClosed().subscribe(result => {
