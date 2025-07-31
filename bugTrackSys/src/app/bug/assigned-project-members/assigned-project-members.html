@@ -1,0 +1,31 @@
+<div class="p-10">
+  <h1 class="mb-5 text-lg font-[500]">Assign Users to the Projects</h1>
+  <div class="flex gap-3">
+    <div class="">
+      <input
+        [formControl]="searchName"
+        (focus)="onFocus()"
+        [value]="selectedUserName"
+        type="text"
+        class="px-5 py-2 rounded-sm border-2"
+        placeholder="Search Users here"
+      />
+      <ul *ngIf="users.length > 0" class="dropdown-list border-b-2">
+        <li
+          *ngFor="let user of users"
+          (click)="onDropdownClick(user.name, user.email)"
+          class="dropdown-item border-l-2 border-r-2 cursor-pointer py-1 ps-5 bg-[#CDD0D2FF] hover:bg-[#007DFA] text-md"
+        >
+          <button>{{ user.name }} </button>
+        </li>
+      </ul>
+    </div>
+
+    <button
+      (click)="assignUser()"
+      class="border-2 rounded-sm px-2 py-2 h-10 cursor-pointer"
+    >
+      Add User
+    </button>
+  </div>
+</div>

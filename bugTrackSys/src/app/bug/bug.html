@@ -43,7 +43,9 @@
           />
         </svg>
       </button>
-      <button class="border-2">
+      <!-- assign developers and  QA -->
+      <button class="border-2" 
+ (click)="openAddMembersToProjectDialog()">
         <svg
           width="24"
           height="24"
@@ -57,7 +59,8 @@
           />
         </svg>
       </button>
-      <button class="border-2">+ New Bug</button>
+      <!-- add new bug -->
+      <button class="border-2" (click)="openAddBugDialog()">+ New Bug</button>
     </div>
   </div>
 

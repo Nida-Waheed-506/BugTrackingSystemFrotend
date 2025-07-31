@@ -13,9 +13,9 @@ export class Project {
  constructor(public dialog: MatDialog) {}
 
   openDialog() {
-    console.log("nida");
+   
     const dialogRef = this.dialog.open(ProjectAdd, {
-      backdropClass: "hello",
+      backdropClass: "popup",
       autoFocus: false
     });
 

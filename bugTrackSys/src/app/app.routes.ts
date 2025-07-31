@@ -5,6 +5,7 @@ import { Login } from "./login/login";
 import { PageNotFound } from "./page-not-found/page-not-found";
 import {Project} from "./project/project";
 import { Bug } from "./bug/bug";
+import { AssignedProjectMembers } from "./bug/assigned-project-members/assigned-project-members";
 
 // +++++++++++++++++++++++++++ imports ends ++++++++++++++++++++++++++++++
 
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: "signup", component: Signup },
   { path: "login", component: Login },
   {path: "projects" , component:Project },
-   {path:"projects/:id/bugs" , component: Bug},
+   {path:"projects/:project_id/bugs" , component: Bug},
+   {path:"projects/:project_id/assign" , component: AssignedProjectMembers},
   { path: "**", component: PageNotFound },
 ];

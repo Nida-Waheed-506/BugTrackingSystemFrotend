@@ -15,8 +15,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
      provideToastr({
-          timeOut: 3000,
-          positionClass: 'toast-top-right', 
+          timeOut: 2000,
+          positionClass: 'toast-bottom-right', 
           preventDuplicates: true,
         }),
     importProvidersFrom(MatDialogModule)
