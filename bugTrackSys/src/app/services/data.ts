@@ -103,17 +103,9 @@ export class Data {
 
   //  check if user is authenticated
   checkAuth() {
-    this.http
-      .get('http://localhost:8000/auth', { withCredentials: true })
-      .subscribe({
-        next: (res: any) => {
-          this.loggedInUserInfo$.next(res.data);
-        },
-        error: () => {
-          this.loggedInUserInfo$.next(null);
-          this.Router.navigate(['/login']);
-        },
-      });
+    return this.http.get('http://localhost:8000/auth', {
+      withCredentials: true,
+    });
   }
 
   //  add the project
@@ -155,9 +147,36 @@ export class Data {
 
   //  get top 4 developers in a project
 
-  getTopDevelopers() {}
-}
+  getTopDevelopers(project_id: any) {
+    return this.http.get(
+      `http://localhost:8000/projects/${project_id}/users/developers`,
+      { withCredentials: true }
+    );
+  }
 
-// // WRONG: Logging the observable object
-// const data$ = this.http.get('/api/data');
-// console.log(data$); // <-- just shows Observable2 {...}, no request executed
+  getDevByName(searchingName: any, project_id: any) {
+    return this.http.get(
+      `http://localhost:8000/projects/${project_id}/users/developers?search=${searchingName}`,
+      { withCredentials: true }
+    );
+  }
+
+  createBug(formData: any) {
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
+    return this.http.post('http://localhost:8000/bug', formData, {
+      withCredentials: true,
+    });
+  }
+
+
+  getProjectBugs(project_id:any){
+    return this.http.post(`http://localhost:8000/${project_id}bug`, {
+      withCredentials: true,
+    });
+  }
+
+
+}

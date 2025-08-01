@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-add',
-  imports: [RouterLink, CommonModule, MatIconModule, FormsModule],
+  imports: [CommonModule, MatIconModule, FormsModule],
   templateUrl: './project-add.html',
   styleUrl: './project-add.scss',
 })

@@ -42,32 +42,46 @@
 
           <div class="flex gap-5 justify-start">
             <!-- Assign to -->
-            <div class="flex items-center gap-3">
-              <h1 class="text-[17px] font-[400]">Assign to</h1>
-              <div class="ms-1 flex justify-start cursor-pointer">
+            <div
+              class="flex items-center gap-3 mt-2"
+              [ngClass]="users ? 'items-start' : 'items-center'"
+            >
+              <h1
+                class="text-[17px] font-[400]"
+                [ngClass]="users ? 'mt-3' : 'mt-0'"
+              >
+                Assign to
+              </h1>
+              <div class="ms-1 flex-col justify-center cursor-pointer">
                 <input
-                [formControl] = "searchName"
-                 (focus)="onFocus()"
+                  [formControl]="searchName"
+                  (focus)="onFocus()"
                   type="text"
-                  class="border-1 py-3 px-2 text-[15px] rounded-sm focus:outline-none border-[#A1A1AA] placeholder-[#A1A1AA] font-[400]"
+                  class="border-1 py-3 px-3 text-[15px] rounded-t-sm focus:outline-none border-[#A1A1AA] placeholder-[#A1A1AA] font-[400]"
                   placeholder="Search developers here"
                   name="developer_ids"
                   ngModel
                 />
-                 <ul *ngIf="users.length > 0" class="dropdown-list border-b-2">
-        <li
-          *ngFor="let user of users"
-          (click)="onDropdownClick(user.name, user.email)"
-          class="dropdown-item border-l-2 border-r-2 cursor-pointer py-1 ps-5 bg-[#CDD0D2FF] hover:bg-[#007DFA] text-md"
-        >
-          <button>{{ user.name }} </button>
-        </li>
-      </ul>
+                <ul
+                  *ngIf="users.length > 0"
+                  class="border-[#A1A1AA] dropdown-list border-1 border-"
+                >
+                  <li
+                    *ngFor="let user of users"
+                    (click)="onDropdownClick(user.name, user.id)"
+                    class="dropdown-item cursor-pointer py-1 ps-3 text-lg hover:bg-[#007DFA] text-md"
+                  >
+                    <button class="">{{ user.name }}</button>
+                  </li>
+                </ul>
               </div>
             </div>
 
             <!-- Add due date -->
-            <div class="flex justify-center items-center mt-4">
+            <div
+              class="flex justify-center"
+              [ngClass]="users ? 'mt-0' : 'mt-4'"
+            >
               <div class="">
                 <mat-form-field class="w-50 h-19">
                   <mat-label>Choose a deadline</mat-label>

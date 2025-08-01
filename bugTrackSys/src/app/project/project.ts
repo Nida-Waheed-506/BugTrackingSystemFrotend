@@ -71,7 +71,7 @@ export class Project {
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
-
+    
     this.Data.projectsInfo$.next(sortedProjects);
   }
 

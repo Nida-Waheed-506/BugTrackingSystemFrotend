@@ -12,7 +12,5 @@ import { CommonModule } from '@angular/common';
 export class App {
   protected title = 'bugTrackSys';
   constructor(private data: Data) {}
-  ngOnInit() {
-    this.data.checkAuth();
-  }
+ 
 }
