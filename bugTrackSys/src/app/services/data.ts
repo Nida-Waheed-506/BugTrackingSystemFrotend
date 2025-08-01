@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { ToastrService } from "ngx-toastr";
-import { Router } from "@angular/router";
-import { BehaviorSubject } from "rxjs";
-import { response } from "express";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { response } from 'express';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class Data {
-  user_type: string = "";
-  loggedInUserInfo$ = new BehaviorSubject<string>("");
+  user_type: string = '';
+  loggedInUserInfo$ = new BehaviorSubject<any>(null);
   projectsInfo$ = new BehaviorSubject<any[]>([]);
   constructor(
     private http: HttpClient,
@@ -35,14 +35,15 @@ export class Data {
     };
     // api call made
     this.http
-      .post("http://localhost:8000/signup", reqBody, { withCredentials: true })
+      .post('http://localhost:8000/signup', reqBody, { withCredentials: true })
       .subscribe({
         next: (response: any) => {
-          this.ToastrService.success(response.message, "Success");
-          this.Router.navigate(["/project"]);
+          this.loggedInUserInfo$.next(response.data);
+          this.ToastrService.success(response.message, 'Success');
+          this.Router.navigate(['/projects']);
         },
         error: (err) => {
-          this.ToastrService.error(err.error.error, "Error");
+          this.ToastrService.error(err.error.error, 'Error');
         },
       });
   }
@@ -55,42 +56,62 @@ export class Data {
       password: password,
     };
     this.http
-      .post("http://localhost:8000/login", reqBody, { withCredentials: true })
+      .post('http://localhost:8000/login', reqBody, { withCredentials: true })
       .subscribe({
         next: (response: any) => {
-          this.loggedInUserInfo$ = response.data;
-          this.ToastrService.success(response.message, "Success");
-          this.Router.navigate(["/projects"]);
+          this.loggedInUserInfo$.next(response.data);
+          this.ToastrService.success(response.message, 'Success');
+          this.Router.navigate(['/projects']);
         },
         error: (err) => {
-          this.ToastrService.error(err.error.error, "Error");
+          this.ToastrService.error(err.error.error, 'Error');
         },
       });
   }
-// get top 5 users
+  // get top 5 users
 
-getTopUsers(){
- return this.http.get("http://localhost:8000/users" , {withCredentials:true});
-}
+  getTopUsers() {
+    return this.http.get('http://localhost:8000/users', {
+      withCredentials: true,
+    });
+  }
 
-//  get users by name
-getUsersByName(searchingName:any){
-
-  console.log(searchingName);
-  return this.http.get(`http://localhost:8000/users?search=${searchingName}` , {withCredentials:true});
-}
+  //  get users by name
+  getUsersByName(searchingName: any) {
+    console.log(searchingName);
+    return this.http.get(
+      `http://localhost:8000/users?search=${searchingName}`,
+      { withCredentials: true }
+    );
+  }
   // user logout
 
   userLogout() {
     this.http
-      .post("http://localhost:8000/logout", "", { withCredentials: true })
+      .post('http://localhost:8000/logout', '', { withCredentials: true })
       .subscribe({
         next: (response: any) => {
-          this.ToastrService.success(response.message, "Success");
-          this.Router.navigate(["/login"]);
+          this.loggedInUserInfo$.next(null);
+          this.ToastrService.success(response.message, 'Success');
+          this.Router.navigate(['/login']);
         },
         error: (err) => {
-          this.ToastrService.error(err.error.error, "Error");
+          this.ToastrService.error(err.error.error, 'Error');
+        },
+      });
+  }
+
+  //  check if user is authenticated
+  checkAuth() {
+    this.http
+      .get('http://localhost:8000/auth', { withCredentials: true })
+      .subscribe({
+        next: (res: any) => {
+          this.loggedInUserInfo$.next(res.data);
+        },
+        error: () => {
+          this.loggedInUserInfo$.next(null);
+          this.Router.navigate(['/login']);
         },
       });
   }
@@ -98,69 +119,44 @@ getUsersByName(searchingName:any){
   //  add the project
 
   addProject(formData: any) {
-    console.log(this.loggedInUserInfo$);
-    this.http
-      .post("http://localhost:8000/project", formData, {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (response: any) => {
-          this.ToastrService.success(response.message, "Success");
-          this.Router.navigate(["/projects"]);
-        },
-        error: (err) => {
-          this.ToastrService.error(err.error.error, "Error");
-        },
-      });
+    return this.http.post('http://localhost:8000/project', formData, {
+      withCredentials: true,
+    });
   }
 
   // get all the projects
 
   getProjects() {
     this.http
-      .get("http://localhost:8000/projects", { withCredentials: true })
+      .get('http://localhost:8000/projects', { withCredentials: true })
       .subscribe({
         next: (response: any) => {
           this.projectsInfo$.next(response.data[0]);
 
           //  this.ToastrService.success(response.message , "Success");
-          this.Router.navigate(["/projects"]);
+          this.Router.navigate(['/projects']);
         },
         error: (err) => {
-          if (err.status === 401) {
-            this.ToastrService.error(
-              "Session expired. Please log in again.",
-              "Unauthorized"
-            );
-            this.Router.navigate(["/login"]);
-          } else this.ToastrService.error(err.error.error, "Error");
+          this.ToastrService.error(err.error.error, 'Error');
         },
       });
   }
 
-
   // assign project
 
-  assignUserToProject(email:string , project_id:any){
-    const reqBody = {email};
-   return this.http.post(`http://localhost:8000/projects/${project_id}/assign` , reqBody , {withCredentials:true});
+  assignUserToProject(email: string, project_id: any) {
+    const reqBody = { email };
+    return this.http.post(
+      `http://localhost:8000/projects/${project_id}/assign`,
+      reqBody,
+      { withCredentials: true }
+    );
   }
-
 
   //  get top 4 developers in a project
 
-  getTopDevelopers(){
-
-  }
-
-  
-
-
-
+  getTopDevelopers() {}
 }
-
-
-
 
 // // WRONG: Logging the observable object
 // const data$ = this.http.get('/api/data');

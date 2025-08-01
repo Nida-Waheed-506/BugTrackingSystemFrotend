@@ -10,7 +10,7 @@
       <div class="mt-5 me-3">
         <p class="font-[500] text-[16px] pb-2">Projects</p>
         <span class="font-[400] text-[14px] text-[#AEAEAE]"
-          >Hi Ali, welcome to ManageBug</span
+          >Hi {{ loggedInUser._value.name }}, welcome to ManageBug</span
         >
       </div>
 
@@ -33,6 +33,7 @@
 
         <input
           type="text"
+          [formControl]="searchControl"
           placeholder="Search for Projects here"
           class="placeholder-[#6E6F72] font-[400] text-[15px] outline-none focus:ring-0 focus:border-transparent"
         />
@@ -42,43 +43,50 @@
 
       <button
         class="px-6 py-4 text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
-         (click)="openDialog()"
+        (click)="openDialog()"
       >
         + Add New Project
       </button>
 
-    
-    
-      <div class="px-2 py-4 flex gap-3 mt-4 rounded-sm cursor-pointer font-[400] text-[#000000]">
-          <span>Sort by</span>
-      <div class="dropdown dropdown-end ms-5">
-        <div tabindex="0" role="button" class="">
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+      <div
+        class="px-2 py-4 flex gap-3 mt-4 rounded-sm cursor-pointer font-[400] text-[#000000]"
+      >
+        <span>Sort by</span>
+        <div class="dropdown dropdown-end ms-5">
+          <div tabindex="0" role="button" class="">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.41663 8.70825L11 13.2916L15.5833 8.70825"
+                stroke="#2F3367"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <ul
+            tabindex="0"
+            class="menu menu-sm border-2 border-[#007DFA] dropdown-content bg-base-100 rounded-box z-1 w-35 mt-3 p-2 shadow"
           >
-            <path
-              d="M6.41663 8.70825L11 13.2916L15.5833 8.70825"
-              stroke="#2F3367"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            <li>
+              <a class="text-sm font-[500]" (click)="onClickSortByName()"
+                >Sort by Name</a
+              >
+            </li>
+            <li>
+              <a class="text-sm font-[500]" (click)="onClickSoryByDate()"
+                >Sort by Date</a
+              >
+            </li>
+          </ul>
         </div>
-        <ul
-          tabindex="0"
-          class="menu menu-sm border-2 border-[#007DFA] dropdown-content bg-base-100 rounded-box z-1 w-35 mt-3  p-2 shadow"
-        >
-          <li><a class="text-sm font-[500]">Sort by Name</a></li>
-            <li><a class="text-sm font-[500]">Sort by Date</a></li>
-        </ul>
       </div>
-
-     </div>
 
       <button
         class="px-2 py-4 mt-4 font-[400] text-[#000000] rounded-sm cursor-pointer"
@@ -107,7 +115,5 @@
     <div class="border-b-1 mt-5 border-b-[#ECECEE]"></div>
 
     <app-project-items></app-project-items>
-
-
   </div>
 </div>
