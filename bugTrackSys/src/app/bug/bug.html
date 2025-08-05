@@ -4,10 +4,10 @@
   <!-- Bug page nav -->
 
   <div class="flex justify-between items-center">
-    <div class="mt-5 flex flex-col items-center justify-center">
+    <div class="mt-5 flex flex-col items-start gap-5 justify-center">
       <!-- project Name -->
-      <div class="flex gap-2">
-        <span>Projects</span>
+      <div class="flex gap-2 flex justify-center items-center">
+        <span class="text-[12px] font-[400] text-[#5B6871]">Projects</span>
         <svg
           width="7"
           height="10"
@@ -17,17 +17,18 @@
         >
           <path d="M1 0.5L5.5 5L1 9.5" stroke="#B0BABF" />
         </svg>
-        <span>Android UI system</span>
+        <span class="text-[#000000] text-[12px]">Android UI system</span>
       </div>
       <!-- All bug listing -->
 
       <div>
-        <span>All bugs listing</span> <button class="p-3 border-2">Bugs</button>
+        <span class="text-[36px] font-[700]">All bugs listing</span>
+        <button class="ms-3 px-3 py-2 bg-[#FDF2F2] text-[#EC5962]">Bugs</button>
       </div>
     </div>
 
-    <div class="flex justify-center items-center">
-      <button class="border-2">
+    <div class="flex justify-center items-center gap-3">
+      <button class="border-1 rounded-sm p-1 border-[#D0D5DD] cursor-pointer">
         <svg
           width="24"
           height="24"
@@ -44,8 +45,10 @@
         </svg>
       </button>
       <!-- assign developers and  QA -->
-      <button class="border-2" 
- (click)="openAddMembersToProjectDialog()">
+      <button
+        class="border-1 rounded-sm p-1 border-[#D0D5DD] cursor-pointer"
+        (click)="openAddMembersToProjectDialog()"
+      >
         <svg
           width="24"
           height="24"
@@ -60,7 +63,12 @@
         </svg>
       </button>
       <!-- add new bug -->
-      <button class="border-2" (click)="openAddBugDialog()">+ New Bug</button>
+      <button
+        class="border-2 bg-[#007DFA] text-white px-10 text-[14px] py-[8px] rounded-lg cursor-pointer"
+        (click)="openAddBugDialog()"
+      >
+        + New Bug
+      </button>
     </div>
   </div>
 
@@ -68,7 +76,9 @@
 
   <div class="mt-5 flex justify-between items-center">
     <!-- search bug -->
-    <div class="p-3 w-60 border-1 flex items-center justify-center">
+    <div
+      class="p-2 rounded-sm w-60 border-1 border-[#DDE2E4] flex items-center justify-center"
+    >
       <svg
         width="24"
         height="24"
@@ -84,13 +94,17 @@
         />
       </svg>
 
-      <input type="text" placeholder="Search" class="border-none" />
+      <input
+        type="text"
+        placeholder="Search"
+        class="text-[15px] ps-1 placeholder-[#9AA6AC]"
+      />
     </div>
 
     <!-- sub tasks  , mee , assignees -->
     <div class="flex items-center gap-3">
       <div class="flex justify-center items-center">
-        <span>Subtasks</span>
+        <span class="text-[14px] text-[#252C32] font-[400]">Subtasks</span>
         <svg
           width="24"
           height="24"
@@ -103,7 +117,7 @@
       </div>
 
       <div class="flex justify-center items-center">
-        <span>Me</span>
+        <span class="text-[14px] text-[#252C32] font-[400]">Me</span>
         <svg
           width="24"
           height="24"
@@ -116,7 +130,7 @@
       </div>
 
       <div class="flex justify-center items-center">
-        <span>Assignees</span>
+        <span class="text-[14px] text-[#252C32] font-[400]">Assignees</span>
         <svg
           width="24"
           height="24"
@@ -131,8 +145,8 @@
 
     <!-- some btns -->
 
-    <div class="flex items-center justify-center">
-      <button class="border-1 p-1">
+    <div class="flex items-center justify-center gap-3">
+      <button class="border-1 border-[#D0D5DD] rounded-lg p-2 cursor-pointer">
         <svg
           width="16"
           height="16"
@@ -147,7 +161,7 @@
         </svg>
       </button>
 
-      <button class="border-1 p-1">
+      <button class="border-1 border-[#D0D5DD] rounded-lg p-2 cursor-pointer">
         <svg
           width="16"
           height="16"
@@ -165,6 +179,7 @@
       <svg
         width="66"
         height="36"
+        class="cursor-pointer"
         viewBox="0 0 66 36"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -243,85 +258,126 @@
   <!-- bug detail -->
 
   <table>
-    <tr class="flex gap-30 mt-5 pb-5 border-b-1 border-b-[#344054]">
-      <th><input type="checkbox" /></th>
-      <th>DETAILS</th>
-      <th>STATE</th>
-      <th>STATUS</th>
-      <th>DUE DATE</th>
-      <th>ASSIGNED TO</th>
-      <th>ACTION</th>
+    <tr
+      class="flex mt-8 px-7 flex items-center justify-start bg-[#f1f5f9] py-5 border-b-1 border-b-[#344054]"
+    >
+      <th>
+        <input
+          type="checkbox"
+          class="border-[#3A3541AD] scale-120 w-15 cursor-pointer"
+        />
+      </th>
+      <th
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-115 text-start ps-3"
+      >
+        DETAILS
+      </th>
+      <th
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-40 text-center"
+      >
+        STATE
+      </th>
+      <th
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-40 text-center"
+      >
+        STATUS
+      </th>
+      <th
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-40 text-center"
+      >
+        DUE DATE
+      </th>
+      <th
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-40 text-center"
+      >
+        ASSIGNED TO
+      </th>
+      <th
+        class="border-x-1 text-[13px] border-x-[#3A35411F] text-[#3A3541DE] w-25 text-start ps-3"
+      >
+        ACTION
+      </th>
     </tr>
 
     <!-- show bug with details -->
 
-    <tr class="flex gap-30 mt-5 pb-5 border-b-1 border-b-[#344054]">
-      <td><input type="checkbox" /></td>
-      <td class="flex">
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+    <div *ngFor="let bug of bugDetails">
+      <tr class="flex py-4 px-7 items-center border-b-1 border-b-[#344054]">
+        <td
+          class="border-[#3A3541AD] scale-120 cursor-pointer text-center w-15 justify-center"
         >
-          <rect width="10" height="10" rx="5" fill="#EC5962" />
-        </svg>
-        Convert the audio
-      </td>
-      <td>Bug</td>
-      <td>Pending</td>
-      <td>
-        <svg
-          width="21"
-          height="21"
-          viewBox="0 0 21 21"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          <input type="checkbox" />
+        </td>
+        <td
+          class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-115 justify-start items-center"
         >
-          <g clip-path="url(#clip0_955_1614)">
-            <path
-              d="M13.947 0.80835C13.947 0.362305 14.3879 0 14.9331 0C15.4783 0 15.9192 0.362305 15.9192 0.80835V4.34937C15.9192 4.79541 15.4783 5.15771 14.9331 5.15771C14.3879 5.15771 13.947 4.79541 13.947 4.34937V0.80835ZM5.0603 0.80835C5.0603 0.362305 5.50122 0 6.04639 0C6.59155 0 7.03247 0.362305 7.03247 0.80835V4.34937C7.03247 4.79541 6.59155 5.15771 6.04639 5.15771C5.50122 5.15771 5.0603 4.79541 5.0603 4.34937V0.80835ZM7.00513 14.4512C6.78809 14.2427 6.78125 13.8975 6.98975 13.6804C7.19824 13.4634 7.54346 13.4565 7.7605 13.665L9.45239 15.3005L13.2156 11.2708C13.4207 11.0503 13.7659 11.0383 13.9863 11.2434C14.2068 11.4485 14.2188 11.7937 14.0137 12.0142L9.8728 16.4507L9.86597 16.4575C9.65747 16.6746 9.31226 16.6814 9.09521 16.4729L7.00513 14.4512ZM1.09375 7.74512H19.9062V3.66919C19.9062 3.53247 19.8499 3.40771 19.7593 3.31543C19.6687 3.22485 19.5439 3.16846 19.4055 3.16846H17.6025C17.3 3.16846 17.0557 2.92407 17.0557 2.62158C17.0557 2.31909 17.3 2.07471 17.6025 2.07471H19.4055C19.8447 2.07471 20.2429 2.25415 20.5317 2.54297C20.8206 2.83179 21 3.22998 21 3.66919V8.2937V19.4072C21 19.8464 20.8206 20.2446 20.5317 20.5334C20.2429 20.8223 19.8447 21.0017 19.4055 21.0017H1.59448C1.15527 21.0017 0.75708 20.8223 0.468262 20.5334C0.179443 20.2429 0 19.8447 0 19.4055V8.2937V3.66919C0 3.22998 0.179443 2.83179 0.468262 2.54297C0.75708 2.25415 1.15527 2.07471 1.59448 2.07471H3.52051C3.823 2.07471 4.06738 2.31909 4.06738 2.62158C4.06738 2.92407 3.823 3.16846 3.52051 3.16846H1.59448C1.45776 3.16846 1.33301 3.22485 1.24072 3.31543C1.15015 3.40601 1.09375 3.53076 1.09375 3.66919V7.74512ZM19.9062 8.84058H1.09375V19.4055C1.09375 19.5422 1.15015 19.667 1.24072 19.7593C1.3313 19.8499 1.45605 19.9062 1.59448 19.9062H19.4055C19.5422 19.9062 19.667 19.8499 19.7593 19.7593C19.8499 19.6687 19.9062 19.5439 19.9062 19.4055V8.84058ZM8.61841 3.16846C8.31592 3.16846 8.07153 2.92407 8.07153 2.62158C8.07153 2.31909 8.31592 2.07471 8.61841 2.07471H12.291C12.5935 2.07471 12.8379 2.31909 12.8379 2.62158C12.8379 2.92407 12.5935 3.16846 12.291 3.16846H8.61841Z"
-              fill="#D0D5DD"
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              width="10"
+              height="10"
+              rx="5"
+              [attr.fill]="
+                bug.status === 'new'
+                  ? '#2563EB'
+                  : bug.status === 'started'
+                  ? '#EAB308'
+                  : '#16A34A'
+              "
             />
-          </g>
-          <defs>
-            <clipPath id="clip0_955_1614">
-              <rect width="21" height="21" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
-      </td>
-      <td>
-        <svg
-          width="5"
-          height="17"
-          viewBox="0 0 5 17"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          </svg>
+          <span class="truncate max-w-[40ch] block">
+            {{ bug.description }}</span
+          >
+        </td>
+        <td class="font-[500] text-[13px] text-[#3A3541DE] w-40 text-center">
+          {{ bug.type }}
+        </td>
+        <td class="text-center w-40">
+          <span
+            class="text-[13px] py-2 px-3 font-[500]"
+            [ngClass]="
+              bug.status === 'new'
+                ? 'text-[#3069FE] bg-[#EEF3FF]'
+                : bug.status === 'started'
+                ? 'text-[#FFCC55] bg-[#FFF8E1]'
+                : 'text-[#00B894] bg-[#E0F7F1]'
+            "
+            >{{ bug.status }}</span
+          >
+        </td>
+        <td class="font-[500] text-[13px] text-[#3A3541DE] w-40 text-center">
+          {{ bug.deadline }}
+        </td>
+        <td
+          class="whitespace-normal break-words flex text-[13px] text-[#3A3541DE] w-40 justify-center font-[500]"
         >
-          <path
-            d="M2.06039 4.12078C3.19361 4.12078 4.12078 3.19361 4.12078 2.06039C4.12078 0.927176 3.19361 0 2.06039 0C0.927176 0 0 0.927176 0 2.06039C0 3.19361 0.927176 4.12078 2.06039 4.12078ZM2.06039 6.18117C0.927176 6.18117 0 7.10835 0 8.24156C0 9.37478 0.927176 10.302 2.06039 10.302C3.19361 10.302 4.12078 9.37478 4.12078 8.24156C4.12078 7.10835 3.19361 6.18117 2.06039 6.18117ZM2.06039 12.3623C0.927176 12.3623 0 13.2895 0 14.4227C0 15.556 0.927176 16.4831 2.06039 16.4831C3.19361 16.4831 4.12078 15.556 4.12078 14.4227C4.12078 13.2895 3.19361 12.3623 2.06039 12.3623Z"
-            fill="#3A3541"
-            fill-opacity="0.54"
-          />
-        </svg>
-      </td>
-      <td>
-        <svg
-          width="5"
-          height="17"
-          viewBox="0 0 5 17"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          {{ bug.developerNames }}
+        </td>
+        <td
+          class="text-[13px] flex text-[#3A3541DE] w-25 text-start justify-center"
         >
-          <path
-            d="M2.06039 4.12078C3.19361 4.12078 4.12078 3.19361 4.12078 2.06039C4.12078 0.927176 3.19361 0 2.06039 0C0.927176 0 0 0.927176 0 2.06039C0 3.19361 0.927176 4.12078 2.06039 4.12078ZM2.06039 6.18117C0.927176 6.18117 0 7.10835 0 8.24156C0 9.37478 0.927176 10.302 2.06039 10.302C3.19361 10.302 4.12078 9.37478 4.12078 8.24156C4.12078 7.10835 3.19361 6.18117 2.06039 6.18117ZM2.06039 12.3623C0.927176 12.3623 0 13.2895 0 14.4227C0 15.556 0.927176 16.4831 2.06039 16.4831C3.19361 16.4831 4.12078 15.556 4.12078 14.4227C4.12078 13.2895 3.19361 12.3623 2.06039 12.3623Z"
-            fill="#3A3541"
-            fill-opacity="0.54"
-          />
-        </svg>
-      </td>
-    </tr>
+          <svg
+            width="5"
+            height="17"
+            class="cursor-pointer"
+            viewBox="0 0 5 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2.06039 4.12078C3.19361 4.12078 4.12078 3.19361 4.12078 2.06039C4.12078 0.927176 3.19361 0 2.06039 0C0.927176 0 0 0.927176 0 2.06039C0 3.19361 0.927176 4.12078 2.06039 4.12078ZM2.06039 6.18117C0.927176 6.18117 0 7.10835 0 8.24156C0 9.37478 0.927176 10.302 2.06039 10.302C3.19361 10.302 4.12078 9.37478 4.12078 8.24156C4.12078 7.10835 3.19361 6.18117 2.06039 6.18117ZM2.06039 12.3623C0.927176 12.3623 0 13.2895 0 14.4227C0 15.556 0.927176 16.4831 2.06039 16.4831C3.19361 16.4831 4.12078 15.556 4.12078 14.4227C4.12078 13.2895 3.19361 12.3623 2.06039 12.3623Z"
+              fill="#3A3541"
+              fill-opacity="0.54"
+            />
+          </svg>
+        </td>
+      </tr>
+    </div>
   </table>
 </div>

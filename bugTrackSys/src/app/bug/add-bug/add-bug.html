@@ -56,6 +56,7 @@
                 <input
                   [formControl]="searchName"
                   (focus)="onFocus()"
+                  (blur)="onBlur()"
                   type="text"
                   class="border-1 py-3 px-3 text-[15px] rounded-t-sm focus:outline-none border-[#A1A1AA] placeholder-[#A1A1AA] font-[400]"
                   placeholder="Search developers here"
@@ -68,7 +69,7 @@
                 >
                   <li
                     *ngFor="let user of users"
-                    (click)="onDropdownClick(user.name, user.id)"
+                    (mousedown)="onDropdownClick(user.name, user.id)"
                     class="dropdown-item cursor-pointer py-1 ps-3 text-lg hover:bg-[#007DFA] text-md"
                   >
                     <button class="">{{ user.name }}</button>
@@ -212,7 +213,11 @@
                 >delete</mat-icon
               >
 
-              <img [src]="preview" alt="Image" class="rounded-sm w-100 h-53" />
+              <img
+                [src]="preview"
+                alt="Image"
+                class="rounded-sm w-full h-40 object-cover"
+              />
             </div>
             <input
               type="file"

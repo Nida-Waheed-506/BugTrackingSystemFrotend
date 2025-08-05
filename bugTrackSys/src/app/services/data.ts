@@ -68,6 +68,12 @@ export class Data {
         },
       });
   }
+
+  getUserById(id: any) {
+    return this.http.get(`http://localhost:8000/user?id=${id}`, {
+      withCredentials: true,
+    });
+  }
   // get top 5 users
 
   getTopUsers() {
@@ -171,12 +177,12 @@ export class Data {
     });
   }
 
-
-  getProjectBugs(project_id:any){
-    return this.http.post(`http://localhost:8000/${project_id}bug`, {
-      withCredentials: true,
-    });
+  getProjectBugs(project_id: any) {
+    return this.http.get(
+      `http://localhost:8000/bugs?project_id=${project_id}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
-
-
 }

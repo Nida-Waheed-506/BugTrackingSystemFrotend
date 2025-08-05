@@ -20,6 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Data } from '../../services/data';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-add-bug',
   imports: [
@@ -60,8 +62,6 @@ export class AddBug {
   ngOnInit() {
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {
-        this.selectedUserName = '';
-        this.selectedUserId = '';
         if (value?.trim() === '')
           this.Data.getTopDevelopers(this.data.projectId).subscribe({
             next: (response: any) => {
@@ -80,6 +80,7 @@ export class AddBug {
   }
   // when input is focused show top 2 developers
   onFocus() {
+    console.log('hello focus');
     if (!this.searchName.value) {
       this.Data.getTopDevelopers(this.data.projectId).subscribe({
         next: (response: any) => {
@@ -92,6 +93,11 @@ export class AddBug {
     }
   }
 
+  onBlur() {
+    console.log('hello blur');
+    this.users = [];
+    this.searchName.setValue('');
+  }
   // when select any of the user from the drop down
 
   onDropdownClick(name: string, id: string) {
@@ -175,23 +181,22 @@ export class AddBug {
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('description', value.description);
-    formData.append('deadline', value.deadline);
+    formData.append('deadline', new Date(value.deadline).toISOString());
     formData.append('type', value.type);
     formData.append('developer_id', JSON.stringify(this.developerAddedToBug));
     formData.append('screenshot', this.selectedFile);
     formData.append('project_id', this.data.projectId);
-     
+
     this.Data.createBug(formData).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
         this.dialogRef.close('Add bug dialog close');
       },
       error: (err) => {
+        console.log(err);
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
-
-
   }
 
   // close the dialog box
