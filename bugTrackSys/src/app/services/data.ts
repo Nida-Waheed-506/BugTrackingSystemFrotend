@@ -124,20 +124,11 @@ export class Data {
 
   // get all the projects
 
-  getProjects() {
-    this.http
-      .get('http://localhost:8000/projects', { withCredentials: true })
-      .subscribe({
-        next: (response: any) => {
-          this.projectsInfo$.next(response.data[0]);
-
-          //  this.ToastrService.success(response.message , "Success");
-          this.Router.navigate(['/projects']);
-        },
-        error: (err) => {
-          this.ToastrService.error(err.error.error, 'Error');
-        },
-      });
+  getProjects( page : any, limit:any) {
+ 
+   return this.http
+      .get(`http://localhost:8000/projects?page=${page+1}&limit=${limit}`, { withCredentials: true })
+    
   }
 
   // assign project
@@ -177,12 +168,20 @@ export class Data {
     });
   }
 
-  getProjectBugs(project_id: any) {
+  getProjectBugs(project_id: any , page:any , limit:any) {
     return this.http.get(
-      `http://localhost:8000/bugs?project_id=${project_id}`,
+      `http://localhost:8000/bugs?project_id=${project_id}&page=${page+1}&limit=${limit}`,
       {
         withCredentials: true,
       }
     );
   }
+
+  changeStatus(project_id: any, status: any, bug_id: any) {
+    const reqBody = { project_id, status };
+    return this.http.patch(`http://localhost:8000/bugs/${bug_id}/status`, reqBody, {
+      withCredentials: true,
+    });
+  }
+  
 }

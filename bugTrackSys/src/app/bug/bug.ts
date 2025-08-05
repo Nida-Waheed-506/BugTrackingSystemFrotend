@@ -9,15 +9,26 @@ import { Data } from '../services/data';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { lastValueFrom } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
+
 @Component({
   selector: 'app-bug',
-  imports: [Navbar, CommonModule],
+  imports: [Navbar, CommonModule, MatIconModule, MatPaginatorModule],
   templateUrl: './bug.html',
   styleUrl: './bug.scss',
 })
 export class Bug {
   project_id: string | null = null;
+  projectName: string = '';
   bugDetails: any[] = [];
+  isChangeStatus: any = false;
+  chosenBug: any = '';
+  currentPageNumber: any = 0;
+  limitt: any = 1;
+  totalRecords: any = 0;
+
   constructor(
     private ToastrService: ToastrService,
     private Data: Data,
@@ -28,15 +39,25 @@ export class Bug {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
+      console.log(params);
       this.project_id = params.get('project_id');
     });
 
-    //  to get the bugs
+    this.route.queryParams.subscribe((query) => {
+      this.projectName = query['project'];
+    });
 
-    this.Data.getProjectBugs(this.project_id).subscribe({
+    this.Data.getProjectBugs(
+      this.project_id,
+      this.currentPageNumber,
+      this.limitt
+    ).subscribe({
       next: (response: any) => {
-        const bugs = response.data.Bugs;
+        console.log(response);
+        this.totalRecords = response.data.count;
 
+        const bugs = response.data.rows;
+        console.log(bugs);
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
@@ -68,6 +89,89 @@ export class Bug {
       },
     });
   }
+
+  // page number get for pagination
+
+  onPageChange(event: PageEvent): void {
+    this.currentPageNumber = event.pageIndex;
+    this.limitt = event.pageSize;
+    this.totalRecords = event.length;
+
+
+    this.Data.getProjectBugs(
+      this.project_id,
+      this.currentPageNumber,
+      this.limitt
+    ).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.totalRecords = response.data.count;
+
+        const bugs = response.data.rows;
+        console.log(bugs);
+        Promise.all(
+          bugs.map(async (bug: any) => {
+            const developerNames: string[] = [];
+
+            for (const devId of bug.developer_id) {
+              try {
+                const userRes: any = await lastValueFrom(
+                  this.Data.getUserById(devId)
+                );
+
+                developerNames.push(userRes.data.name);
+              } catch (error) {
+                console.error(error);
+              }
+            }
+
+            return {
+              ...bug,
+              developerNames: developerNames.join(' - '),
+            };
+          })
+        ).then((bugDet) => {
+          this.bugDetails = bugDet;
+        });
+      },
+      error: (err: any) => {
+        console.log(err);
+        this.ToastrService.error(err.error.error, 'Error');
+      },
+    });
+
+    
+  }
+
+  showChangeStatus(chosenBug: any) {
+    console.log(chosenBug);
+    this.chosenBug = chosenBug;
+  }
+  choosenStatus(id: any, status: any) {
+    this.Data.changeStatus(this.project_id, status, id).subscribe({
+      next: (response: any) => {
+        this.bugDetails = this.bugDetails.map((bug) => {
+          if (bug.id === id && bug.status !== status) {
+            return {
+              ...bug,
+              status: status,
+            };
+          }
+          return bug;
+        });
+      },
+      error: (err) => {
+        console.log(err);
+        this.ToastrService.error(err.error.error, 'Error');
+      },
+    });
+    this.chosenBug = '';
+  }
+
+  closeChangeStatus() {
+    this.chosenBug = '';
+  }
+
   openAddMembersToProjectDialog() {
     const dialogRef = this.dialog.open(AssignedProjectMembers, {
       backdropClass: 'popup',

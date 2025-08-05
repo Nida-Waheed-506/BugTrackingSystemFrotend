@@ -8,9 +8,13 @@ import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
+
+
 @Component({
   selector: 'app-project',
-  imports: [Navbar, ProjectItems, ReactiveFormsModule],
+  imports: [Navbar, ProjectItems, ReactiveFormsModule,MatPaginatorModule],
   templateUrl: './project.html',
   styleUrl: './project.scss',
 })
@@ -18,6 +22,9 @@ export class Project {
   loggedInUser: any | null = null;
   searchControl = new FormControl('');
   originalProjects: any[] = [];
+  currentPageNumber : any = 0;
+  limitt : any = 1;
+  totalRecords : any = 0;
   constructor(
     public dialog: MatDialog,
     private Data: Data,
@@ -55,6 +62,22 @@ export class Project {
         }
       });
   }
+
+    receiveDataFromChild(totProjects: string) {
+     this.totalRecords = totProjects;
+     
+    }
+
+  // page number get for pagination
+
+     onPageChange(event: PageEvent): void {
+     
+       this.currentPageNumber = event.pageIndex; 
+       this.limitt = event.pageSize;
+       this.totalRecords = event.length;
+       
+     
+    }
 
   // sort by name
   onClickSortByName() {

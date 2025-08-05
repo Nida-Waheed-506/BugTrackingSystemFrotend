@@ -1,119 +1,138 @@
-<div class="py-6 px-30 bg-[#FAFAFA]">
-  <app-navbar></app-navbar>
-  <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
+<div class="py-6 px-30 bg-[#FAFAFA] max-h-[100vh]">
+  <div class="h-[85vh]">
+    <app-navbar></app-navbar>
 
-  <!-- project page  -->
-  <div>
-    <!-- project nav -->
-    <div class="flex items-center gap-10 ps-5">
-      <!-- project owner -->
-      <div class="mt-5 me-3">
-        <p class="font-[500] text-[16px] pb-2">Projects</p>
-        <span class="font-[400] text-[14px] text-[#AEAEAE]"
-          >Hi {{ loggedInUser._value.name }}, welcome to ManageBug</span
-        >
-      </div>
+    <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
 
-      <!-- search the project -->
-      <div
-        class="flex gap-3 ps-4 pe-20 bg-[#F1F1F1] py-4 rounded-sm items-center mt-4"
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12.5684 12.5957C12.6632 12.5016 12.8124 12.5016 12.9072 12.5957L12.9258 12.6133L12.9463 12.6299L14.8623 14.1768L14.9209 14.2236C15.045 14.4193 15.0225 14.6837 14.8535 14.8545C14.6634 15.0465 14.3592 15.0479 14.167 14.8594L12.5918 13.0547H12.5928L12.5898 13.0518L12.5449 13.002C12.5041 12.9486 12.4805 12.8821 12.4805 12.8125C12.4805 12.7303 12.513 12.6527 12.5684 12.5957ZM6.93359 1C8.50528 1.0001 10.0139 1.6309 11.127 2.75586C12.2402 3.88113 12.8662 5.40927 12.8662 7.00293C12.866 10.3227 10.2051 13.0047 6.93359 13.0049C3.66195 13.0049 1.00026 10.3228 1 7.00293C1 3.68281 3.66179 1 6.93359 1Z"
-            stroke="#6E6F72"
-          />
-        </svg>
-
-        <input
-          type="text"
-          [formControl]="searchControl"
-          placeholder="Search for Projects here"
-          class="placeholder-[#6E6F72] font-[400] text-[15px] outline-none focus:ring-0 focus:border-transparent"
-        />
-      </div>
-
-      <!-- button -->
-
-      <button
-        class="px-6 py-4 text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
-        (click)="openDialog()"
-      >
-        + Add New Project
-      </button>
-
-      <div
-        class="px-2 py-4 flex gap-3 mt-4 rounded-sm cursor-pointer font-[400] text-[#000000]"
-      >
-        <span>Sort by</span>
-        <div class="dropdown dropdown-end ms-5">
-          <div tabindex="0" role="button" class="">
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 22 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6.41663 8.70825L11 13.2916L15.5833 8.70825"
-                stroke="#2F3367"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-          <ul
-            tabindex="0"
-            class="menu menu-sm border-2 border-[#007DFA] dropdown-content bg-base-100 rounded-box z-1 w-35 mt-3 p-2 shadow"
+    <!-- project page  -->
+    <div>
+      <!-- project nav -->
+      <div class="flex items-center gap-10 ps-5">
+        <!-- project owner -->
+        <div class="mt-5 me-3">
+          <p class="font-[500] text-[16px] pb-2">Projects</p>
+          <span class="font-[400] text-[14px] text-[#AEAEAE]"
+            >Hi {{ loggedInUser._value.name }}, welcome to ManageBug</span
           >
-            <li>
-              <a class="text-sm font-[500]" (click)="onClickSortByName()"
-                >Sort by Name</a
-              >
-            </li>
-            <li>
-              <a class="text-sm font-[500]" (click)="onClickSoryByDate()"
-                >Sort by Date</a
-              >
-            </li>
-          </ul>
         </div>
+
+        <!-- search the project -->
+        <div
+          class="flex gap-3 ps-4 pe-20 bg-[#F1F1F1] py-4 rounded-sm items-center mt-4"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.5684 12.5957C12.6632 12.5016 12.8124 12.5016 12.9072 12.5957L12.9258 12.6133L12.9463 12.6299L14.8623 14.1768L14.9209 14.2236C15.045 14.4193 15.0225 14.6837 14.8535 14.8545C14.6634 15.0465 14.3592 15.0479 14.167 14.8594L12.5918 13.0547H12.5928L12.5898 13.0518L12.5449 13.002C12.5041 12.9486 12.4805 12.8821 12.4805 12.8125C12.4805 12.7303 12.513 12.6527 12.5684 12.5957ZM6.93359 1C8.50528 1.0001 10.0139 1.6309 11.127 2.75586C12.2402 3.88113 12.8662 5.40927 12.8662 7.00293C12.866 10.3227 10.2051 13.0047 6.93359 13.0049C3.66195 13.0049 1.00026 10.3228 1 7.00293C1 3.68281 3.66179 1 6.93359 1Z"
+              stroke="#6E6F72"
+            />
+          </svg>
+
+          <input
+            type="text"
+            [formControl]="searchControl"
+            placeholder="Search for Projects here"
+            class="placeholder-[#6E6F72] font-[400] text-[15px] outline-none focus:ring-0 focus:border-transparent"
+          />
+        </div>
+
+        <!-- button -->
+
+        <button
+          class="px-6 py-4 text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
+          (click)="openDialog()"
+        >
+          + Add New Project
+        </button>
+
+        <div
+          class="px-2 py-4 flex gap-3 mt-4 rounded-sm cursor-pointer font-[400] text-[#000000]"
+        >
+          <span>Sort by</span>
+          <div class="dropdown dropdown-end ms-5">
+            <div tabindex="0" role="button" class="">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.41663 8.70825L11 13.2916L15.5833 8.70825"
+                  stroke="#2F3367"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <ul
+              tabindex="0"
+              class="menu menu-sm border-2 border-[#007DFA] dropdown-content bg-base-100 rounded-box z-1 w-35 mt-3 p-2 shadow"
+            >
+              <li>
+                <a class="text-sm font-[500]" (click)="onClickSortByName()"
+                  >Sort by Name</a
+                >
+              </li>
+              <li>
+                <a class="text-sm font-[500]" (click)="onClickSoryByDate()"
+                  >Sort by Date</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <button
+          class="px-2 py-4 mt-4 font-[400] text-[#000000] rounded-sm cursor-pointer"
+        >
+          My Projects
+        </button>
+
+        <button class="bg-[#007DFA] py-3 rounded-sm px-5 mt-4">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.7102 0V4.94631C15.9088 5.44932 18.434 8.2159 18.434 11.5693C18.434 15.2581 15.4037 18.2762 11.7001 18.2762C8.16481 18.2762 5.30292 15.5935 4.96622 12.1562H0C0.336693 18.36 5.38709 23.3063 11.7001 23.3063C18.1814 23.3063 23.4002 18.1085 23.4002 11.6532C23.4002 5.53316 18.6865 0.58685 12.7102 0Z"
+              fill="white"
+            />
+            <path d="M11.3634 0H0V4.86247H11.3634V0Z" fill="white" />
+            <path
+              d="M8.75402 6.12012H0V11.0664H8.75402V6.12012Z"
+              fill="white"
+            />
+          </svg>
+        </button>
       </div>
 
-      <button
-        class="px-2 py-4 mt-4 font-[400] text-[#000000] rounded-sm cursor-pointer"
-      >
-        My Projects
-      </button>
+      <div class="border-b-1 mt-5 border-b-[#ECECEE]"></div>
 
-      <button class="bg-[#007DFA] py-3 rounded-sm px-5 mt-4">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12.7102 0V4.94631C15.9088 5.44932 18.434 8.2159 18.434 11.5693C18.434 15.2581 15.4037 18.2762 11.7001 18.2762C8.16481 18.2762 5.30292 15.5935 4.96622 12.1562H0C0.336693 18.36 5.38709 23.3063 11.7001 23.3063C18.1814 23.3063 23.4002 18.1085 23.4002 11.6532C23.4002 5.53316 18.6865 0.58685 12.7102 0Z"
-            fill="white"
-          />
-          <path d="M11.3634 0H0V4.86247H11.3634V0Z" fill="white" />
-          <path d="M8.75402 6.12012H0V11.0664H8.75402V6.12012Z" fill="white" />
-        </svg>
-      </button>
+      <div class="h-[60vh] overflow-y-auto">
+        <app-project-items [page]="currentPageNumber" [limit]="limitt"   (totalProjects)="receiveDataFromChild($event)"></app-project-items>
+      </div>
     </div>
+  </div>
 
-    <div class="border-b-1 mt-5 border-b-[#ECECEE]"></div>
-
-    <app-project-items></app-project-items>
+  <div class="flex items-end justify-end h-[10vh]">
+    <mat-paginator
+      [length]="this.totalRecords"
+      [pageSize]="1"
+      [pageSizeOptions]="[1,5, 10, 25, 100]"
+      aria-label="Select page"
+      (page)="onPageChange($event)"> 
+    >
+    </mat-paginator>
   </div>
 </div>
