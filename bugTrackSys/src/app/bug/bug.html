@@ -6,10 +6,10 @@
   <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
   <!-- Bug page nav -->
 
-  <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center ">
     <div class="mt-5 flex flex-col items-start gap-5 justify-center">
       <!-- project Name -->
-      <div class="flex gap-2 flex justify-center items-center">
+      <div class="hidden xl:flex gap-2 flex justify-center items-center">
         <span class="text-[12px] font-[400] text-[#5B6871]">Projects</span>
         <svg
           width="7"
@@ -24,14 +24,14 @@
       </div>
       <!-- All bug listing -->
 
-      <div>
-        <span class="text-[36px] font-[700]">All bugs listing</span>
-        <button class="ms-3 px-3 py-2 bg-[#FDF2F2] text-[#EC5962]">Bugs</button>
+      <div class="flex justify-center items-center">
+        <span class="text-[20px] xl:text-[36px] font-[700]">All bugs listing</span>
+        <button class="hidden xl:block ms-3 px-3 py-2 bg-[#FDF2F2] text-[#EC5962]">Bugs</button>
       </div>
     </div>
 
-    <div class="flex justify-center items-center gap-3">
-      <button class="border-1 rounded-sm p-1 border-[#D0D5DD] cursor-pointer">
+    <div class="flex justify-center items-center gap-3 mt-4 xl:mt-0">
+      <button class="hidden xl:block border-1 rounded-sm p-1 border-[#D0D5DD] cursor-pointer">
         <svg
           width="24"
           height="24"
@@ -77,16 +77,17 @@
 
   <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
 
-  <div class="mt-5 flex justify-between items-center">
+  <div class="hidden xl:flex mt-5 flex justify-between items-center">
     <!-- search bug -->
     <div
-      class="p-2 rounded-sm w-60 border-1 border-[#DDE2E4] flex items-center justify-center"
+      class="p-2 rounded-sm w-70 border-1 border-[#DDE2E4] flex items-center justify-center"
     >
       <svg
-        width="24"
-        height="24"
+        width="28"
+        height="28"
+      
         viewBox="0 0 24 24"
-        fill="none"
+        fill="#DDE2E4"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -99,8 +100,9 @@
 
       <input
         type="text"
+        [formControl]="searchControl"
         placeholder="Search"
-        class="text-[15px] ps-1 placeholder-[#9AA6AC]"
+        class="text-[17px] ps-1 placeholder-[#9AA6AC] focus:outline-none"
       />
     </div>
 
@@ -256,11 +258,11 @@
     </div>
   </div>
 
-  <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
+  <div class="hidden xl:block border-b-1 mt-3 border-b-[#ECECEE]"></div>
 
   <!-- bug detail -->
 
-  <table>
+  <div class="h-[60vh] w-[108%]  overflow-auto"> <table >
     <tr
       class="flex mt-8 px-7 flex items-center justify-start bg-[#f1f5f9] py-5 border-b-1 border-b-[#344054]"
     >
@@ -270,8 +272,13 @@
           class="border-[#3A3541AD] scale-120 w-15 cursor-pointer"
         />
       </th>
+       <th
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-30 text-start ps-3"
+      >
+        TITLE
+      </th>
       <th
-        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-115 text-start ps-3"
+        class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-72 text-start ps-3"
       >
         DETAILS
       </th>
@@ -311,8 +318,13 @@
         >
           <input type="checkbox" />
         </td>
+
+        <td class="truncate max-w-[20ch] font-[500] text-[13px] text-[#3A3541DE] w-30 text-start ps-3">
+          {{ bug.title}}
+        </td>
+
         <td
-          class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-115 justify-start items-center"
+          class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-72 justify-start items-center"
         >
           <svg
             width="10"
@@ -327,14 +339,14 @@
               rx="5"
               [attr.fill]="
                 bug.status === 'new'
-                  ? '#2563EB'
+                  ? '#EC5962'
                   : bug.status === 'started'
-                  ? '#EAB308'
+                  ? '#2563EB'
                   : '#16A34A'
               "
             />
           </svg>
-          <span class="truncate max-w-[40ch] block">
+          <span class="truncate max-w-[25ch] block">
             {{ bug.description }}</span
           >
         </td>
@@ -346,9 +358,9 @@
             class="text-[13px] py-2 px-3 font-[500]"
             [ngClass]="
               bug.status === 'new'
-                ? 'text-[#3069FE] bg-[#EEF3FF]'
+                ? 'text-[#EC5962] bg-[#FDF2F2]'
                 : bug.status === 'started'
-                ? 'text-[#FFCC55] bg-[#FFF8E1]'
+                ? 'text-[#3069FE] bg-[#EEF3FF]'
                 : 'text-[#00B894] bg-[#E0F7F1]'
             "
             >{{ bug.status }}</span
@@ -404,13 +416,13 @@
             <div class="flex flex-col items-start pt-2 pb-3 gap-2">
              
               <button
-                class="bg-[#EEF3FF] text-[#3069FE] px-5 py-1 rounded-sm cursor-pointer"
+                class="bg-[#FDF2F2] text-[#EC5962] px-5 py-1 rounded-sm cursor-pointer"
                 (click)="choosenStatus(bug.id , 'new')"
                 >
                 new
               </button>
               <button
-                class="text-[#FFCC55] bg-[#FFF8E1] px-5 py-1 rounded-sm cursor-pointer"
+                class="text-[#3069FE] bg-[#EEF3FF] px-5 py-1 rounded-sm cursor-pointer"
                  (click)="choosenStatus(bug.id , 'started')"
                 >
                 started
@@ -431,18 +443,33 @@
              
            
             </div>
-               <div (click)="closeChangeStatus()" class="flex w-full px-2 justify-between cursor-pointer close py-1 border-t-1 border-t-[#65676B]">
-                <button class="text-[13px] cursor-pointer">Cancel</button><mat-icon class="" >close</mat-icon></div>
+               <div (click)="deleteBug(bug.id)" class="flex w-full px-2 justify-between cursor-pointer close py-1 border-t-1 border-t-[#65676B]">
+                <button class="text-[13px] cursor-pointer">Delete</button><svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_955_1794)">
+<path d="M1.48596 3.67627H13.2294" stroke="#EB4C42" stroke-width="0.978619" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.9541 3.67627H11.7617V12.4838C11.7617 12.7434 11.6585 12.9923 11.475 13.1758C11.2915 13.3593 11.0426 13.4625 10.7831 13.4625H3.93272C3.67317 13.4625 3.42426 13.3593 3.24073 13.1758C3.05721 12.9923 2.9541 12.7434 2.9541 12.4838V3.67627Z" stroke="#EB4C42" stroke-width="0.978619" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.91125 3.67609V3.18678C4.91125 2.53792 5.16901 1.91562 5.62783 1.45681C6.08665 0.997995 6.70894 0.740234 7.3578 0.740234C8.00667 0.740234 8.62896 0.997995 9.08778 1.45681C9.54659 1.91562 9.80435 2.53792 9.80435 3.18678V3.67609" stroke="#EB4C42" stroke-width="0.978619" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.88977 6.61328V10.5293" stroke="#EB4C42" stroke-width="0.978619" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.82544 6.61328V10.5293" stroke="#EB4C42" stroke-width="0.978619" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_955_1794">
+<rect width="13.7007" height="13.7007" fill="white" transform="translate(0.50708 0.250977)"/>
+</clipPath>
+</defs>
+</svg>
+</div>
          
              
           </div>
         </td>
       </tr>
     </div>
-  </table>
+  </table></div>
+ 
   </div>
 
- <div class="flex items-end justify-end h-[10vh] z-10">
+ <div class="flex items-end justify-end h-[10vh] z-10 w-full   xl:mt-3">
     <mat-paginator
       [length]="this.totalRecords"
       [pageSize]="1"

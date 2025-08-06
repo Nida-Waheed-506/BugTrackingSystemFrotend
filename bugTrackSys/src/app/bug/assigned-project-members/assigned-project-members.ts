@@ -1,7 +1,7 @@
 import { Component , Inject } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormControl } from "@angular/forms";
-import { Data } from "../../services/data";
+import { Service } from "../../services/service";
 import { CommonModule } from "@angular/common";
 import { debounceTime } from "rxjs";
 import { ToastrService } from "ngx-toastr";
@@ -23,12 +23,12 @@ export class AssignedProjectMembers {
 
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data:any ,
-    private Data: Data,
+    @Inject(MAT_DIALOG_DATA) public dialog_Data:any ,
+    private Service: Service,
     private ToastrService: ToastrService,
     public dialogRef : MatDialogRef<AssignedProjectMembers>
   ) {
-   this.projectId = this.data.projectId;
+   this.projectId = this.dialog_Data.projectId;
   }
 
 
@@ -41,14 +41,14 @@ export class AssignedProjectMembers {
         this.selectedUserName = "";
         this.selectedUserEmail = "";
         if (value?.trim() === "")
-          this.Data.getTopUsers().subscribe({
+          this.Service.getTopUsers().subscribe({
             next: (response: any) => {
               console.log(response);
               this.users = response.data;
             },
           });
         else {
-          this.Data.getUsersByName(value).subscribe({
+          this.Service.getUsersByName(value).subscribe({
             next: (response: any) => {
               console.log(response);
               // console.log(response.data[0]);
@@ -65,7 +65,7 @@ export class AssignedProjectMembers {
   // when input is focused show top 5 users
   onFocus() {
     if (!this.searchName.value) {
-      this.Data.getTopUsers().subscribe({
+      this.Service.getTopUsers().subscribe({
         next: (response: any) => {
           console.log(response.data[0]);
           this.users = response.data;
@@ -85,7 +85,7 @@ export class AssignedProjectMembers {
   assignUser() {
    
     if (this.selectedUserEmail.trim() !== ""){}
-      this.Data.assignUserToProject(
+      this.Service.assignUserToProject(
         this.selectedUserEmail,
         this.projectId
       ).subscribe({

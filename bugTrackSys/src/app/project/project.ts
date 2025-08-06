@@ -3,7 +3,7 @@ import { Navbar } from '../shared/navbar/navbar';
 import { ProjectItems } from './project-items/project-items';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectAdd } from './project-add/project-add';
-import { Data } from '../services/data';
+import { Service } from '../services/service';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
@@ -26,38 +26,44 @@ export class Project {
   totalRecords: any = 0;
   constructor(
     public dialog: MatDialog,
-    private Data: Data,
+    private Service: Service,
     private ToasterService: ToastrService
   ) {}
 
   ngOnInit() {
-    this.loggedInUser = this.Data.loggedInUserInfo$.pipe((user) => {
+    this.loggedInUser = this.Service.loggedInUserInfo$.pipe((user) => {
       return user;
     });
 
     // when filter by name the project.
 
-    this.Data.projectsInfo$.subscribe((projects) => {
-      if (projects.length > 0 && this.originalProjects.length === 0) {
+    this.Service.projectGetByApi$.subscribe((projects) => {
+     
+      console.log(this.originalProjects.length)
+      if (projects.length > 0 ) {
         this.originalProjects = [...projects];
+          this.Service.projectsInfo$.next(projects);
       }
+      console.log(this.originalProjects);
     });
 
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
       .subscribe((keyword) => {
-        console.log(keyword);
+        console.log(this.originalProjects);
         if (!keyword || keyword.trim() === '') {
-          this.Data.projectsInfo$.next(this.originalProjects);
-          console.log(this.Data.projectsInfo$);
+          this.Service.projectsInfo$.next(this.originalProjects);
+          console.log(this.Service.projectsInfo$);
         } else {
           console.log('nida');
+          console.log(this.originalProjects);
           const filteredProjects = this.originalProjects.filter((project) => {
             return project.projectName
               .toLowerCase()
               .includes(keyword.toLowerCase());
           });
-          this.Data.projectsInfo$.next(filteredProjects);
+          console.log(filteredProjects);
+          this.Service.projectsInfo$.next(filteredProjects);
         }
       });
   }
@@ -76,21 +82,24 @@ export class Project {
 
   // sort by name
   onClickSortByName() {
-    const sortedProjects = [...this.Data.projectsInfo$.getValue()].sort(
+  
+    const sortedProjects = [...this.Service.projectsInfo$.getValue()].sort(
       (a, b) => a.projectName.localeCompare(b.projectName)
     );
 
-    this.Data.projectsInfo$.next(sortedProjects);
+    this.Service.projectsInfo$.next(sortedProjects);
   }
   // sory by date
 
   onClickSoryByDate() {
-    const sortedProjects = [...this.Data.projectsInfo$.getValue()].sort(
+     
+    const sortedProjects = [...this.Service.projectsInfo$.getValue()].sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
 
-    this.Data.projectsInfo$.next(sortedProjects);
+    console.log(sortedProjects);
+    this.Service.projectsInfo$.next(sortedProjects);
   }
 
   openDialog() {

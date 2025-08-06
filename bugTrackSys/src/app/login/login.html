@@ -29,7 +29,7 @@
           <!-- email -->
 
           <div
-            class="my-3 ps-3 pe-26 bg-[#F5F5F7] flex items-center rounded-lg"
+            class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg"
           >
             <svg
               width="20"
@@ -51,12 +51,12 @@
               placeholder="E-mail"
               ngModel
               name="email"
-              class="py-4 ps-3 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
+              class="py-4 w-full pe-2  ps-3 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
             />
           </div>
           <!-- password -->
           <div
-            class="my-3 ps-3 pe-26 bg-[#F5F5F7] flex items-center rounded-lg"
+            class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg"
           >
             <svg
               width="18"
@@ -112,15 +112,15 @@
               placeholder="Password"
               ngModel
               name="password"
-              class="py-4 ps-3 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
+              class="py-4 ps-3 w-full pe-2 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
             />
           </div>
-          <div
-            class="flex justify-between cursor-pointer mt-5 text-white items-center px-3 rounded-md w-[110px] h-[50px] bg-[#007DFA]"
+          <button
+            class="flex border-2 justify-center cursor-pointer mt-5 text-white items-center px-3 rounded-md w-[110px] h-[50px] bg-[#007DFA]"
           >
-            <button class="font-[500] text-[16px] ps-1 cursor-pointer">
+            <div class="font-[500] text-[16px] ps-1 ">
               Login
-            </button>
+            </div>
             <svg
               width="28"
               height="28"
@@ -136,7 +136,7 @@
                 stroke-linejoin="round"
               />
             </svg>
-          </div>
+          </button>
         </form>
 
         <div class="border-b-2 mt-7 border-[#ECECF0]"></div>

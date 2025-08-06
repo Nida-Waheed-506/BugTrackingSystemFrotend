@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Img } from '../shared/img/img';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Data } from '../services/data';
+import { Service} from '../services/service';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-signup',
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './signup.scss',
 })
 export class Signup {
-  constructor(private Data: Data, private ToastrService: ToastrService) {}
+  constructor(private Service: Service, private ToastrService: ToastrService) {}
   onSubmitSignUpForm(val: any) {
     if (val.name.length > 12) {
       this.ToastrService.error('Name must be 12 characters or less', 'Error');
@@ -26,6 +26,6 @@ export class Signup {
       return;
     }
 
-    this.Data.addUser(val.name, val.mobile_number, val.email, val.password);
+    this.Service.addUser(val.name, val.mobile_number, val.email, val.password);
   }
 }

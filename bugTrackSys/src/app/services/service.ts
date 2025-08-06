@@ -8,10 +8,11 @@ import { response } from 'express';
 @Injectable({
   providedIn: 'root',
 })
-export class Data {
+export class Service {
   user_type: string = '';
   loggedInUserInfo$ = new BehaviorSubject<any>(null);
   projectsInfo$ = new BehaviorSubject<any[]>([]);
+  projectGetByApi$ = new BehaviorSubject<any[]>([]);
   constructor(
     private http: HttpClient,
     private ToastrService: ToastrService,
@@ -168,6 +169,12 @@ export class Data {
     });
   }
 
+  deleteBug(bug_id:any , project_id:any){
+    const reqBody = {project_id};
+    return this.http.delete(`http://localhost:8000/bugs/${bug_id}?project_id=${project_id}`,  {
+      withCredentials: true,
+    });
+  }
   getProjectBugs(project_id: any , page:any , limit:any) {
     return this.http.get(
       `http://localhost:8000/bugs?project_id=${project_id}&page=${page+1}&limit=${limit}`,

@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+
   Component,
   Inject,
   ViewChild,
@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Data } from '../../services/data';
+import { Service } from '../../services/service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
@@ -35,7 +35,7 @@ import { ChangeDetectorRef } from '@angular/core';
     ReactiveFormsModule,
   ],
   providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+
   templateUrl: './add-bug.html',
   styleUrl: './add-bug.scss',
 })
@@ -53,7 +53,7 @@ export class AddBug {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddBug>,
     private ToastrService: ToastrService,
-    private Data: Data
+    private Service: Service
   ) {}
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -63,13 +63,13 @@ export class AddBug {
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {
         if (value?.trim() === '')
-          this.Data.getTopDevelopers(this.data.projectId).subscribe({
+          this.Service.getTopDevelopers(this.data.projectId).subscribe({
             next: (response: any) => {
               this.users = response.data;
             },
           });
         else {
-          this.Data.getDevByName(value, this.data.projectId).subscribe({
+          this.Service.getDevByName(value, this.data.projectId).subscribe({
             next: (response: any) => {
               this.users = response.data;
             },
@@ -82,7 +82,7 @@ export class AddBug {
   onFocus() {
     console.log('hello focus');
     if (!this.searchName.value) {
-      this.Data.getTopDevelopers(this.data.projectId).subscribe({
+      this.Service.getTopDevelopers(this.data.projectId).subscribe({
         next: (response: any) => {
           this.users = response.data;
         },
@@ -187,7 +187,7 @@ export class AddBug {
     formData.append('screenshot', this.selectedFile);
     formData.append('project_id', this.data.projectId);
 
-    this.Data.createBug(formData).subscribe({
+    this.Service.createBug(formData).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
         this.dialogRef.close('Add bug dialog close');

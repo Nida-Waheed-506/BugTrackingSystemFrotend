@@ -1,21 +1,21 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Data } from './services/data';
+import { Service } from './services/service';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const data = inject(Data);
+  const service = inject(Service);
   const router = inject(Router);
 
-  return data.checkAuth().pipe(
+  return service.checkAuth().pipe(
     map((res: any) => {
       
-      data.loggedInUserInfo$.next(res.data);
+      service.loggedInUserInfo$.next(res.data);
       return true;
     }),
     catchError((err) => {
-      data.loggedInUserInfo$.next(null);
+      service.loggedInUserInfo$.next(null);
       router.navigate(['/login']);
       return of(false);
     })

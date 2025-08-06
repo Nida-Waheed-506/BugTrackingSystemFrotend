@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { Data } from '../../services/data';
+import { Service} from '../../services/service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -18,7 +18,7 @@ export class ProjectAdd {
   preview = '';
   constructor(
     private ToastrService: ToastrService,
-    private Data: Data,
+    private Service: Service,
     public dialogRef: MatDialogRef<ProjectAdd>
   ) {}
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -85,7 +85,7 @@ export class ProjectAdd {
     formData.append('projectName', value.projectName);
     formData.append('projectDes', value.projectDes);
     formData.append('image', this.selectedFile);
-    this.Data.addProject(formData).subscribe({
+    this.Service.addProject(formData).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
         this.dialogRef.close('Add project dialog close');

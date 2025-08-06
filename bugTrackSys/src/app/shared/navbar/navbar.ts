@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Data } from '../../services/data';
+import { Service } from '../../services/service';
 import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-navbar',
@@ -9,14 +9,14 @@ import { RouterLink } from '@angular/router';
 })
 export class Navbar {
   loggedInUser: any | null = null;
-  constructor(private Data: Data) {}
+  constructor(private Service: Service) {}
   ngOnInit() {
-    this.loggedInUser = this.Data.loggedInUserInfo$.pipe((user) => {
+    this.loggedInUser = this.Service.loggedInUserInfo$.pipe((user) => {
       console.log(user);
       return user;
     });
   }
   onLogout() {
-    this.Data.userLogout();
+    this.Service.userLogout();
   }
 }

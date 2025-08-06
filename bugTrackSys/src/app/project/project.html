@@ -7,18 +7,18 @@
     <!-- project page  -->
     <div>
       <!-- project nav -->
-      <div class="flex items-center gap-10 ps-5">
+      <div class="flex items-center border-b-1 border-l-3 border-[#50A885] mt-3 border-b-[#ECECEE] pb-5 justify-between gap-10 ps-5">
         <!-- project owner -->
         <div class="mt-5 me-3">
           <p class="font-[500] text-[16px] pb-2">Projects</p>
-          <span class="font-[400] text-[14px] text-[#AEAEAE]"
-            >Hi {{ loggedInUser._value.name }}, welcome to ManageBug</span
+          <span class="font-[400] text-[14px] text-[#AEAEAE] flex"
+            >Hi {{ loggedInUser._value.name }}, welcome <span class="hidden xl:block">to ManageBug</span></span
           >
         </div>
 
         <!-- search the project -->
         <div
-          class="flex gap-3 ps-4 pe-20 bg-[#F1F1F1] py-4 rounded-sm items-center mt-4"
+          class=" hidden xl:flex gap-3 ps-4  bg-[#F1F1F1] py-4 rounded-sm items-center mt-4"
         >
           <svg
             width="16"
@@ -37,21 +37,21 @@
             type="text"
             [formControl]="searchControl"
             placeholder="Search for Projects here"
-            class="placeholder-[#6E6F72] font-[400] text-[15px] outline-none focus:ring-0 focus:border-transparent"
+            class="placeholder-[#6E6F72] w-full pe-2 font-[400] text-[15px] outline-none focus:ring-0 focus:border-transparent"
           />
         </div>
 
         <!-- button -->
 
         <button
-          class="px-6 py-4 text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
+          class="  px-6 py-2 lg:py-4 text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
           (click)="openDialog()"
         >
           + Add New Project
         </button>
 
         <div
-          class="px-2 py-4 flex gap-3 mt-4 rounded-sm cursor-pointer font-[400] text-[#000000]"
+          class="hidden xl:flex py-4 flex gap-3 mt-4 rounded-sm cursor-pointer font-[400] text-[#000000]"
         >
           <span>Sort by</span>
           <div class="dropdown dropdown-end ms-5">
@@ -91,12 +91,12 @@
         </div>
 
         <button
-          class="px-2 py-4 mt-4 font-[400] text-[#000000] rounded-sm cursor-pointer"
+          class="hidden xl:flex px-2 py-4 mt-4 font-[400] text-[#000000] rounded-sm cursor-pointer"
         >
           My Projects
         </button>
 
-        <button class="bg-[#007DFA] py-3 rounded-sm px-5 mt-4">
+        <button class="hidden xl:flex bg-[#007DFA] py-3 rounded-sm px-5 mt-4">
           <svg
             width="24"
             height="24"
@@ -117,21 +117,22 @@
         </button>
       </div>
 
-      <div class="border-b-1 mt-5 border-b-[#ECECEE]"></div>
+     
 
-      <div class="h-[60vh] overflow-y-auto">
+      <div class="h-[60vh] overflow-y-auto pb-10">
         <app-project-items [page]="currentPageNumber" [limit]="limitt"   (totalProjects)="receiveDataFromChild($event)"></app-project-items>
       </div>
     </div>
   </div>
 
-  <div class="flex items-end justify-end h-[10vh]">
+  <div class="flex items-end justify-end h-[10vh] w-full  xl:mt-3 ">
     <mat-paginator
       [length]="this.totalRecords"
       [pageSize]="1"
       [pageSizeOptions]="[1,5, 10, 25, 100]"
       aria-label="Select page"
       (page)="onPageChange($event)"> 
+      
     >
     </mat-paginator>
   </div>
