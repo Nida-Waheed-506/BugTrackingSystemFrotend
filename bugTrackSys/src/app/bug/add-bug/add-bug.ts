@@ -20,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Service } from '../../services/service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { debounceTime } from 'rxjs';
-import { ChangeDetectorRef } from '@angular/core';
+import { DevSelect } from "./dev-select/dev-select";
+
 
 @Component({
   selector: 'app-add-bug',
@@ -33,7 +34,8 @@ import { ChangeDetectorRef } from '@angular/core';
     MatNativeDateModule,
     CommonModule,
     ReactiveFormsModule,
-  ],
+    DevSelect
+],
   providers: [provideNativeDateAdapter()],
 
   templateUrl: './add-bug.html',
@@ -60,59 +62,33 @@ export class AddBug {
   // developers get
 
   ngOnInit() {
-    this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
-      next: (value) => {
-        if (value?.trim() === '')
-          this.Service.getTopDevelopers(this.data.projectId).subscribe({
-            next: (response: any) => {
-              this.users = response.data;
-            },
-          });
-        else {
-          this.Service.getDevByName(value, this.data.projectId).subscribe({
-            next: (response: any) => {
-              this.users = response.data;
-            },
-          });
-        }
-      },
-    });
-  }
-  // when input is focused show top 2 developers
-  onFocus() {
-    console.log('hello focus');
-    if (!this.searchName.value) {
-      this.Service.getTopDevelopers(this.data.projectId).subscribe({
-        next: (response: any) => {
-          this.users = response.data;
-        },
-        error: (err) => {
-          this.ToastrService.error(err.error.error, 'Error');
-        },
-      });
-    }
+   
   }
 
-  onBlur() {
-    console.log('hello blur');
-    this.users = [];
-    this.searchName.setValue('');
-  }
+getIds(value : any[]){
+ this.developerAddedToBug = value;
+ console.log(this.developerAddedToBug);
+}
+  // onBlur() {
+  //   console.log('hello blur');
+  //   this.users = [];
+  //   this.searchName.setValue('');
+  // }
   // when select any of the user from the drop down
 
-  onDropdownClick(name: string, id: string) {
-    this.selectedUserName = name;
-    this.selectedUserId = id;
+  // onDropdownClick(name: string, id: string) {
+  //   this.selectedUserName = name;
+  //   this.selectedUserId = id;
 
-    if (this.developerAddedToBug.includes(id)) {
-      this.ToastrService.error('This user is already added in list', 'Error');
-    } else {
-      this.developerAddedToBug.push(id);
-      this.ToastrService.success('User added in list successfully', 'Success');
-    }
+  //   if (this.developerAddedToBug.includes(id)) {
+  //     this.ToastrService.error('This user is already added in list', 'Error');
+  //   } else {
+  //     this.developerAddedToBug.push(id);
+  //     this.ToastrService.success('User added in list successfully', 'Success');
+  //   }
 
-    this.users = [];
-  }
+  //   this.users = [];
+  // }
 
   // to open image selection dialog
 

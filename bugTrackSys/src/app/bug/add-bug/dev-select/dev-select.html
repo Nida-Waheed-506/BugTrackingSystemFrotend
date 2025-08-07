@@ -1,0 +1,26 @@
+<mat-form-field class="min-h-18 w-70">
+  <mat-label>Add Devs</mat-label>
+  <mat-select [formControl]="toppings" multiple >
+    <input
+      [formControl]="searchName"
+      (focus)="onFocus()"
+      type="text"
+      placeholder="Search Devs"
+      class="border-none focus:outline-none ps-5 py-2 text-[15px]"
+    />
+    <mat-select-trigger>
+      {{toppings.value?.[0]?.name || ''}}
+      @if ((toppings.value?.length || 0) > 1) {
+      <span class="example-additional-selection">
+        (+{{ (toppings.value?.length || 0) - 1 }}
+        {{ toppings.value?.length === 2 ? "other" : "others" }})
+      </span>
+      }
+    </mat-select-trigger>
+    <div class="h-25">
+      @for (dev of devs; track dev.id) {
+        <mat-option  [value]="dev">{{ dev.name }}</mat-option>
+      }
+    </div>
+  </mat-select>
+</mat-form-field>

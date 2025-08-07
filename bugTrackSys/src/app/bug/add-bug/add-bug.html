@@ -41,50 +41,13 @@
           <!-- Assign to and due date  -->
 
           <div class="flex gap-5 justify-start">
-            <!-- Assign to -->
-            <div
-              class="flex items-center gap-3 mt-2"
-              [ngClass]="users ? 'items-start' : 'items-center'"
-            >
-              <h1
-                class="text-[17px] font-[400]"
-                [ngClass]="users ? 'mt-3' : 'mt-0'"
-              >
-                Assign to
-              </h1>
-              <div class="ms-1 flex-col justify-center cursor-pointer">
-                <input
-                  [formControl]="searchName"
-                  (focus)="onFocus()"
-                  (blur)="onBlur()"
-                  type="text"
-                  class="border-1 py-3 px-3 text-[15px] rounded-t-sm focus:outline-none border-[#A1A1AA] placeholder-[#A1A1AA] font-[400]"
-                  placeholder="Search developers here"
-                  name="developer_ids"
-                  ngModel
-                />
-                <ul
-                  *ngIf="users.length > 0"
-                  class="border-[#A1A1AA] dropdown-list border-1 border-"
-                >
-                  <li
-                    *ngFor="let user of users"
-                    (mousedown)="onDropdownClick(user.name, user.id)"
-                    class="dropdown-item cursor-pointer py-1 ps-3 text-lg hover:bg-[#007DFA] text-md"
-                  >
-                    <button class="">{{ user.name }}</button>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <app-dev-select [projectId]="this.data.projectId"  (selectedIds)="getIds($event)"></app-dev-select>
 
             <!-- Add due date -->
-            <div
-              class="flex justify-center"
-              [ngClass]="users ? 'mt-0' : 'mt-4'"
-            >
+            <div class="flex justify-center">
               <div class="">
-                <mat-form-field class="w-50 h-19">
+               
+                <mat-form-field class="w-65 h-22">
                   <mat-label>Choose a deadline</mat-label>
                   <input
                     matInput
