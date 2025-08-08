@@ -1,6 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Service } from '../../../services/service';
 import { ToastrService } from 'ngx-toastr';
@@ -22,14 +28,11 @@ export class DevSelect {
   devs: any[] = [];
   @Input() projectId: any = '';
 
-  toppings = new FormControl([{
-    id : null,
-    name: '',
-  }]);
-  @Output() selectedIds = new EventEmitter< any|number[]>();
+  toppings = new FormControl<{ id: number; name: string }[]>([]);
+  @Output() selectedIds = new EventEmitter<any | number[]>();
 
-  names: any[] = ['hello', 'hy'];
   constructor(private Service: Service, private ToastrService: ToastrService) {}
+  @ViewChild(MatSelect) matSelect!: MatSelect;
 
   ngOnInit() {
     this.Service.getTopDevelopers(this.projectId).subscribe({
@@ -50,30 +53,47 @@ export class DevSelect {
         if (value?.trim() === '') {
           this.Service.getTopDevelopers(this.projectId).subscribe({
             next: (response: any) => {
-              this.devs = response.data.map((user: any) => ({
+              const res = response.data.map((user: any) => ({
                 id: user.id,
                 name: user.name,
               }));
+
+              const merg = res.concat(this.toppings.value || []);
+
+              const uniqueMap2 = new Map();
+              merg.forEach((user: any) => {
+                uniqueMap2.set(user.id, user); //key , value
+              });
+
+              this.devs = Array.from(uniqueMap2.values());
             },
           });
         } else {
           // when input is enterd in search developer field
           this.Service.getDevByName(value, this.projectId).subscribe({
             next: (response: any) => {
-              const allDevs = response.data.map((user: any) => ({
+              const res = response.data.map((user: any) => ({
                 id: user.id,
                 name: user.name,
               }));
 
-              const arr = this.devs.concat(allDevs);
+              const mer = this.devs.concat(res);
 
-              const uniqueMap = new Map();
-              arr.forEach((user) => {
-                uniqueMap.set(user.id, user); //key , value store Map
+              const uniqueMap1 = new Map();
+              mer.forEach((user) => {
+                uniqueMap1.set(user.id, user); //key , value store Map
               });
 
-              this.devs = Array.from(uniqueMap.values());
-              console.log(this.devs);
+              const merg = Array.from(uniqueMap1.values()).concat(
+                this.toppings.value || []
+              );
+
+              const uniqueMap2 = new Map();
+              merg.forEach((user) => {
+                uniqueMap2.set(user.id, user); //key , value
+              });
+
+              this.devs = Array.from(uniqueMap2.values());
             },
           });
         }
@@ -83,14 +103,11 @@ export class DevSelect {
     this.toppings.valueChanges.subscribe((selected) => {
       console.log(selected);
       const ids = selected?.map((dev) => dev.id);
-     
+
       this.selectedIds.emit(ids);
 
       // console.log('hee', this.selectedIds);
-      
     });
-
-  
   }
 
   // when focus the input this execute to search the top developers
@@ -98,10 +115,19 @@ export class DevSelect {
     if (!this.searchName.value) {
       this.Service.getTopDevelopers(this.projectId).subscribe({
         next: (response: any) => {
-          this.devs = response.data.map((user: any) => ({
+          const res = response.data.map((user: any) => ({
             id: user.id,
             name: user.name,
           }));
+
+          const merg = res.concat(this.toppings.value);
+
+          const uniqueMap2 = new Map();
+          merg.forEach((user: any) => {
+            uniqueMap2.set(user.id, user); //key , value
+          });
+
+          this.devs = Array.from(uniqueMap2.values());
         },
         error: (err) => {
           this.ToastrService.error(err.error.error, 'Error');

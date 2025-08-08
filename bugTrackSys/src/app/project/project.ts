@@ -76,7 +76,7 @@ export class Project {
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
-    this.limitt = event.pageSize;
+    this.limitt = event.pageSize || 1;
     this.totalRecords = event.length;
   }
 

@@ -1,6 +1,6 @@
 <mat-form-field class="min-h-18 w-70">
   <mat-label>Add Devs</mat-label>
-  <mat-select [formControl]="toppings" multiple >
+  <mat-select [formControl]="toppings" multiple>
     <input
       [formControl]="searchName"
       (focus)="onFocus()"
@@ -19,7 +19,7 @@
     </mat-select-trigger>
     <div class="h-25">
       @for (dev of devs; track dev.id) {
-        <mat-option  [value]="dev">{{ dev.name }}</mat-option>
+      <mat-option [value]="dev">{{ dev.name }}</mat-option>
       }
     </div>
   </mat-select>

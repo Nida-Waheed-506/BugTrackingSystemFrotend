@@ -16,7 +16,13 @@ import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-bug',
-  imports: [Navbar, CommonModule, MatIconModule, MatPaginatorModule,ReactiveFormsModule],
+  imports: [
+    Navbar,
+    CommonModule,
+    MatIconModule,
+    MatPaginatorModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './bug.html',
   styleUrl: './bug.scss',
 })
@@ -31,7 +37,6 @@ export class Bug {
   limitt: any = 1;
   totalRecords: any = 0;
   searchControl = new FormControl('');
-
 
   constructor(
     private ToastrService: ToastrService,
@@ -62,7 +67,7 @@ export class Bug {
         this.totalRecords = response.data.count;
 
         const bugs = response.data.rows;
-        
+
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
@@ -96,34 +101,28 @@ export class Bug {
     });
 
     //  search the bug
-      this.searchControl.valueChanges
-          .pipe(debounceTime(300))
-          .subscribe((keyword) => {
-           
-            if (!keyword || keyword.trim() === '') {
-                this.bugDetails = this.bugDetailsFromApi;
-            } else {
-             
-              const filteredBugs = this.bugDetailsFromApi.filter((bug) => {
-                return bug.title
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase());
-              });
-              
-              this.bugDetails = filteredBugs;
-            }
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe((keyword) => {
+        if (!keyword || keyword.trim() === '') {
+          this.bugDetails = this.bugDetailsFromApi;
+        } else {
+          const filteredBugs = this.bugDetailsFromApi.filter((bug) => {
+            return bug.title.toLowerCase().includes(keyword.toLowerCase());
           });
+
+          this.bugDetails = filteredBugs;
+        }
+      });
   }
 
   // page number get for pagination
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
-    this.limitt = event.pageSize;
+    this.limitt = event.pageSize || 1;
     this.totalRecords = event.length;
 
-
-  
     this.Service.getProjectBugs(
       this.project_id,
       this.currentPageNumber,
@@ -157,7 +156,7 @@ export class Bug {
             };
           })
         ).then((bugDet) => {
-           this.bugDetailsFromApi = bugDet;
+          this.bugDetailsFromApi = bugDet;
           this.bugDetails = bugDet;
         });
       },
@@ -193,18 +192,16 @@ export class Bug {
     this.chosenBug = '';
   }
 
-  deleteBug(bug_id:any) {
-    console.log(bug_id , this.project_id);
-    this.Service.deleteBug(bug_id , this.project_id).subscribe({
-        next: (response: any) => {
-         
-          this.ToastrService.success(response.message, 'Success');
-         
-        },
-        error: (err) => {
-          this.ToastrService.error(err.error.error, 'Error');
-        },
-      });
+  deleteBug(bug_id: any) {
+    console.log(bug_id, this.project_id);
+    this.Service.deleteBug(bug_id, this.project_id).subscribe({
+      next: (response: any) => {
+        this.ToastrService.success(response.message, 'Success');
+      },
+      error: (err) => {
+        this.ToastrService.error(err.error.error, 'Error');
+      },
+    });
     this.chosenBug = '';
   }
 

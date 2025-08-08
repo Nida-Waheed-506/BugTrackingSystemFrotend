@@ -46,7 +46,7 @@ export class AddBug {
   preview = '';
   developerAddedToBug: any[] = [];
 
-  //  for getting developers of the project
+ 
   searchName = new FormControl('');
   users: any[] = [];
   selectedUserName = '';
@@ -59,7 +59,7 @@ export class AddBug {
   ) {}
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  // developers get
+
 
   ngOnInit() {
    
@@ -69,28 +69,8 @@ getIds(value : any[]){
  this.developerAddedToBug = value;
  console.log(this.developerAddedToBug);
 }
-  // onBlur() {
-  //   console.log('hello blur');
-  //   this.users = [];
-  //   this.searchName.setValue('');
-  // }
-  // when select any of the user from the drop down
+ 
 
-  // onDropdownClick(name: string, id: string) {
-  //   this.selectedUserName = name;
-  //   this.selectedUserId = id;
-
-  //   if (this.developerAddedToBug.includes(id)) {
-  //     this.ToastrService.error('This user is already added in list', 'Error');
-  //   } else {
-  //     this.developerAddedToBug.push(id);
-  //     this.ToastrService.success('User added in list successfully', 'Success');
-  //   }
-
-  //   this.users = [];
-  // }
-
-  // to open image selection dialog
 
   openImageSelectionDialog(): void {
     this.fileInput.nativeElement.click();
@@ -152,7 +132,7 @@ getIds(value : any[]){
       return;
     }
 
-    console.log(this.selectedFile, typeof this.developerAddedToBug[0]);
+
 
     const formData = new FormData();
     formData.append('title', value.title);
