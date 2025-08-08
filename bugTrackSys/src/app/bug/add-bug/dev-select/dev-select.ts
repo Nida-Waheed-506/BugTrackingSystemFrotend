@@ -27,15 +27,27 @@ export class DevSelect {
   searchName = new FormControl('');
   devs: any[] = [];
   @Input() projectId: any = '';
+  @Input() toppingsData : []= [];
 
   toppings = new FormControl<{ id: number; name: string }[]>([]);
   @Output() selectedIds = new EventEmitter<any | number[]>();
 
-  constructor(private Service: Service, private ToastrService: ToastrService) {}
+  constructor(private Service: Service, private ToastrService: ToastrService) {
+   
+  }
   @ViewChild(MatSelect) matSelect!: MatSelect;
 
   ngOnInit() {
-    this.Service.getTopDevelopers(this.projectId).subscribe({
+ 
+    
+    this.devs = this.toppingsData;
+
+     if (this.toppingsData && this.toppingsData.length > 0) {
+      this.toppings.setValue(this.toppingsData);
+    }
+    
+    if(this.toppingsData.length === 0){
+      this.Service.getTopDevelopers(this.projectId).subscribe({
       next: (response: any) => {
         this.devs = response.data.map((user: any) => ({
           id: user.id,
@@ -46,6 +58,8 @@ export class DevSelect {
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
+    }
+
 
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {

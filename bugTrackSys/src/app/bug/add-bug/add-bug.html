@@ -15,7 +15,7 @@
     <div
       class="bg-[#FFFFFF] p-10 border-b-2 border-b-[#8D98AA4D] flex justify-between items-center"
     >
-      <h1 class="font-[500] text-[27px]">Add new bug</h1>
+      <h1 class="font-[500] text-[27px]">{{dialogTitle}}</h1>
 
       <!-- icon -->
 
@@ -35,13 +35,13 @@
       </svg>
     </div>
 
-    <form action="" #form="ngForm" (ngSubmit)="onSubmit(form.value)">
+    <form [formGroup]="bugForm" (ngSubmit)="onSubmit(bugForm.value)">
       <div class="max-h-[19rem] overflow-y-auto">
         <div class="px-10 py-6">
           <!-- Assign to and due date  -->
 
           <div class="flex gap-5 justify-start">
-            <app-dev-select [projectId]="this.data.projectId"  (selectedIds)="getIds($event)"></app-dev-select>
+            <app-dev-select [projectId]="this.data.projectId" [toppingsData] = "this.developers" (selectedIds)="getIds($event)"></app-dev-select>
 
             <!-- Add due date -->
             <div class="flex justify-center">
@@ -52,8 +52,8 @@
                   <input
                     matInput
                     [matDatepicker]="picker"
-                    name="deadline"
-                    ngModel
+                    formControlName="deadline"
+                  
                   />
 
                   <mat-datepicker-toggle
@@ -70,8 +70,8 @@
           <input
             type="text"
             placeholder="Add title here"
-            name="title"
-            ngModel
+            formControlName="title"
+            
             class="text-[35px] placeholder-[#DFDEE0] text-[#5A595AFF] px-1 py-1 border-none focus:outline-none mt-1 font-[500]"
           />
 
@@ -83,8 +83,8 @@
             <input
               type="text"
               placeholder="Add here"
-              name="description"
-              ngModel
+              formControlName="description"
+              
               class="my-3 py-4 ps-3 w-140 rounded-sm border-1 focus:outline-none border-[#A1A1AA] text-[#5A595AFF] text-[16px] placeholder-[#A1A1AA] font-[500]"
             />
           </div>
@@ -94,8 +94,8 @@
             <label class="font-[400] text-[17px]">Bug Type</label>
             <select
               class="my-3 py-4 ps-3 pe-10 border-[#A1A1AA] w-140 border-1 rounded-sm text-[16px] text-[#5A595AFF] font-[500] focus:outline-none"
-              name="type"
-              ngModel
+              formControlName="type"
+              
             >
               <option value="">Select type here</option>
               <option value="bug">Bug</option>
@@ -198,7 +198,7 @@
         <button
           class="bg-[#007DFA] text-[14px] font-[600] text-white px-15 rounded-sm py-3 cursor-pointer"
         >
-          Add
+          {{dialogBtn}}
         </button>
       </div>
     </form>

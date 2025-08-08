@@ -125,11 +125,11 @@ export class Service {
 
   // get all the projects
 
-  getProjects( page : any, limit:any) {
- 
-   return this.http
-      .get(`http://localhost:8000/projects?page=${page+1}&limit=${limit}`, { withCredentials: true })
-    
+  getProjects(page: any, limit: any) {
+    return this.http.get(
+      `http://localhost:8000/projects?page=${page + 1}&limit=${limit}`,
+      { withCredentials: true }
+    );
   }
 
   // assign project
@@ -169,15 +169,25 @@ export class Service {
     });
   }
 
-  deleteBug(bug_id:any , project_id:any){
-    const reqBody = {project_id};
-    return this.http.delete(`http://localhost:8000/bugs/${bug_id}?project_id=${project_id}`,  {
+  editBug(formData: any, bug_id: any) {
+    return this.http.patch(`http://localhost:8000/bugs/${bug_id}`, formData, {
       withCredentials: true,
     });
   }
-  getProjectBugs(project_id: any , page:any , limit:any) {
+  deleteBug(bug_id: any, project_id: any) {
+    const reqBody = { project_id };
+    return this.http.delete(
+      `http://localhost:8000/bugs/${bug_id}?project_id=${project_id}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  getProjectBugs(project_id: any, page: any, limit: any) {
     return this.http.get(
-      `http://localhost:8000/bugs?project_id=${project_id}&page=${page+1}&limit=${limit}`,
+      `http://localhost:8000/bugs?project_id=${project_id}&page=${
+        page + 1
+      }&limit=${limit}`,
       {
         withCredentials: true,
       }
@@ -186,9 +196,31 @@ export class Service {
 
   changeStatus(project_id: any, status: any, bug_id: any) {
     const reqBody = { project_id, status };
-    return this.http.patch(`http://localhost:8000/bugs/${bug_id}/status`, reqBody, {
+    return this.http.patch(
+      `http://localhost:8000/bugs/${bug_id}/status`,
+      reqBody,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  isManagerBelongToProject(project_id: any) {
+    return this.http.get(`http://localhost:8000/projects/${project_id}`, {
       withCredentials: true,
     });
   }
-  
+
+  isQABelongToProject(project_id: any) {
+    return this.http.get(`http://localhost:8000/bugs/${project_id}`, {
+      withCredentials: true,
+    });
+  }
+
+  isQABelongToBug(project_id:any , bug_id:any){
+    
+ return this.http.get(`http://localhost:8000/bugs/${bug_id}/${project_id}`, {
+      withCredentials: true,
+    });
+  }
 }

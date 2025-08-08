@@ -14,6 +14,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { describe } from 'node:test';
+
 @Component({
   selector: 'app-bug',
   imports: [
@@ -37,7 +39,8 @@ export class Bug {
   limitt: any = 1;
   totalRecords: any = 0;
   searchControl = new FormControl('');
-
+  assignBtn = false;
+  addTask = false;
   constructor(
     private ToastrService: ToastrService,
     private Service: Service,
@@ -47,6 +50,8 @@ export class Bug {
   ) {}
 
   ngOnInit() {
+
+   
     this.route.paramMap.subscribe((params: ParamMap) => {
       console.log(params);
       this.project_id = params.get('project_id');
@@ -71,14 +76,16 @@ export class Bug {
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
-
+            const developersDetail : any [] = [];
             for (const devId of bug.developer_id) {
               try {
                 const userRes: any = await lastValueFrom(
                   this.Service.getUserById(devId)
                 );
-
+                developersDetail.push(userRes.data);
                 developerNames.push(userRes.data.name);
+                console.log(developerNames);
+                console.log(developersDetail);
               } catch (error) {
                 console.error(error);
               }
@@ -87,16 +94,41 @@ export class Bug {
             return {
               ...bug,
               developerNames: developerNames.join(' - '),
+              developersDetail: developersDetail
             };
           })
         ).then((bugDet) => {
           this.bugDetailsFromApi = bugDet;
           this.bugDetails = bugDet;
         });
+
+       
       },
       error: (err: any) => {
         console.log(err);
         this.ToastrService.error(err.error.error, 'Error');
+      },
+    });
+
+
+
+    //  check valid manager or is manager
+
+    this.Service.isManagerBelongToProject(this.project_id).subscribe({
+      next: (res: any) => {},
+      error: (err: any) => {
+        this.assignBtn = true;
+        console.log(err);
+      },
+    });
+
+    //  check valid QA and is QA
+
+    this.Service.isQABelongToProject(this.project_id).subscribe({
+      next: (res: any) => {},
+      error: (err: any) => {
+        this.addTask = true;
+        console.log(err);
       },
     });
 
@@ -137,7 +169,7 @@ export class Bug {
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
-
+            const developersDetail : any [] = [];
             for (const devId of bug.developer_id) {
               try {
                 const userRes: any = await lastValueFrom(
@@ -145,6 +177,7 @@ export class Bug {
                 );
 
                 developerNames.push(userRes.data.name);
+                developersDetail.push(userRes.data);
               } catch (error) {
                 console.error(error);
               }
@@ -153,6 +186,7 @@ export class Bug {
             return {
               ...bug,
               developerNames: developerNames.join(' - '),
+              developersDetail,
             };
           })
         ).then((bugDet) => {
@@ -206,6 +240,8 @@ export class Bug {
   }
 
   openAddMembersToProjectDialog() {
+    console.log(this.assignBtn, '..........');
+
     const dialogRef = this.dialog.open(AssignedProjectMembers, {
       backdropClass: 'popup',
       autoFocus: false,
@@ -225,6 +261,35 @@ export class Bug {
       autoFocus: false,
       data: {
         projectId: this.project_id,
+        dialogTitle : 'Add New Bug',
+        btnName : 'Add',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openEditBugDialog(bug:any) {
+     this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
+      next:(res:any)=>{
+       console.log(res);
+      },
+      error:(err:any)=>{
+       this.ToastrService.error(err.error.error , "Error" );
+       return;
+      }
+     })
+  
+     const dialogRef = this.dialog.open(AddBug, {
+      backdropClass: 'popup',
+      autoFocus: false,
+      data: {
+        projectId: this.project_id,
+        dialogTitle : 'Edit Bug',
+        btnName : 'Edit',
+        bugDetail :bug
       },
     });
 

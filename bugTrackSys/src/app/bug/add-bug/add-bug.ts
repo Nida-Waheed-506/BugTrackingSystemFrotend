@@ -1,10 +1,4 @@
-import {
-
-  Component,
-  Inject,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -14,14 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Service } from '../../services/service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { debounceTime } from 'rxjs';
-import { DevSelect } from "./dev-select/dev-select";
-
+import { DevSelect } from './dev-select/dev-select';
 
 @Component({
   selector: 'app-add-bug',
@@ -34,8 +26,8 @@ import { DevSelect } from "./dev-select/dev-select";
     MatNativeDateModule,
     CommonModule,
     ReactiveFormsModule,
-    DevSelect
-],
+    DevSelect,
+  ],
   providers: [provideNativeDateAdapter()],
 
   templateUrl: './add-bug.html',
@@ -46,31 +38,62 @@ export class AddBug {
   preview = '';
   developerAddedToBug: any[] = [];
 
- 
   searchName = new FormControl('');
   users: any[] = [];
   selectedUserName = '';
   selectedUserId = '';
+  dialogTitle: String = '';
+  dialogBtn: String = '';
+
+  bugForm: FormGroup;
+  developers: [] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddBug>,
     private ToastrService: ToastrService,
     private Service: Service
-  ) {}
+  ) {
+    this.dialogTitle = this.data.dialogTitle;
+    this.dialogBtn = this.data.btnName;
+    console.log(this.data);
+    if (this.data.bugDetail) {
+      this.bugForm = new FormGroup({
+        deadline: new FormControl(this.data.bugDetail.deadline),
+        title: new FormControl(this.data.bugDetail.title),
+        description: new FormControl(this.data.bugDetail.description),
+        type: new FormControl(this.data.bugDetail.type),
+      });
+      this.developers = this.data.bugDetail.developersDetail;
+     
+
+      // for image
+      if (this.data.bugDetail.screenshot) {
+        this.selectedFile = this.data.bugDetail.screenshot;
+        const jsonImage = JSON.stringify(this.data.bugDetail.screenshot);
+        const base64Image = btoa(jsonImage);
+        this.preview = `data:image/png;base64,${base64Image}`;
+        console.log(this.preview);
+      }
+
+
+
+    } else {
+      this.bugForm = new FormGroup({
+        deadline: new FormControl(''),
+        title: new FormControl(''),
+        description: new FormControl(''),
+        type: new FormControl(''),
+      });
+    }
+  }
   @ViewChild('fileInput') fileInput!: ElementRef;
 
+  ngOnInit() {}
 
-
-  ngOnInit() {
-   
+  getIds(value: any[]) {
+    this.developerAddedToBug = value;
+    console.log(this.developerAddedToBug);
   }
-
-getIds(value : any[]){
- this.developerAddedToBug = value;
- console.log(this.developerAddedToBug);
-}
- 
-
 
   openImageSelectionDialog(): void {
     this.fileInput.nativeElement.click();
@@ -90,6 +113,7 @@ getIds(value : any[]){
 
         reader.onload = (e: any) => {
           this.preview = e.target.result;
+          console.log(this.preview);
 
           this.ToastrService.success('Image uploaded successfully', 'Success');
         };
@@ -132,8 +156,6 @@ getIds(value : any[]){
       return;
     }
 
-
-
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('description', value.description);
@@ -143,7 +165,8 @@ getIds(value : any[]){
     formData.append('screenshot', this.selectedFile);
     formData.append('project_id', this.data.projectId);
 
-    this.Service.createBug(formData).subscribe({
+    if(this.data.bugDetail.btnName === 'Add New Bug'){
+        this.Service.createBug(formData).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
         this.dialogRef.close('Add bug dialog close');
@@ -153,11 +176,26 @@ getIds(value : any[]){
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
+    }else{
+      
+       this.Service.editBug(formData , this.data.bugDetail.id).subscribe({
+      next: (response: any) => {
+        this.ToastrService.success(response.message, 'Success');
+        this.dialogRef.close('Add bug dialog close');
+      },
+      error: (err:any) => {
+        console.log(err);
+        this.ToastrService.error(err.error.error, 'Error');
+      },
+    });
+
+
+    }
   }
 
   // close the dialog box
 
   onCloseDialog() {
-    this.dialogRef.close('Add bug dialog close');
+    this.dialogRef.close('bug dialog close');
   }
 }

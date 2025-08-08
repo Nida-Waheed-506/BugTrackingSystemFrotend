@@ -24,6 +24,7 @@ export class Project {
   currentPageNumber: any = 0;
   limitt: any = 1;
   totalRecords: any = 0;
+  isManager: boolean = false;
   constructor(
     public dialog: MatDialog,
     private Service: Service,
@@ -35,14 +36,18 @@ export class Project {
       return user;
     });
 
+    this.Service.loggedInUserInfo$.subscribe((user) => {
+      console.log(user);
+      if (user.user_type !== 'manager') this.isManager = true;
+    });
+
     // when filter by name the project.
 
     this.Service.projectGetByApi$.subscribe((projects) => {
-     
-      console.log(this.originalProjects.length)
-      if (projects.length > 0 ) {
+      console.log(this.originalProjects.length);
+      if (projects.length > 0) {
         this.originalProjects = [...projects];
-          this.Service.projectsInfo$.next(projects);
+        this.Service.projectsInfo$.next(projects);
       }
       console.log(this.originalProjects);
     });
@@ -82,7 +87,6 @@ export class Project {
 
   // sort by name
   onClickSortByName() {
-  
     const sortedProjects = [...this.Service.projectsInfo$.getValue()].sort(
       (a, b) => a.projectName.localeCompare(b.projectName)
     );
@@ -92,7 +96,6 @@ export class Project {
   // sory by date
 
   onClickSoryByDate() {
-     
     const sortedProjects = [...this.Service.projectsInfo$.getValue()].sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
@@ -103,20 +106,13 @@ export class Project {
   }
 
   openDialog() {
-    if (this.loggedInUser._value.user_type === 'manager') {
-      const dialogRef = this.dialog.open(ProjectAdd, {
-        backdropClass: 'popup',
-        autoFocus: false,
-      });
+    const dialogRef = this.dialog.open(ProjectAdd, {
+      backdropClass: 'popup',
+      autoFocus: false,
+    });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log(`Dialog result: ${result}`);
-      });
-    } else {
-      this.ToasterService.error(
-        'Only manager can perform this action',
-        'Error'
-      );
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
