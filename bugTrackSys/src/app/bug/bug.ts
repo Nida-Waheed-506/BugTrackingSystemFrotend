@@ -69,7 +69,8 @@ export class Bug {
         console.log('ALl bugs', response);
         this.totalRecords = response.data.count;
 
-        const bugs = response.data.rows;
+         const bugs = response.data.rows.sort((a:any, b:any)=>a.id.toString().localeCompare(b.id.toString()));
+
 
         Promise.all(
           bugs.map(async (bug: any) => {
@@ -96,6 +97,7 @@ export class Bug {
             };
           })
         ).then((bugDet) => {
+         
           this.bugDetailsFromApi = bugDet;
           this.bugDetails = bugDet;
         });
@@ -155,11 +157,11 @@ export class Bug {
       this.limitt
     ).subscribe({
       next: (response: any) => {
-        console.log(response);
+       
         this.totalRecords = response.data.count;
-
-        const bugs = response.data.rows;
-        console.log(bugs);
+     
+         const bugs = response.data.rows.sort((a:any, b:any)=>a.id.toString().localeCompare(b.id.toString()));;
+       
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
@@ -266,30 +268,30 @@ export class Bug {
     });
   }
 
-  openEditBugDialog(bug: any) {
-    this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
-      next: (res: any) => {
-        console.log(res);
-      },
-      error: (err: any) => {
-        this.ToastrService.error(err.error.error, 'Error');
-        return;
-      },
-    });
+ openEditBugDialog(bug: any) {
+  this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
+    next: (res: any) => {
+      console.log(res);
 
-    const dialogRef = this.dialog.open(AddBug, {
-      backdropClass: 'popup',
-      autoFocus: false,
-      data: {
-        projectId: this.project_id,
-        dialogTitle: 'Edit Bug',
-        btnName: 'Edit',
-        bugDetail: bug,
-      },
-    });
+      const dialogRef = this.dialog.open(AddBug, {
+        backdropClass: 'popup',
+        autoFocus: false,
+        data: {
+          projectId: this.project_id,
+          dialogTitle: 'Edit Bug',
+          btnName: 'Edit',
+          bugDetail: bug,
+        },
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    },
+    error: (err: any) => {
+      this.ToastrService.error(err.error.error, 'Error');
+    },
+  });
+}
+
 }

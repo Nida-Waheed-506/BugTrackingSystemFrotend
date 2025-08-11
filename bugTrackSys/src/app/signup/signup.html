@@ -25,13 +25,11 @@
       <div class="">
         <form
           action=""
-          #form="ngForm"
-          (ngSubmit)="onSubmitSignUpForm(form.value)"
+          [formGroup]="signUpForm"
+          (ngSubmit)="onSubmitSignUpForm(signUpForm.value)"
         >
           <!-- for name -->
-          <div
-            class="my-3 ps-3  bg-[#F5F5F7] flex items-center rounded-lg"
-          >
+          <div class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg">
             <svg
               width="24"
               height="24"
@@ -55,17 +53,43 @@
             <input
               type="text"
               placeholder="Name"
-              ngModel
               required
-              name="name"
+              formControlName="name"
               class="py-4 ps-3 w-full pe-2 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
+              [ngClass]="{
+                'border-grey-300': !(
+                  signUpForm.get('name')?.invalid &&
+                  signUpForm.get('name')?.touched
+                ),
+                'border-red-500':
+                  signUpForm.get('name')?.invalid &&
+                  signUpForm.get('name')?.touched
+              }"
             />
           </div>
 
-          <!-- mobile number  -->
-          <div
-            class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg"
+          <p
+            *ngIf="
+              signUpForm.get('name')?.hasError('required') &&
+              signUpForm.get('name')?.touched
+            "
+            class="text-red-500 text-sm"
           >
+            Name is required
+          </p>
+
+          <p
+            *ngIf="
+              signUpForm.get('name')?.hasError('maxlength') &&
+              (signUpForm.get('name')?.dirty || signUpForm.get('name')?.touched)
+            "
+            class="text-red-500 text-sm"
+          >
+            Name cannot be more than 12 characters long
+          </p>
+
+          <!-- mobile number  -->
+          <div class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg">
             <svg
               width="19"
               height="19"
@@ -84,18 +108,38 @@
             <input
               type="text"
               placeholder="Mobile number"
-              ngModel
               required
-              name="mobile_number"
+              formControlName="mobile_number"
               class="py-4 ps-3 w-full pe-2 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
+              [ngClass]="{
+                'border-grey-300': !(
+                  signUpForm.get('mobile_number')?.invalid &&
+                  signUpForm.get('mobile_number')?.touched
+                ),
+                'border-red-500':
+                  signUpForm.get('mobile_number')?.invalid &&
+                  signUpForm.get('mobile_number')?.touched
+              }"
             />
           </div>
 
+          <p
+            *ngIf="
+              signUpForm.get('mobile_number')?.hasError('required') &&
+              signUpForm.get('mobile_number')?.touched
+            "
+            class="text-red-500 text-sm"
+          >
+            Mobile number is required
+          </p>
+
+           
+          <div  class="text-red-500 text-sm" *ngIf="signUpForm.get('mobile_number')?.hasError('pattern')&& (signUpForm.get('mobile_number')?.dirty || signUpForm.get('mobile_number')?.touched)">
+          Mobile number must follow patter +923XXXXXXXXXX / 03XXXXXXXXXX
+          </div>
           <!-- email -->
 
-          <div
-            class="my-3 ps-3  bg-[#F5F5F7] flex items-center rounded-lg"
-          >
+          <div class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg">
             <svg
               width="20"
               height="20"
@@ -114,16 +158,41 @@
             <input
               type="email"
               placeholder="E-mail"
-              ngModel
               required
-              name="email"
+              formControlName="email"
               class="py-4 w-full pe-2 ps-3 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
+              [ngClass]="{
+                'border-grey-300': !(
+                  signUpForm.get('email')?.invalid &&
+                  signUpForm.get('email')?.touched
+                ),
+                'border-red-500':
+                  signUpForm.get('email')?.invalid &&
+                  signUpForm.get('email')?.touched
+              }"
             />
           </div>
-          <!-- password -->
-          <div
-            class="my-3 ps-3  bg-[#F5F5F7] flex items-center rounded-lg"
+
+          <p
+            *ngIf="
+              signUpForm.get('email')?.hasError('required') &&
+              signUpForm.get('email')?.touched
+            "
+            class="text-red-500 text-sm"
           >
+            Email is required
+          </p>
+           <p
+            *ngIf="
+              signUpForm.get('email')?.hasError('pattern') &&
+              signUpForm.get('email')?.touched
+            "
+            class="text-red-500 text-sm"
+          >
+            Enter valid email
+          </p>
+          <!-- password -->
+          <div class="my-3 ps-3 bg-[#F5F5F7] flex items-center rounded-lg">
             <svg
               width="18"
               height="18"
@@ -174,16 +243,39 @@
             </svg>
 
             <input
-              type="password"
+              [type]="hide?'password':'text'"
               placeholder="Password"
-              ngModel
               required
-              name="password"
+              formControlName="password"
               class="py-4 ps-3 w-full pe-2 text-[16px] text-[#3C4071] placeholder-[#8B8FA8] focus:outline-none focus:ring-0 focus:border-transparent"
+              [ngClass]="{
+                'border-grey-300': !(
+                  signUpForm.get('password')?.invalid &&
+                  signUpForm.get('password')?.touched
+                ),
+                'border-red-500':
+                  signUpForm.get('password')?.invalid &&
+                  signUpForm.get('password')?.touched
+              }"
             />
+            <mat-icon class="pe-10 cursor-pointer color" (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </div>
+
+          <p
+            *ngIf="
+              signUpForm.get('password')?.hasError('required') &&
+              signUpForm.get('password')?.touched
+            "
+            class="text-red-500 text-sm"
+          >
+            Password is required
+          </p>
+         
+          <div  class="text-red-500 text-sm" *ngIf="signUpForm.get('password')?.hasError('pattern')&& (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)">
+          Password must contain more than 8 characters, 1 numeric, 1 upper case letter, and 1 special character($@$!%*?&).
           </div>
           <button
-            class="flex border-2 justify-center cursor-pointer mt-5 text-white items-center  rounded-md w-[110px] h-[50px] bg-[#007DFA]"
+            class="flex border-2 justify-center cursor-pointer mt-5 text-white items-center rounded-md w-[110px] h-[50px] bg-[#007DFA]"
           >
             <div class="font-[500] text-[16px] ps-1 cursor-pointer">
               Sign Up

@@ -4,8 +4,8 @@
 
   <!-- Add Project Form -->
 
-   <form action="" #form="ngForm"
-          (ngSubmit)="onSubmit(form.value)">
+   <form  [formGroup]="projectForm"
+          (ngSubmit)="onSubmit(projectForm.value)">
   <div class="flex gap-15 mt-4">
     <div>
       
@@ -17,10 +17,36 @@
           type="text"
           class="input border-1 border-[#F4F4F5] text-[13px] font-[400] placeholder-[#A1A1AA] rounded-none w-60 focus:outline-none rounded-sm"
           placeholder="Enter project name"
-          name="projectName"
-          ngModel
+          formControlName ="projectName"
+           [ngClass]="{
+                'border-grey-300': !(
+                  projectForm.get('projectName')?.invalid &&
+                  projectForm.get('projectName')?.touched
+                ),
+                'border-red-500':
+                  projectForm.get('projectName')?.invalid &&
+                  projectForm.get('projectName')?.touched
+              }"
          
         />
+         <p
+            *ngIf="
+              projectForm.get('projectName')?.hasError('maxlength') &&
+              (projectForm.get('projectName')?.dirty || projectForm.get('projectName')?.touched)
+            "
+            class="text-red-500 text-sm"
+          >
+            Project name cannot be more than 20 characters long
+          </p>
+          <p
+            *ngIf="
+              projectForm.get('projectName')?.hasError('required') &&
+              projectForm.get('projectName')?.touched
+            "
+            class="text-red-500 text-sm"
+          >
+            Project name is required
+          </p>
       </div>
 
       <div class="fieldset">
@@ -31,9 +57,35 @@
           type="text"
           class="input border-1 border-[#F4F4F5] text-[13px] font-[400] placeholder-[#A1A1AA] rounded-none w-60 focus:outline-none rounded-sm"
           placeholder="Enter details here"
-          name="projectDes"
-          ngModel
+          formControlName="projectDes"
+           [ngClass]="{
+                'border-grey-300': !(
+                  projectForm.get('projectDes')?.invalid &&
+                  projectForm.get('projectDes')?.touched
+                ),
+                'border-red-500':
+                  projectForm.get('projectDes')?.invalid &&
+                  projectForm.get('projectDes')?.touched
+              }"
         />
+         <p
+            *ngIf="
+              projectForm.get('projectDes')?.hasError('minlength') &&
+              (projectForm.get('projectDes')?.dirty || projectForm.get('projectName')?.touched)
+            "
+            class="text-red-500 text-sm"
+          >
+           Bug description cannot be less than 60 characters
+          </p>
+          <p
+            *ngIf="
+              projectForm.get('projectDes')?.hasError('required') &&
+              projectForm.get('projectDes')?.touched
+            "
+            class="text-red-500 text-sm"
+          >
+            Project description is required
+          </p>
       </div>
 
 
@@ -110,8 +162,11 @@
         #fileInput
         style="display: none"
         accept="image/png , image/gif"
+        formControlName = 'image'
         (change)="onFileSelected($event)"
+       
       />
+
     </div>
   </div>
 

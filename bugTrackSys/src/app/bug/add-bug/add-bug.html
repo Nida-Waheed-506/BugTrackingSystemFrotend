@@ -2,9 +2,9 @@
   <!-- close pop up -->
   <div class="p-4 w-full flex justify-end bg-[#F5F6F8]">
     <button
-      class="bg-[#000000] p-2 cursor-pointer flex justify-center rounded-sm"
+      class=" p-2 cursor-pointer flex justify-center rounded-sm"
     >
-      <mat-icon (click)="onCloseDialog()" class="color text-white"
+      <mat-icon (click)="onCloseDialog()" class=" text-white"
         >close</mat-icon
       >
     </button>
@@ -117,7 +117,7 @@
               [ngClass]="{
                 'border-grey-300': !(
                   bugForm.get('description')?.invalid &&
-                  bugForm.get('title')?.touched
+                  bugForm.get('description')?.touched
                 ),
                 'border-red-500':
                   bugForm.get('description')?.invalid &&
@@ -162,8 +162,8 @@
             </select>
             <p
               *ngIf="
-                bugForm.get('description')?.hasError('required') &&
-                bugForm.get('title')?.touched
+                bugForm.get('type')?.hasError('required') &&
+                bugForm.get('type')?.touched
               "
               class="text-red-500 text-sm"
             >

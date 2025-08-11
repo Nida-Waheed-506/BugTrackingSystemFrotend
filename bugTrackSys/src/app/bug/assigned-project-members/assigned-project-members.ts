@@ -79,13 +79,18 @@ export class AssignedProjectMembers {
   onDropdownClick(name: string, email: string) {
     this.selectedUserName = name;
     this.selectedUserEmail = email;
+    this.users = [];
   }
+
 
   // when click on assign user btn
   assignUser() {
+
+
+    this.users = [];
    
-    if (this.selectedUserEmail.trim() !== ""){}
-      this.Service.assignUserToProject(
+    if (this.selectedUserEmail.trim() !== ""){
+        this.Service.assignUserToProject(
         this.selectedUserEmail,
         this.projectId
       ).subscribe({
@@ -96,6 +101,12 @@ export class AssignedProjectMembers {
           this.ToastrService.error(err.error.error, "Error");
         },
       });
+     }else{
+      this.ToastrService.error("Choose User first", "Error");
+     }
+     
+
+      
   }
 
   // dialog box is closed

@@ -1,11 +1,11 @@
-<div class="flex flex-row poppins lg:h-[100%] lg:py-0">
+<div class="flex flex-row poppins lg:h-[100vh] lg:py-0">
   <!-- image -->
   <div class="hidden lg:flex">
     <app-img></app-img>
   </div>
   <!-- selector for the user  -->
-  <div class="w-full">
-    <div class="flex flex-row-reverse m-5 text-[18px] font-[500]">
+  <div class="w-full ">
+    <div class="flex justify-start w-full lg:justify-end px-7 my-5 text-[18px] font-[500]">
       <span class="text-[#8692A6]"
         >Already have an account?
         <a class="text-[#007DFA] cursor-pointer" routerLink="/login"
@@ -14,13 +14,13 @@
       >
     </div>
 
-    <div class="flex flex-col justify-center items-center w-full h-[91%]">
-      <div class="flex pe-7 pb-7 ps-0 justify-start">
+    <div class="flex flex-col justify-center items-center w-full h-[80vh] lg:h-[90vh]">
+      <div class="flex  w-fit mx-7 my-5 lg:mx-0 lg:my-0 lg:pe-7 lg:pb-7 ps-0 justify-center">
         <div class="">
           <h1 class="text-start text-[#2F3367] text-[28px] font-[700] pb-7">
             Join Us!
           </h1>
-          <p class="text-[#8692A6] text-[16px] font-[400] w-[420px]">
+          <p class="text-[#8692A6] text-[16px] font-[400] text-start   lg:mx-0 lg:w-[420px]">
             To begin this journey, tell us what type of account you'd be
             opening.
           </p>
@@ -32,7 +32,7 @@
         <div
           (mouseenter)="onManagerHover(true)"
           (mouseleave)="onManagerHover(false)"
-          class="w-[446px] shadow-md h-[108px] flex justify-center items-center"
+          class="lg:w-[446px] shadow-md h-[108px] flex justify-center items-center"
         >
           <mat-card-content>
             <div class="flex justify-around align-center gap-4">
@@ -101,7 +101,7 @@
 
       <div class="mb-9 cursor-pointer" routerLink="/signup">
         <div
-          class="w-[446px] shadow-md h-[108px] flex justify-center items-center"
+          class="lg:w-[446px] shadow-md h-[108px] flex justify-center items-center"
           (mouseenter)="onDeveloperHover(true)"
           (mouseleave)="onDeveloperHover(false)"
         >
@@ -172,7 +172,7 @@
 
       <div class="cursor-pointer" routerLink="/signup">
         <div
-          class="w-[446px] shadow-md h-[108px] flex justify-center items-center"
+          class="lg:w-[446px] shadow-md h-[108px] flex justify-center items-center"
           (mouseenter)="onQAHover(true)"
           (mouseleave)="onQAHover(false)"
         >

@@ -73,7 +73,8 @@ export class AddBug {
         type: new FormControl(this.data.bugDetail.type, Validators.required),
       });
       this.developers = this.data.bugDetail.developersDetail;
-
+    
+      this.developerAddedToBug = this.data.bugDetail.developer_id;
       // for image
       if (this.data.bugDetail.screenshot) {
         this.selectedFile = this.data.bugDetail.screenshot;
@@ -145,7 +146,7 @@ export class AddBug {
   }
 
   onSubmit(value: any) {
-    console.log(value);
+  
 
     if (this.bugForm.invalid) {
       this.bugForm.markAllAsTouched();
@@ -155,7 +156,8 @@ export class AddBug {
     if (this.developerAddedToBug.length < 1) {
       return;
     }
-    console.log(this.data.projectId);
+    
+
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('description', value.description);
@@ -176,7 +178,8 @@ export class AddBug {
           this.ToastrService.error(err.error.error, 'Error');
         },
       });
-    } else if (this.dialogBtn === 'Edit') {
+    } else {
+      console.log("hello");
       this.Service.editBug(formData, this.data.bugDetail.id).subscribe({
         next: (response: any) => {
           console.log('..Edit bug', response);

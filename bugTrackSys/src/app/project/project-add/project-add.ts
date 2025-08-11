@@ -3,19 +3,27 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Service} from '../../services/service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-project-add',
-  imports: [CommonModule, MatIconModule, FormsModule],
+  imports: [CommonModule, MatIconModule, FormsModule,ReactiveFormsModule],
   templateUrl: './project-add.html',
   styleUrl: './project-add.scss',
 })
 export class ProjectAdd {
   selectedFile: File | '' = '';
   preview = '';
+
+  projectForm = new FormGroup({
+    projectName:  new FormControl('' , [Validators.required ,  Validators.maxLength(20),]),
+    projectDes : new FormControl('',[Validators.required,  Validators.minLength(60)]),
+   
+  })
+
   constructor(
     private ToastrService: ToastrService,
     private Service: Service,
@@ -60,26 +68,17 @@ export class ProjectAdd {
   }
 
   onSubmit(value: any) {
-    if (!value.projectName || !value.projectDes || !this.selectedFile) {
-      this.ToastrService.error('Please fill all fields', 'Error');
+      if (this.projectForm.invalid) {
+      this.projectForm.markAllAsTouched();
+      return;
+    }
+  
+    if(!this.selectedFile){
+      this.ToastrService.error("Add image" , "Error");
       return;
     }
 
-    if (value.projectName.length > 20) {
-      this.ToastrService.error(
-        'Project name must be 20 characters or less',
-        'Error'
-      );
-      return;
-    }
-
-    if (value.projectDes.length < 60) {
-      this.ToastrService.error(
-        'Project description must not be less than 60 characters',
-        'Error'
-      );
-      return;
-    }
+    console.log(this.selectedFile);
 
     const formData = new FormData();
     formData.append('projectName', value.projectName);
