@@ -202,6 +202,8 @@ export class Bug {
     this.chosenBug = chosenBug;
   }
 
+ 
+
   choosenStatus(id: any, status: any) {
     this.Service.changeStatus(this.project_id, status, id).subscribe({
       next: (response: any) => {

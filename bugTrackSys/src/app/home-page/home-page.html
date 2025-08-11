@@ -1,11 +1,13 @@
-<div class="flex flex-row poppins lg:h-[100vh] lg:py-0">
+<div class="flex flex-row poppins lg:h-[100vh] md:ps-10 lg:ps-0 lg:py-0">
   <!-- image -->
   <div class="hidden lg:flex">
     <app-img></app-img>
   </div>
   <!-- selector for the user  -->
-  <div class="w-full ">
-    <div class="flex justify-start w-full lg:justify-end px-7 my-5 text-[18px] font-[500]">
+  <div class="w-full">
+    <div
+      class="flex justify-start w-full lg:justify-end px-7 my-7 text-[18px] font-[500]"
+    >
       <span class="text-[#8692A6]"
         >Already have an account?
         <a class="text-[#007DFA] cursor-pointer" routerLink="/login"
@@ -14,13 +16,19 @@
       >
     </div>
 
-    <div class="flex flex-col justify-center items-center w-full h-[80vh] lg:h-[90vh]">
-      <div class="flex  w-fit mx-7 my-5 lg:mx-0 lg:my-0 lg:pe-7 lg:pb-7 ps-0 justify-center">
-        <div class="">
+    <div
+      class="flex flex-col justify-center items-center w-full h-[80vh] lg:h-[88vh]"
+    >
+      <div
+        class="flex sm:w-fit md:w-full mx-7 my-5 lg:mx-0 lg:my-0 lg:pe-7 lg:pb-7 ps-0 sm:justify-center md:justify-start md:ms-22 lg:ms-0 lg:ms-0 lg:justify-center"
+      >
+        <div class="mt-22 sm:mt-0">
           <h1 class="text-start text-[#2F3367] text-[28px] font-[700] pb-7">
             Join Us!
           </h1>
-          <p class="text-[#8692A6] text-[16px] font-[400] text-start   lg:mx-0 lg:w-[420px]">
+          <p
+            class="text-[#8692A6] text-[16px] font-[400] text-start lg:mx-0 lg:w-[420px]"
+          >
             To begin this journey, tell us what type of account you'd be
             opening.
           </p>
@@ -28,11 +36,14 @@
       </div>
 
       <!-- For manager -->
-      <div class="mb-9 cursor-pointer" routerLink="/signup">
+      <div
+        class="ms-12 lg:ms-0 mt-8 mb-10 cursor-pointer w-full lg:w-fit"
+        routerLink="/signup"
+      >
         <div
           (mouseenter)="onManagerHover(true)"
           (mouseleave)="onManagerHover(false)"
-          class="lg:w-[446px] shadow-md h-[108px] flex justify-center items-center"
+          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 shadow-lg h-[108px] flex justify-start lg:justify-center items-center"
         >
           <mat-card-content>
             <div class="flex justify-around align-center gap-4">
@@ -62,7 +73,7 @@
                 </svg>
               </button>
 
-              <div class="w-[20rem] ps-3">
+              <div class="w-max-[200] lg:w-[20rem] ps-3">
                 <h1 class="text-[16px] font-[500] pb-1 text-[#2F3367]">
                   Manager
                 </h1>
@@ -99,9 +110,12 @@
 
       <!-- For developer -->
 
-      <div class="mb-9 cursor-pointer" routerLink="/signup">
+      <div
+        class="ms-12 lg:ms-0 mb-10 cursor-pointer w-full lg:w-fit"
+        routerLink="/signup"
+      >
         <div
-          class="lg:w-[446px] shadow-md h-[108px] flex justify-center items-center"
+          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 shadow-lg h-[108px] flex justify-start lg:justify-center items-center"
           (mouseenter)="onDeveloperHover(true)"
           (mouseleave)="onDeveloperHover(false)"
         >
@@ -133,7 +147,7 @@
                 </svg>
               </button>
 
-              <div class="w-[20rem] ps-3">
+              <div class="w-max-[200] lg:w-[20rem] ps-3">
                 <h1 class="text-[16px] font-[500] pb-1 text-[#2F3367]">
                   Developer
                 </h1>
@@ -170,9 +184,12 @@
 
       <!-- For QA  -->
 
-      <div class="cursor-pointer" routerLink="/signup">
+      <div
+        class="ms-12 lg:ms-0 mb-10 cursor-pointer w-full lg:w-fit"
+        routerLink="/signup"
+      >
         <div
-          class="lg:w-[446px] shadow-md h-[108px] flex justify-center items-center"
+          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 shadow-lg h-[108px] flex justify-start lg:justify-center items-center"
           (mouseenter)="onQAHover(true)"
           (mouseleave)="onQAHover(false)"
         >
@@ -205,7 +222,7 @@
                 </svg>
               </button>
 
-              <div class="w-[20rem] ps-3">
+              <div class="w-max-[200] lg:w-[20rem] ps-3">
                 <h1 class="text-[16px] font-[500] pb-1 text-[#2F3367]">QA</h1>
                 <p class="text-[14px] text-[#8692A6] p-0">
                   Signup as a QA to create the bugs and report in tasks

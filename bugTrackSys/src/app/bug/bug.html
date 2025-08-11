@@ -1,5 +1,5 @@
-<div class="py-6 px-30 bg-[#FAFAFA] h-[100vh]">
-  <div class="h-[85vh]">
+<div class="py-6 px-30 bg-[#FAFAFA] h-fit flex flex-col justify-between h-[100vh] ">
+  <div class="h-[80vh] ">
     <app-navbar></app-navbar>
     <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
     <!-- Bug page nav -->
@@ -269,7 +269,7 @@
 
     <!-- bug detail -->
 
-    <div class="min-h-[50vh] max-h-[55vh] w-[108%] overflow-auto">
+    <div class="min-h-[50vh]  mb-0 max-h-[60vh] w-[100%] overflow-auto">
       <table>
         <tr
           class="flex mt-8 px-7 flex items-center justify-start bg-[#f1f5f9] py-5 border-b-1 border-b-[#344054]"
@@ -399,6 +399,7 @@
             >
               <svg
                 (click)="showChangeStatus(bug.id)"
+               
                 width="5"
                 height="17"
                 class="cursor-pointer"
@@ -413,7 +414,7 @@
                 />
               </svg>
               <div
-                class="z-10 bg-white w-33 absolute p-2 ms-37 mt-0 shadow rounded-sm"
+                class="z-10 bg-white w-33 absolute p-2  mt-0 shadow rounded-sm"
                 *ngIf="this.chosenBug === bug.id"
               >
                 <div class="flex justify-between">
@@ -536,7 +537,7 @@
     </div>
   </div>
 
-  <div class="flex items-end justify-end h-[10vh] z-10 w-full xl:mt-3">
+  <div class="flex items-end justify-end h-[10vh] z-10 w-full xl:mt-3 ">
     <mat-paginator
       [length]="this.totalRecords"
       [pageSize]="1"

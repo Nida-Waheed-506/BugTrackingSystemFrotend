@@ -1,5 +1,5 @@
-<div class="py-6 px-30 bg-[#FAFAFA] max-h-[100vh]">
-  <div class="h-[85vh]">
+<div class="py-6 px-30 bg-[#FAFAFA] max-h-[100vh] flex flex-col justify-between">
+  <div class="h-[75vh]">
     <app-navbar></app-navbar>
 
     <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
@@ -120,13 +120,13 @@
 
      
 
-      <div class="h-[60vh] overflow-y-auto pb-10">
+      <div class="h-[60vh] overflow-y-auto pb-10 mt-10">
         <app-project-items [page]="currentPageNumber" [limit]="limitt"   (totalProjects)="receiveDataFromChild($event)"></app-project-items>
       </div>
     </div>
   </div>
 
-  <div class="flex items-end justify-end h-[10vh] w-full  xl:mt-3 ">
+  <div class="flex items-end justify-end h-[15vh] w-full  xl:mt-3 ">
     <mat-paginator
       [length]="this.totalRecords"
       [pageSize]="1"
