@@ -50,8 +50,6 @@ export class Bug {
   ) {}
 
   ngOnInit() {
-
-   
     this.route.paramMap.subscribe((params: ParamMap) => {
       console.log(params);
       this.project_id = params.get('project_id');
@@ -68,7 +66,7 @@ export class Bug {
       this.limitt
     ).subscribe({
       next: (response: any) => {
-        console.log(response);
+        console.log('ALl bugs', response);
         this.totalRecords = response.data.count;
 
         const bugs = response.data.rows;
@@ -76,7 +74,7 @@ export class Bug {
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
-            const developersDetail : any [] = [];
+            const developersDetail: any[] = [];
             for (const devId of bug.developer_id) {
               try {
                 const userRes: any = await lastValueFrom(
@@ -94,23 +92,19 @@ export class Bug {
             return {
               ...bug,
               developerNames: developerNames.join(' - '),
-              developersDetail: developersDetail
+              developersDetail: developersDetail,
             };
           })
         ).then((bugDet) => {
           this.bugDetailsFromApi = bugDet;
           this.bugDetails = bugDet;
         });
-
-       
       },
       error: (err: any) => {
         console.log(err);
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
-
-
 
     //  check valid manager or is manager
 
@@ -169,7 +163,7 @@ export class Bug {
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
-            const developersDetail : any [] = [];
+            const developersDetail: any[] = [];
             for (const devId of bug.developer_id) {
               try {
                 const userRes: any = await lastValueFrom(
@@ -205,6 +199,7 @@ export class Bug {
     console.log(chosenBug);
     this.chosenBug = chosenBug;
   }
+
   choosenStatus(id: any, status: any) {
     this.Service.changeStatus(this.project_id, status, id).subscribe({
       next: (response: any) => {
@@ -261,8 +256,8 @@ export class Bug {
       autoFocus: false,
       data: {
         projectId: this.project_id,
-        dialogTitle : 'Add New Bug',
-        btnName : 'Add',
+        dialogTitle: 'Add New Bug',
+        btnName: 'Add',
       },
     });
 
@@ -271,25 +266,25 @@ export class Bug {
     });
   }
 
-  openEditBugDialog(bug:any) {
-     this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
-      next:(res:any)=>{
-       console.log(res);
+  openEditBugDialog(bug: any) {
+    this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
+      next: (res: any) => {
+        console.log(res);
       },
-      error:(err:any)=>{
-       this.ToastrService.error(err.error.error , "Error" );
-       return;
-      }
-     })
-  
-     const dialogRef = this.dialog.open(AddBug, {
+      error: (err: any) => {
+        this.ToastrService.error(err.error.error, 'Error');
+        return;
+      },
+    });
+
+    const dialogRef = this.dialog.open(AddBug, {
       backdropClass: 'popup',
       autoFocus: false,
       data: {
         projectId: this.project_id,
-        dialogTitle : 'Edit Bug',
-        btnName : 'Edit',
-        bugDetail :bug
+        dialogTitle: 'Edit Bug',
+        btnName: 'Edit',
+        bugDetail: bug,
       },
     });
 

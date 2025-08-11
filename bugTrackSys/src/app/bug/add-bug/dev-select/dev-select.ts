@@ -5,7 +5,12 @@ import {
   EventEmitter,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Service } from '../../../services/service';
@@ -27,43 +32,41 @@ export class DevSelect {
   searchName = new FormControl('');
   devs: any[] = [];
   @Input() projectId: any = '';
-  @Input() toppingsData : []= [];
+  @Input() toppingsData: [] = [];
 
-  toppings = new FormControl<{ id: number; name: string }[]>([]);
+  toppings = new FormControl<{ id: number; name: string }[]>(
+    [],
+
+    Validators.required
+  );
   @Output() selectedIds = new EventEmitter<any | number[]>();
 
-  constructor(private Service: Service, private ToastrService: ToastrService) {
-   
-  }
+  constructor(private Service: Service, private ToastrService: ToastrService) {}
   @ViewChild(MatSelect) matSelect!: MatSelect;
 
   ngOnInit() {
- 
-    
     this.devs = this.toppingsData;
 
-     if (this.toppingsData && this.toppingsData.length > 0) {
+    if (this.toppingsData && this.toppingsData.length > 0) {
       this.toppings.setValue(this.toppingsData);
     }
-    
-    if(this.toppingsData.length === 0){
-      this.Service.getTopDevelopers(this.projectId).subscribe({
-      next: (response: any) => {
-        this.devs = response.data.map((user: any) => ({
-          id: user.id,
-          name: user.name,
-        }));
-      },
-      error: (err) => {
-        this.ToastrService.error(err.error.error, 'Error');
-      },
-    });
-    }
 
+    if (this.toppingsData.length === 0) {
+      this.Service.getTopDevelopers(this.projectId).subscribe({
+        next: (response: any) => {
+          this.devs = response.data.map((user: any) => ({
+            id: user.id,
+            name: user.name,
+          }));
+        },
+        error: (err) => {
+          this.ToastrService.error(err.error.error, 'Error');
+        },
+      });
+    }
 
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {
-        console.log('nida');
         if (value?.trim() === '') {
           this.Service.getTopDevelopers(this.projectId).subscribe({
             next: (response: any) => {

@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Service } from '../../services/service';
@@ -55,34 +55,46 @@ export class AddBug {
   ) {
     this.dialogTitle = this.data.dialogTitle;
     this.dialogBtn = this.data.btnName;
-    console.log(this.data);
+
     if (this.data.bugDetail) {
       this.bugForm = new FormGroup({
-        deadline: new FormControl(this.data.bugDetail.deadline),
-        title: new FormControl(this.data.bugDetail.title),
-        description: new FormControl(this.data.bugDetail.description),
-        type: new FormControl(this.data.bugDetail.type),
+        deadline: new FormControl(
+          this.data.bugDetail.deadline,
+          Validators.required
+        ),
+        title: new FormControl(this.data.bugDetail.title, [
+          Validators.required,
+          Validators.maxLength(15),
+        ]),
+        description: new FormControl(this.data.bugDetail.description, [
+          Validators.required,
+          Validators.minLength(20),
+        ]),
+        type: new FormControl(this.data.bugDetail.type, Validators.required),
       });
       this.developers = this.data.bugDetail.developersDetail;
-     
 
       // for image
       if (this.data.bugDetail.screenshot) {
         this.selectedFile = this.data.bugDetail.screenshot;
-        const jsonImage = JSON.stringify(this.data.bugDetail.screenshot);
-        const base64Image = btoa(jsonImage);
+        const uint8Array = new Uint8Array(this.data.bugDetail.screenshot.data);
+        let binary = '';
+        uint8Array.forEach((byte) => (binary += String.fromCharCode(byte)));
+        const base64Image = btoa(binary);
         this.preview = `data:image/png;base64,${base64Image}`;
-        console.log(this.preview);
       }
-
-
-
     } else {
       this.bugForm = new FormGroup({
-        deadline: new FormControl(''),
-        title: new FormControl(''),
-        description: new FormControl(''),
-        type: new FormControl(''),
+        deadline: new FormControl('', Validators.required),
+        title: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(15),
+        ]),
+        description: new FormControl('', [
+          Validators.required,
+          Validators.minLength(20),
+        ]),
+        type: new FormControl('', Validators.required),
       });
     }
   }
@@ -134,28 +146,16 @@ export class AddBug {
 
   onSubmit(value: any) {
     console.log(value);
-    if (!value.deadline || !value.description || !value.title || !value.type) {
-      this.ToastrService.error('Plz fill all fields', 'Error');
-    }
 
-    if (value.title.length > 20) {
-      this.ToastrService.error('Title must be 20 characters or less', 'Error');
-      return;
-    }
-
-    if (value.description.length < 20) {
-      this.ToastrService.error(
-        'Description must be greater than 20 characters',
-        'Error'
-      );
+    if (this.bugForm.invalid) {
+      this.bugForm.markAllAsTouched();
       return;
     }
 
     if (this.developerAddedToBug.length < 1) {
-      this.ToastrService.error('Atleast add one developer', 'Error');
       return;
     }
-
+    console.log(this.data.projectId);
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('description', value.description);
@@ -165,31 +165,29 @@ export class AddBug {
     formData.append('screenshot', this.selectedFile);
     formData.append('project_id', this.data.projectId);
 
-    if(this.data.bugDetail.btnName === 'Add New Bug'){
-        this.Service.createBug(formData).subscribe({
-      next: (response: any) => {
-        this.ToastrService.success(response.message, 'Success');
-        this.dialogRef.close('Add bug dialog close');
-      },
-      error: (err) => {
-        console.log(err);
-        this.ToastrService.error(err.error.error, 'Error');
-      },
-    });
-    }else{
-      
-       this.Service.editBug(formData , this.data.bugDetail.id).subscribe({
-      next: (response: any) => {
-        this.ToastrService.success(response.message, 'Success');
-        this.dialogRef.close('Add bug dialog close');
-      },
-      error: (err:any) => {
-        console.log(err);
-        this.ToastrService.error(err.error.error, 'Error');
-      },
-    });
-
-
+    if (this.dialogBtn === 'Add') {
+      this.Service.createBug(formData).subscribe({
+        next: (response: any) => {
+          this.ToastrService.success(response.message, 'Success');
+          this.dialogRef.close('Add bug dialog close');
+        },
+        error: (err) => {
+          console.log(err);
+          this.ToastrService.error(err.error.error, 'Error');
+        },
+      });
+    } else if (this.dialogBtn === 'Edit') {
+      this.Service.editBug(formData, this.data.bugDetail.id).subscribe({
+        next: (response: any) => {
+          console.log('..Edit bug', response);
+          this.ToastrService.success(response.message, 'Success');
+          this.dialogRef.close('Add bug dialog close');
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.ToastrService.error(err.error.error, 'Error');
+        },
+      });
     }
   }
 

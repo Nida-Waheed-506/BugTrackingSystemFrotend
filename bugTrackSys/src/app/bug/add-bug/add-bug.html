@@ -15,7 +15,7 @@
     <div
       class="bg-[#FFFFFF] p-10 border-b-2 border-b-[#8D98AA4D] flex justify-between items-center"
     >
-      <h1 class="font-[500] text-[27px]">{{dialogTitle}}</h1>
+      <h1 class="font-[500] text-[27px]">{{ dialogTitle }}</h1>
 
       <!-- icon -->
 
@@ -41,19 +41,30 @@
           <!-- Assign to and due date  -->
 
           <div class="flex gap-5 justify-start">
-            <app-dev-select [projectId]="this.data.projectId" [toppingsData] = "this.developers" (selectedIds)="getIds($event)"></app-dev-select>
+            <app-dev-select
+              [projectId]="this.data.projectId"
+              [toppingsData]="this.developers"
+              (selectedIds)="getIds($event)"
+            ></app-dev-select>
 
             <!-- Add due date -->
             <div class="flex justify-center">
               <div class="">
-               
                 <mat-form-field class="w-65 h-22">
                   <mat-label>Choose a deadline</mat-label>
                   <input
                     matInput
                     [matDatepicker]="picker"
                     formControlName="deadline"
-                  
+                    [ngClass]="{
+                      'border-grey-300': !(
+                        bugForm.get('deadline')?.invalid &&
+                        bugForm.get('deadline')?.touched
+                      ),
+                      'border-red-500':
+                        bugForm.get('deadline')?.invalid &&
+                        bugForm.get('deadline')?.touched
+                    }"
                   />
 
                   <mat-datepicker-toggle
@@ -71,9 +82,27 @@
             type="text"
             placeholder="Add title here"
             formControlName="title"
-            
-            class="text-[35px] placeholder-[#DFDEE0] text-[#5A595AFF] px-1 py-1 border-none focus:outline-none mt-1 font-[500]"
+            class="text-[35px] placeholder-[#DFDEE0] text-[#5A595AFF] px-1 py-1 focus:outline-none mt-1 font-[500]"
           />
+
+          <p
+            *ngIf="
+              bugForm.get('title')?.hasError('maxlength') &&
+              (bugForm.get('title')?.dirty || bugForm.get('title')?.touched)
+            "
+            class="text-red-500 text-sm"
+          >
+            Title cannot be more than 15 characters
+          </p>
+          <p
+            *ngIf="
+              bugForm.get('title')?.hasError('required') &&
+              bugForm.get('title')?.touched
+            "
+            class="text-red-500 text-sm"
+          >
+            Title is required
+          </p>
 
           <!-- for bug detail and type -->
 
@@ -84,9 +113,33 @@
               type="text"
               placeholder="Add here"
               formControlName="description"
-              
               class="my-3 py-4 ps-3 w-140 rounded-sm border-1 focus:outline-none border-[#A1A1AA] text-[#5A595AFF] text-[16px] placeholder-[#A1A1AA] font-[500]"
+              [ngClass]="{
+                'border-grey-300': !(
+                  bugForm.get('description')?.invalid &&
+                  bugForm.get('title')?.touched
+                ),
+                'border-red-500':
+                  bugForm.get('description')?.invalid &&
+                  bugForm.get('description')?.touched
+              }"
             />
+
+            <p
+              *ngIf="bugForm.get('description')?.hasError('minlength')"
+              class="text-red-500 text-sm"
+            >
+              Bug description cannot be less than 20 characters
+            </p>
+            <p
+              *ngIf="
+                bugForm.get('description')?.hasError('required') &&
+                bugForm.get('description')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              Bug Detail is required
+            </p>
           </div>
 
           <!-- for type -->
@@ -95,12 +148,27 @@
             <select
               class="my-3 py-4 ps-3 pe-10 border-[#A1A1AA] w-140 border-1 rounded-sm text-[16px] text-[#5A595AFF] font-[500] focus:outline-none"
               formControlName="type"
-              
+              [ngClass]="{
+                'border-grey-300': !(
+                  bugForm.get('type')?.invalid && bugForm.get('type')?.touched
+                ),
+                'border-red-500':
+                  bugForm.get('type')?.invalid && bugForm.get('type')?.touched
+              }"
             >
               <option value="">Select type here</option>
               <option value="bug">Bug</option>
               <option value="feature">Feature</option>
             </select>
+            <p
+              *ngIf="
+                bugForm.get('description')?.hasError('required') &&
+                bugForm.get('title')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              Bug Type is required
+            </p>
           </div>
 
           <!-- for image  -->
@@ -198,7 +266,7 @@
         <button
           class="bg-[#007DFA] text-[14px] font-[600] text-white px-15 rounded-sm py-3 cursor-pointer"
         >
-          {{dialogBtn}}
+          {{ dialogBtn }}
         </button>
       </div>
     </form>

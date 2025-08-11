@@ -322,7 +322,6 @@
         <div>
           @for (bug of bugDetails ; track bug.id) {
           <tr
-            (click)="openEditBugDialog(bug)"
             class="flex py-4 px-7 items-center cursor-pointer border-b-1 border-b-[#344054]"
           >
             <td
@@ -331,67 +330,70 @@
               <input type="checkbox" />
             </td>
 
-            <td
-              class="truncate max-w-[20ch] font-[500] text-[13px] text-[#3A3541DE] w-30 text-start ps-3"
-            >
-              {{ bug.title }}
-            </td>
-
-            <td
-              class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-72 justify-start items-center"
-            >
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div (click)="openEditBugDialog(bug)" class="flex">
+              <td
+                class="truncate max-w-[20ch] font-[500] text-[13px] text-[#3A3541DE] w-30 text-start ps-3"
               >
-                <rect
+                {{ bug.title }}
+              </td>
+
+              <td
+                class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-72 justify-start items-center"
+              >
+                <svg
                   width="10"
                   height="10"
-                  rx="5"
-                  [attr.fill]="
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    width="10"
+                    height="10"
+                    rx="5"
+                    [attr.fill]="
+                      bug.status === 'new'
+                        ? '#EC5962'
+                        : bug.status === 'started'
+                        ? '#2563EB'
+                        : '#16A34A'
+                    "
+                  />
+                </svg>
+                <span class="truncate max-w-[25ch] block">
+                  {{ bug.description }}</span
+                >
+              </td>
+              <td
+                class="font-[500] text-[13px] text-[#3A3541DE] w-40 text-center"
+              >
+                {{ bug.type }}
+              </td>
+              <td class="text-center w-40">
+                <span
+                  class="text-[13px] py-2 px-3 font-[500]"
+                  [ngClass]="
                     bug.status === 'new'
-                      ? '#EC5962'
+                      ? 'text-[#EC5962] bg-[#FDF2F2]'
                       : bug.status === 'started'
-                      ? '#2563EB'
-                      : '#16A34A'
+                      ? 'text-[#3069FE] bg-[#EEF3FF]'
+                      : 'text-[#00B894] bg-[#E0F7F1]'
                   "
-                />
-              </svg>
-              <span class="truncate max-w-[25ch] block">
-                {{ bug.description }}</span
+                  >{{ bug.status }}</span
+                >
+              </td>
+              <td
+                class="font-[500] text-[13px] text-[#3A3541DE] w-40 text-center"
               >
-            </td>
-            <td
-              class="font-[500] text-[13px] text-[#3A3541DE] w-40 text-center"
-            >
-              {{ bug.type }}
-            </td>
-            <td class="text-center w-40">
-              <span
-                class="text-[13px] py-2 px-3 font-[500]"
-                [ngClass]="
-                  bug.status === 'new'
-                    ? 'text-[#EC5962] bg-[#FDF2F2]'
-                    : bug.status === 'started'
-                    ? 'text-[#3069FE] bg-[#EEF3FF]'
-                    : 'text-[#00B894] bg-[#E0F7F1]'
-                "
-                >{{ bug.status }}</span
+                {{ bug.deadline }}
+              </td>
+              <td
+                class="whitespace-normal break-words flex text-[13px] text-[#3A3541DE] w-40 justify-center font-[500]"
               >
-            </td>
-            <td
-              class="font-[500] text-[13px] text-[#3A3541DE] w-40 text-center"
-            >
-              {{ bug.deadline }}
-            </td>
-            <td
-              class="whitespace-normal break-words flex text-[13px] text-[#3A3541DE] w-40 justify-center font-[500]"
-            >
-              {{ bug.developerNames }}
-            </td>
+                {{ bug.developerNames }}
+              </td>
+            </div>
+
             <td
               class="text-[13px] flex text-[#3A3541DE] w-25 text-start justify-center relative"
             >
@@ -525,7 +527,9 @@
             </td>
           </tr>
           } @empty {
-          <div>No task found.</div>
+          <div class="flex pt-3 justify-center items-center">
+            No task found.
+          </div>
           }
         </div>
       </table>
