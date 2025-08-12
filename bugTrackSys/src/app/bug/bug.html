@@ -543,7 +543,7 @@
   >
     <mat-paginator
       [length]="this.totalRecords"
-      [pageSize]="1"
+      [pageSize]="this.limitt"
       [pageSizeOptions]="[1, 5, 10, 25, 100]"
       aria-label="Select page"
       (page)="onPageChange($event)"

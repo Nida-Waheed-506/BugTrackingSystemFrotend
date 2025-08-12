@@ -59,6 +59,12 @@ export class Bug {
 
   ngOnInit() {
 
+    // get the limit of bugs
+
+    this.Service.limitBug.subscribe((value)=>{
+      this.limitt = value;
+    })
+
     // to get the path params
 
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -74,11 +80,51 @@ export class Bug {
 
     // get project bugs
 
+    this.getBugs(this.limitt);
+
+    //  check valid manager or is manager
+
+    this.Service.isManagerBelongToProject(this.project_id).subscribe({
+      next: (res: any) => {},
+      error: (err: any) => {
+        this.assignBtn = true;
+        console.log(err);
+      },
+    });
+
+    //  check valid QA and is QA
+
+    this.Service.isQABelongToProject(this.project_id).subscribe({
+      next: (res: any) => {},
+      error: (err: any) => {
+        this.addTask = true;
+        console.log(err);
+      },
+    });
+
+    //  search the bug
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe((keyword) => {
+        if (!keyword || keyword.trim() === '') {
+          this.bugDetails = this.bugDetailsFromApi;
+        } else {
+          const filteredBugs = this.bugDetailsFromApi.filter((bug) => {
+            return bug.title.toLowerCase().includes(keyword.toLowerCase());
+          });
+
+          this.bugDetails = filteredBugs;
+        }
+      });
+  }
+
+
+  private getBugs(limit:number){
 
     this.Service.getProjectBugs(
       this.project_id,
       this.currentPageNumber,
-      this.limitt
+      limit
     ).subscribe({
       next: (response: any) => {
         console.log('ALl bugs', response);
@@ -122,95 +168,16 @@ export class Bug {
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
-
-    //  check valid manager or is manager
-
-    this.Service.isManagerBelongToProject(this.project_id).subscribe({
-      next: (res: any) => {},
-      error: (err: any) => {
-        this.assignBtn = true;
-        console.log(err);
-      },
-    });
-
-    //  check valid QA and is QA
-
-    this.Service.isQABelongToProject(this.project_id).subscribe({
-      next: (res: any) => {},
-      error: (err: any) => {
-        this.addTask = true;
-        console.log(err);
-      },
-    });
-
-    //  search the bug
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe((keyword) => {
-        if (!keyword || keyword.trim() === '') {
-          this.bugDetails = this.bugDetailsFromApi;
-        } else {
-          const filteredBugs = this.bugDetailsFromApi.filter((bug) => {
-            return bug.title.toLowerCase().includes(keyword.toLowerCase());
-          });
-
-          this.bugDetails = filteredBugs;
-        }
-      });
   }
 
   // page number get for pagination and get bugs
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
-    this.limitt = event.pageSize || 1;
+    this.Service.limitBug.next(event.pageSize || 1);
     this.totalRecords = event.length;
 
-    this.Service.getProjectBugs(
-      this.project_id,
-      this.currentPageNumber,
-      this.limitt
-    ).subscribe({
-      next: (response: any) => {
-        this.totalRecords = response.data.count;
-
-        const bugs = response.data.rows.sort((a: any, b: any) =>
-          a.id.toString().localeCompare(b.id.toString())
-        );
-
-        Promise.all(
-          bugs.map(async (bug: any) => {
-            const developerNames: string[] = [];
-            const developersDetail: any[] = [];
-            for (const devId of bug.developer_id) {
-              try {
-                const userRes: any = await lastValueFrom(
-                  this.Service.getUserById(devId)
-                );
-
-                developerNames.push(userRes.data.name);
-                developersDetail.push(userRes.data);
-              } catch (error) {
-                console.error(error);
-              }
-            }
-
-            return {
-              ...bug,
-              developerNames: developerNames.join(' - '),
-              developersDetail,
-            };
-          })
-        ).then((bugDet) => {
-          this.bugDetailsFromApi = bugDet;
-          this.bugDetails = bugDet;
-        });
-      },
-      error: (err: any) => {
-        console.log(err);
-        this.ToastrService.error(err.error.error, 'Error');
-      },
-    });
+    this.getBugs(event.pageSize);
   }
 
   // get the selected id of bug and show the UI for choosing bug status

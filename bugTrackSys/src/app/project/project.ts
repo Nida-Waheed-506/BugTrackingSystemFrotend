@@ -10,6 +10,7 @@ import { debounceTime } from 'rxjs/operators';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
+import { BehaviorSubject } from 'rxjs';
 
 // ..............................imports ends ..................................
 
@@ -29,7 +30,7 @@ export class Project {
   searchControl = new FormControl('');
   originalProjects: any[] = [];
   currentPageNumber: any = 0;
-  limitt: any = 1;
+  limit : any ;
   totalRecords: any = 0;
   isManager: boolean = false;
 
@@ -43,6 +44,13 @@ export class Project {
 
   ngOnInit() {
 
+     this.Service.limitt.subscribe((value)=>{
+      
+       this.limit = value;
+
+     });
+
+ 
     // get the logged in user
 
     this.loggedInUser = this.Service.loggedInUserInfo$.pipe((user) => {
@@ -99,7 +107,7 @@ export class Project {
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
-    this.limitt = event.pageSize || 1;
+    this.Service.limitt.next(event.pageSize || 1);
     this.totalRecords = event.length;
   }
 

@@ -125,7 +125,7 @@
       <div class="h-[50vh] overflow-y-auto pb-40 mt-10">
         <app-project-items
           [page]="currentPageNumber"
-          [limit]="limitt"
+         
           (totalProjects)="receiveDataFromChild($event)"
         ></app-project-items>
       </div>
@@ -137,7 +137,7 @@
   >
     <mat-paginator
       [length]="this.totalRecords"
-      [pageSize]="1"
+      [pageSize]="this.limit"
       [pageSizeOptions]="[1, 5, 10, 25, 100]"
       aria-label="Select page"
       (page)="onPageChange($event)"

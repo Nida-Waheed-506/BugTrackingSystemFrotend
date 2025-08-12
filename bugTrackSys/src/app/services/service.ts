@@ -13,6 +13,8 @@ export class Service {
   loggedInUserInfo$ = new BehaviorSubject<any>(null);
   projectsInfo$ = new BehaviorSubject<any[]>([]);
   projectGetByApi$ = new BehaviorSubject<any[]>([]);
+  limitt = new BehaviorSubject<number>(1);
+  limitBug = new BehaviorSubject<number>(1);
   constructor(
     private http: HttpClient,
     private ToastrService: ToastrService,
