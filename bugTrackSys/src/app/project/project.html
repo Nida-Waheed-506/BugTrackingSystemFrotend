@@ -1,5 +1,5 @@
-<div class="py-6 px-30 bg-[#FAFAFA] max-h-[100vh] flex flex-col justify-between">
-  <div class="h-[75vh]">
+<div class="py-6 px-10 lg:px-30 bg-[#FAFAFA] flex flex-col justify-between">
+  <div class="h-[70vh]">
     <app-navbar></app-navbar>
 
     <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
@@ -7,18 +7,22 @@
     <!-- project page  -->
     <div>
       <!-- project nav -->
-      <div class="flex items-center border-b-1 border-l-3 border-[#50A885] mt-3 border-b-[#ECECEE] pb-5 justify-between gap-10 ps-5">
+      <div
+        class="flex items-center border-b-1 border-l-3 border-[#50A885] mt-3 border-b-[#ECECEE] pb-5 justify-between gap-10 ps-5"
+      >
         <!-- project owner -->
         <div class="mt-5 me-3">
           <p class="font-[500] text-[16px] pb-2">Projects</p>
-          <span class="font-[400] text-[14px] text-[#AEAEAE] flex"
-            >Hi {{ loggedInUser._value.name }}, welcome <span class="hidden xl:block">to ManageBug</span></span
+          <span
+            class="hidden flex:block font-[400] text-[14px] text-[#AEAEAE] flex"
+            >Hi {{ loggedInUser._value.name }}, welcome
+            <span class="hidden xl:block">to ManageBug</span></span
           >
         </div>
 
         <!-- search the project -->
         <div
-          class=" hidden xl:flex gap-3 ps-4  bg-[#F1F1F1] py-4 rounded-sm items-center mt-4"
+          class="hidden xl:flex gap-3 ps-4 bg-[#F1F1F1] py-4 rounded-sm items-center mt-4"
         >
           <svg
             width="16"
@@ -44,7 +48,7 @@
         <!-- button -->
 
         <button
-          class="  px-6 py-2 lg:py-4  disabled:bg-gray-300 disabled:border-0 disabled:opacity-50  text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
+          class="px-6 py-4 me-2 disabled:bg-gray-300 disabled:border-0 disabled:opacity-50 text-white bg-[#007DFA] mt-4 rounded-sm cursor-pointer"
           (click)="openDialog()"
           [disabled]="isManager"
         >
@@ -118,23 +122,27 @@
         </button>
       </div>
 
-     
-
-      <div class="h-[60vh] overflow-y-auto pb-10 mt-10">
-        <app-project-items [page]="currentPageNumber" [limit]="limitt"   (totalProjects)="receiveDataFromChild($event)"></app-project-items>
+      <div class="h-[50vh] overflow-y-auto pb-40 mt-10">
+        <app-project-items
+          [page]="currentPageNumber"
+          [limit]="limitt"
+          (totalProjects)="receiveDataFromChild($event)"
+        ></app-project-items>
       </div>
     </div>
   </div>
 
-  <div class="flex items-end justify-end h-[15vh] w-full  xl:mt-3 ">
+  <div
+    class="flex items-end justify-end h-[20vh] w-full pt-10 xl:mt-3 bg-[#FAFAFA]"
+  >
     <mat-paginator
       [length]="this.totalRecords"
       [pageSize]="1"
-      [pageSizeOptions]="[1,5, 10, 25, 100]"
+      [pageSizeOptions]="[1, 5, 10, 25, 100]"
       aria-label="Select page"
-      (page)="onPageChange($event)"> 
-      
+      (page)="onPageChange($event)"
     >
+      >
     </mat-paginator>
   </div>
 </div>

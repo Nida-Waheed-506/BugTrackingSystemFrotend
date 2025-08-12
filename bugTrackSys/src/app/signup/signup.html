@@ -133,9 +133,15 @@
             Mobile number is required
           </p>
 
-           
-          <div  class="text-red-500 text-sm" *ngIf="signUpForm.get('mobile_number')?.hasError('pattern')&& (signUpForm.get('mobile_number')?.dirty || signUpForm.get('mobile_number')?.touched)">
-          Mobile number must follow patter +923XXXXXXXXXX / 03XXXXXXXXXX
+          <div
+            class="text-red-500 text-sm"
+            *ngIf="
+              signUpForm.get('mobile_number')?.hasError('pattern') &&
+              (signUpForm.get('mobile_number')?.dirty ||
+                signUpForm.get('mobile_number')?.touched)
+            "
+          >
+            Mobile number must follow patter +923XXXXXXXXXX / 03XXXXXXXXXX
           </div>
           <!-- email -->
 
@@ -182,7 +188,7 @@
           >
             Email is required
           </p>
-           <p
+          <p
             *ngIf="
               signUpForm.get('email')?.hasError('pattern') &&
               signUpForm.get('email')?.touched
@@ -243,7 +249,7 @@
             </svg>
 
             <input
-              [type]="hide?'password':'text'"
+              [type]="hide ? 'password' : 'text'"
               placeholder="Password"
               required
               formControlName="password"
@@ -258,7 +264,11 @@
                   signUpForm.get('password')?.touched
               }"
             />
-            <mat-icon class="pe-10 cursor-pointer color" (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-icon
+              class="pe-10 cursor-pointer color"
+              (click)="hide = !hide"
+              >{{ hide ? "visibility_off" : "visibility" }}</mat-icon
+            >
           </div>
 
           <p
@@ -270,9 +280,17 @@
           >
             Password is required
           </p>
-         
-          <div  class="text-red-500 text-sm" *ngIf="signUpForm.get('password')?.hasError('pattern')&& (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)">
-          Password must contain more than 8 characters, 1 numeric, 1 upper case letter, and 1 special character($@$!%*?&).
+
+          <div
+            class="text-red-500 text-sm"
+            *ngIf="
+              signUpForm.get('password')?.hasError('pattern') &&
+              (signUpForm.get('password')?.dirty ||
+                signUpForm.get('password')?.touched)
+            "
+          >
+            Password must contain more than 8 characters, 1 numeric, 1 upper
+            case letter, and 1 special character($@$!%*?&).
           </div>
           <button
             class="flex border-2 justify-center cursor-pointer mt-5 text-white items-center rounded-md w-[110px] h-[50px] bg-[#007DFA]"

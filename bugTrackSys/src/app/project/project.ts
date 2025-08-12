@@ -11,13 +11,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 
+// ..............................imports ends ..................................
+
+
 @Component({
   selector: 'app-project',
   imports: [Navbar, ProjectItems, ReactiveFormsModule, MatPaginatorModule],
   templateUrl: './project.html',
   styleUrl: './project.scss',
 })
+
 export class Project {
+
+  // component variable
+
   loggedInUser: any | null = null;
   searchControl = new FormControl('');
   originalProjects: any[] = [];
@@ -25,6 +32,9 @@ export class Project {
   limitt: any = 1;
   totalRecords: any = 0;
   isManager: boolean = false;
+
+  // constructor
+
   constructor(
     public dialog: MatDialog,
     private Service: Service,
@@ -32,26 +42,32 @@ export class Project {
   ) {}
 
   ngOnInit() {
+
+    // get the logged in user
+
     this.loggedInUser = this.Service.loggedInUserInfo$.pipe((user) => {
       return user;
     });
 
+
+    // logged in users type check
     this.Service.loggedInUserInfo$.subscribe((user) => {
-      console.log(user);
+      
       if (user.user_type !== 'manager') this.isManager = true;
     });
 
-    // when filter by name the project.
-
+   
+ //  get projects 
     this.Service.projectGetByApi$.subscribe((projects) => {
-      console.log(this.originalProjects.length);
+      
       if (projects.length > 0) {
         this.originalProjects = [...projects];
         this.Service.projectsInfo$.next(projects);
       }
-      console.log(this.originalProjects);
+      // console.log(this.originalProjects);
     });
 
+ // when filter by name the project.
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
       .subscribe((keyword) => {
@@ -60,8 +76,8 @@ export class Project {
           this.Service.projectsInfo$.next(this.originalProjects);
           console.log(this.Service.projectsInfo$);
         } else {
-          console.log('nida');
-          console.log(this.originalProjects);
+         
+          // console.log(this.originalProjects);
           const filteredProjects = this.originalProjects.filter((project) => {
             return project.projectName
               .toLowerCase()
@@ -72,6 +88,8 @@ export class Project {
         }
       });
   }
+
+
 
   receiveDataFromChild(totProjects: string) {
     this.totalRecords = totProjects;
@@ -105,6 +123,7 @@ export class Project {
     this.Service.projectsInfo$.next(sortedProjects);
   }
 
+  // Project add dialog
   openDialog() {
     const dialogRef = this.dialog.open(ProjectAdd, {
       backdropClass: 'popup',
@@ -115,4 +134,6 @@ export class Project {
       console.log(`Dialog result: ${result}`);
     });
   }
+
+
 }

@@ -1,5 +1,7 @@
-<div class="py-6 px-30 bg-[#FAFAFA] h-fit flex flex-col justify-between h-[100vh] ">
-  <div class="h-[80vh] ">
+<div
+  class="py-6 px-10 lg:px-30 bg-[#FAFAFA] h-fit flex flex-col justify-between h-[100vh]"
+>
+  <div class="sm:h-[75vh] md:h-[65vh] mb-30">
     <app-navbar></app-navbar>
     <div class="border-b-1 mt-3 border-b-[#ECECEE]"></div>
     <!-- Bug page nav -->
@@ -23,7 +25,7 @@
         <!-- All bug listing -->
 
         <div class="flex justify-center items-center">
-          <span class="text-[20px] xl:text-[36px] font-[700]"
+          <span class="text-[15px] xl:text-[36px] font-[700]"
             >All bugs listing</span
           >
           <button
@@ -269,7 +271,7 @@
 
     <!-- bug detail -->
 
-    <div class="min-h-[50vh]  mb-0 max-h-[60vh] w-[100%] overflow-auto">
+    <div class="mb-0 h-[40vh] pb-10 w-full overflow-auto">
       <table>
         <tr
           class="flex mt-8 px-7 flex items-center justify-start bg-[#f1f5f9] py-5 border-b-1 border-b-[#344054]"
@@ -286,7 +288,7 @@
             TITLE
           </th>
           <th
-            class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-72 text-start ps-3"
+            class="border-l-1 text-[13px] border-l-[#3A35411F] text-[#3A3541DE] w-68 text-start ps-3"
           >
             DETAILS
           </th>
@@ -338,7 +340,7 @@
               </td>
 
               <td
-                class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-72 justify-start items-center"
+                class="flex text-[15px] text-[#3A3541AD] gap-3 ps-3 w-68 justify-start items-center"
               >
                 <svg
                   width="10"
@@ -399,10 +401,9 @@
             >
               <svg
                 (click)="showChangeStatus(bug.id)"
-               
                 width="5"
                 height="17"
-                class="cursor-pointer"
+                class="cursor-pointer focus:outline-none border-#FAFAFA"
                 viewBox="0 0 5 17"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -414,7 +415,7 @@
                 />
               </svg>
               <div
-                class="z-10 bg-white w-33 absolute p-2  mt-0 shadow rounded-sm"
+                class="z-10 bg-white w-33 absolute p-2 border-1 mt-4 shadow rounded-sm"
                 *ngIf="this.chosenBug === bug.id"
               >
                 <div class="flex justify-between">
@@ -537,7 +538,9 @@
     </div>
   </div>
 
-  <div class="flex items-end justify-end h-[10vh] z-10 w-full xl:mt-3 ">
+  <div
+    class="flex items-end justify-end h-[15vh] md:h-[10vh] bg-[#FAFAFA] z-10 w-full xl:mt-3"
+  >
     <mat-paginator
       [length]="this.totalRecords"
       [pageSize]="1"

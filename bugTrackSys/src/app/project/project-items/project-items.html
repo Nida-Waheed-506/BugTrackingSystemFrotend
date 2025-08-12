@@ -8,10 +8,8 @@
     <a
       class="flex rounded-lg mt-5 pb-10 pt-3 flex-col"
       [routerLink]="['/projects', projectDetail.id, 'bugs']"
-      [queryParams]="{ project:  projectDetail.projectName }"
+      [queryParams]="{ project: projectDetail.projectName }"
     >
-
-
       <img
         class="w-14 mb-4 h-12 rounded-sm"
         [src]="'data:image/;base64,' + projectDetail.image"

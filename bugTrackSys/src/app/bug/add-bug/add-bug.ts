@@ -15,6 +15,7 @@ import { Service } from '../../services/service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DevSelect } from './dev-select/dev-select';
 
+// .................................imports end here .............................
 @Component({
   selector: 'app-add-bug',
   imports: [
@@ -33,7 +34,13 @@ import { DevSelect } from './dev-select/dev-select';
   templateUrl: './add-bug.html',
   styleUrl: './add-bug.scss',
 })
+
+
 export class AddBug {
+
+
+// Component variable
+
   selectedFile: File | '' = '';
   preview = '';
   developerAddedToBug: any[] = [];
@@ -47,12 +54,19 @@ export class AddBug {
 
   bugForm: FormGroup;
   developers: [] = [];
+
+
+  // constructore
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddBug>,
     private ToastrService: ToastrService,
     private Service: Service
   ) {
+
+    //  initialize component variable with task value if edit form
+
     this.dialogTitle = this.data.dialogTitle;
     this.dialogBtn = this.data.btnName;
 
@@ -73,7 +87,7 @@ export class AddBug {
         type: new FormControl(this.data.bugDetail.type, Validators.required),
       });
       this.developers = this.data.bugDetail.developersDetail;
-    
+
       this.developerAddedToBug = this.data.bugDetail.developer_id;
       // for image
       if (this.data.bugDetail.screenshot) {
@@ -85,6 +99,8 @@ export class AddBug {
         this.preview = `data:image/png;base64,${base64Image}`;
       }
     } else {
+      // if add form
+
       this.bugForm = new FormGroup({
         deadline: new FormControl('', Validators.required),
         title: new FormControl('', [
@@ -98,6 +114,7 @@ export class AddBug {
         type: new FormControl('', Validators.required),
       });
     }
+
   }
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -146,8 +163,6 @@ export class AddBug {
   }
 
   onSubmit(value: any) {
-  
-
     if (this.bugForm.invalid) {
       this.bugForm.markAllAsTouched();
       return;
@@ -156,7 +171,6 @@ export class AddBug {
     if (this.developerAddedToBug.length < 1) {
       return;
     }
-    
 
     const formData = new FormData();
     formData.append('title', value.title);
@@ -179,7 +193,7 @@ export class AddBug {
         },
       });
     } else {
-      console.log("hello");
+      console.log('hello');
       this.Service.editBug(formData, this.data.bugDetail.id).subscribe({
         next: (response: any) => {
           console.log('..Edit bug', response);

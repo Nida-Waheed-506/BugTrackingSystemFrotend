@@ -17,6 +17,9 @@ import { Service } from '../../../services/service';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
 
+
+// .................................... imports ends ............................
+
 @Component({
   selector: 'app-dev-select',
   imports: [
@@ -28,18 +31,23 @@ import { debounceTime } from 'rxjs';
   templateUrl: './dev-select.html',
   styleUrl: './dev-select.scss',
 })
+
+
 export class DevSelect {
+
+  // component variable 
+
   searchName = new FormControl('');
   devs: any[] = [];
   @Input() projectId: any = '';
   @Input() toppingsData: [] = [];
 
   toppings = new FormControl<{ id: number; name: string }[]>(
-    [],
-
-    Validators.required
+    [],Validators.required
   );
   @Output() selectedIds = new EventEmitter<any | number[]>();
+
+  // constructor
 
   constructor(private Service: Service, private ToastrService: ToastrService) {}
   @ViewChild(MatSelect) matSelect!: MatSelect;
@@ -50,6 +58,8 @@ export class DevSelect {
     if (this.toppingsData && this.toppingsData.length > 0) {
       this.toppings.setValue(this.toppingsData);
     }
+
+    // when no focus no search developer
 
     if (this.toppingsData.length === 0) {
       this.Service.getTopDevelopers(this.projectId).subscribe({
@@ -64,6 +74,8 @@ export class DevSelect {
         },
       });
     }
+
+    // when search the name of the developer and after search remove
 
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {
@@ -117,13 +129,15 @@ export class DevSelect {
       },
     });
 
+    // send developes back to add bug component
+
     this.toppings.valueChanges.subscribe((selected) => {
       console.log(selected);
       const ids = selected?.map((dev) => dev.id);
 
       this.selectedIds.emit(ids);
 
-      // console.log('hee', this.selectedIds);
+     
     });
   }
 
@@ -152,4 +166,6 @@ export class DevSelect {
       });
     }
   }
+
+
 }

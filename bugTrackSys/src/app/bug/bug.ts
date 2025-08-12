@@ -14,7 +14,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { describe } from 'node:test';
+
+// ...................imports ends ............................
 
 @Component({
   selector: 'app-bug',
@@ -29,6 +30,9 @@ import { describe } from 'node:test';
   styleUrl: './bug.scss',
 })
 export class Bug {
+
+  // component variable
+
   project_id: string | null = null;
   projectName: string = '';
   bugDetails: any[] = [];
@@ -41,6 +45,10 @@ export class Bug {
   searchControl = new FormControl('');
   assignBtn = false;
   addTask = false;
+
+
+  // constructor 
+
   constructor(
     private ToastrService: ToastrService,
     private Service: Service,
@@ -50,16 +58,23 @@ export class Bug {
   ) {}
 
   ngOnInit() {
+
+    // to get the path params
+
     this.route.paramMap.subscribe((params: ParamMap) => {
-      console.log(params);
+     
       this.project_id = params.get('project_id');
     });
+
+    // to get the query params
 
     this.route.queryParams.subscribe((query) => {
       this.projectName = query['project'];
     });
 
     // get project bugs
+
+
     this.Service.getProjectBugs(
       this.project_id,
       this.currentPageNumber,
@@ -69,8 +84,9 @@ export class Bug {
         console.log('ALl bugs', response);
         this.totalRecords = response.data.count;
 
-         const bugs = response.data.rows.sort((a:any, b:any)=>a.id.toString().localeCompare(b.id.toString()));
-
+        const bugs = response.data.rows.sort((a: any, b: any) =>
+          a.id.toString().localeCompare(b.id.toString())
+        );
 
         Promise.all(
           bugs.map(async (bug: any) => {
@@ -97,7 +113,6 @@ export class Bug {
             };
           })
         ).then((bugDet) => {
-         
           this.bugDetailsFromApi = bugDet;
           this.bugDetails = bugDet;
         });
@@ -144,7 +159,7 @@ export class Bug {
       });
   }
 
-  // page number get for pagination
+  // page number get for pagination and get bugs
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
@@ -157,11 +172,12 @@ export class Bug {
       this.limitt
     ).subscribe({
       next: (response: any) => {
-       
         this.totalRecords = response.data.count;
-     
-         const bugs = response.data.rows.sort((a:any, b:any)=>a.id.toString().localeCompare(b.id.toString()));;
-       
+
+        const bugs = response.data.rows.sort((a: any, b: any) =>
+          a.id.toString().localeCompare(b.id.toString())
+        );
+
         Promise.all(
           bugs.map(async (bug: any) => {
             const developerNames: string[] = [];
@@ -197,14 +213,15 @@ export class Bug {
     });
   }
 
+  // get the selected id of bug and show the UI for choosing bug status
   showChangeStatus(chosenBug: any) {
     console.log(chosenBug);
     this.chosenBug = chosenBug;
   }
 
- 
-
+  // choose status get and update
   choosenStatus(id: any, status: any) {
+    console.log(id, status);
     this.Service.changeStatus(this.project_id, status, id).subscribe({
       next: (response: any) => {
         this.bugDetails = this.bugDetails.map((bug) => {
@@ -225,6 +242,7 @@ export class Bug {
     this.chosenBug = '';
   }
 
+  // delete bug 
   deleteBug(bug_id: any) {
     console.log(bug_id, this.project_id);
     this.Service.deleteBug(bug_id, this.project_id).subscribe({
@@ -238,6 +256,7 @@ export class Bug {
     this.chosenBug = '';
   }
 
+  // add member to Project either QA or developer
   openAddMembersToProjectDialog() {
     console.log(this.assignBtn, '..........');
 
@@ -254,6 +273,7 @@ export class Bug {
     });
   }
 
+  // add bug dialog
   openAddBugDialog() {
     const dialogRef = this.dialog.open(AddBug, {
       backdropClass: 'popup',
@@ -270,30 +290,30 @@ export class Bug {
     });
   }
 
- openEditBugDialog(bug: any) {
-  this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
-    next: (res: any) => {
-      console.log(res);
+  // edit bug dialog
+  openEditBugDialog(bug: any) {
+    this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
+      next: (res: any) => {
+        console.log(res);
 
-      const dialogRef = this.dialog.open(AddBug, {
-        backdropClass: 'popup',
-        autoFocus: false,
-        data: {
-          projectId: this.project_id,
-          dialogTitle: 'Edit Bug',
-          btnName: 'Edit',
-          bugDetail: bug,
-        },
-      });
+        const dialogRef = this.dialog.open(AddBug, {
+          backdropClass: 'popup',
+          autoFocus: false,
+          data: {
+            projectId: this.project_id,
+            dialogTitle: 'Edit Bug',
+            btnName: 'Edit',
+            bugDetail: bug,
+          },
+        });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log(`Dialog result: ${result}`);
-      });
-    },
-    error: (err: any) => {
-      this.ToastrService.error(err.error.error, 'Error');
-    },
-  });
-}
-
+        dialogRef.afterClosed().subscribe((result) => {
+          console.log(`Dialog result: ${result}`);
+        });
+      },
+      error: (err: any) => {
+        this.ToastrService.error(err.error.error, 'Error');
+      },
+    });
+  }
 }

@@ -1,46 +1,56 @@
-import { Component , Inject } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
-import { FormControl } from "@angular/forms";
-import { Service } from "../../services/service";
-import { CommonModule } from "@angular/common";
-import { debounceTime } from "rxjs";
-import { ToastrService } from "ngx-toastr";
+import { Component, Inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { Service } from '../../services/service';
+import { CommonModule } from '@angular/common';
+import { debounceTime } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatIconModule } from "@angular/material/icon";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogRef } from '@angular/material/dialog';
+
+// ....................... imports ends here..............................
+
+
 @Component({
-  selector: "app-assigned-project-members",
-  imports: [ReactiveFormsModule, CommonModule , MatIconModule],
-  templateUrl: "./assigned-project-members.html",
-  styleUrl: "./assigned-project-members.scss",
+  selector: 'app-assigned-project-members',
+  imports: [ReactiveFormsModule, CommonModule, MatIconModule],
+  templateUrl: './assigned-project-members.html',
+  styleUrl: './assigned-project-members.scss',
 })
+
 export class AssignedProjectMembers {
-  searchName = new FormControl("");
+
+  // component variable
+
+  searchName = new FormControl('');
   users: any[] = [];
   projectId: string | null = null;
-  selectedUserName = "";
-  selectedUserEmail = "";
+  selectedUserName = '';
+  selectedUserEmail = '';
 
 
+  // constructor 
+
+  
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialog_Data:any ,
+    @Inject(MAT_DIALOG_DATA) public dialog_Data: any,
     private Service: Service,
     private ToastrService: ToastrService,
-    public dialogRef : MatDialogRef<AssignedProjectMembers>
+    public dialogRef: MatDialogRef<AssignedProjectMembers>
   ) {
-   this.projectId = this.dialog_Data.projectId;
+    this.projectId = this.dialog_Data.projectId;
   }
-
-
 
   ngOnInit() {
 
+    // when search the name  of users and remove the name
 
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {
-        this.selectedUserName = "";
-        this.selectedUserEmail = "";
-        if (value?.trim() === "")
+        this.selectedUserName = '';
+        this.selectedUserEmail = '';
+        if (value?.trim() === '')
           this.Service.getTopUsers().subscribe({
             next: (response: any) => {
               console.log(response);
@@ -58,8 +68,6 @@ export class AssignedProjectMembers {
         }
       },
     });
-
-    
   }
 
   // when input is focused show top 5 users
@@ -82,36 +90,30 @@ export class AssignedProjectMembers {
     this.users = [];
   }
 
-
   // when click on assign user btn
   assignUser() {
-
-
     this.users = [];
-   
-    if (this.selectedUserEmail.trim() !== ""){
-        this.Service.assignUserToProject(
+
+    if (this.selectedUserEmail.trim() !== '') {
+      this.Service.assignUserToProject(
         this.selectedUserEmail,
         this.projectId
       ).subscribe({
         next: (response: any) => {
-          this.ToastrService.success(response.message, "Success");
+          this.ToastrService.success(response.message, 'Success');
         },
         error: (err: any) => {
-          this.ToastrService.error(err.error.error, "Error");
+          this.ToastrService.error(err.error.error, 'Error');
         },
       });
-     }else{
-      this.ToastrService.error("Choose User first", "Error");
-     }
-     
-
-      
+    } else {
+      this.ToastrService.error('Choose User first', 'Error');
+    }
   }
 
   // dialog box is closed
 
-  onCloseDialog(){
+  onCloseDialog() {
     this.dialogRef.close('assign project dialog closed');
   }
 }

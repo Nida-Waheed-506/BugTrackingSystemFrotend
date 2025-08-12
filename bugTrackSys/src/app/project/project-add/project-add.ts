@@ -3,27 +3,44 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { MatIconModule } from '@angular/material/icon';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { Service} from '../../services/service';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
+import { Service } from '../../services/service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+// ........................... imports ends ....................................
+
+
 
 @Component({
   selector: 'app-project-add',
-  imports: [CommonModule, MatIconModule, FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, MatIconModule, FormsModule, ReactiveFormsModule],
   templateUrl: './project-add.html',
   styleUrl: './project-add.scss',
 })
 export class ProjectAdd {
+
+  // component variable
+
   selectedFile: File | '' = '';
   preview = '';
 
   projectForm = new FormGroup({
-    projectName:  new FormControl('' , [Validators.required ,  Validators.maxLength(20),]),
-    projectDes : new FormControl('',[Validators.required,  Validators.minLength(60)]),
-   
-  })
+    projectName: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(20),
+    ]),
+    projectDes: new FormControl('', [
+      Validators.required,
+      Validators.minLength(60),
+    ]),
+  });
 
+  // constructor
   constructor(
     private ToastrService: ToastrService,
     private Service: Service,
@@ -68,13 +85,13 @@ export class ProjectAdd {
   }
 
   onSubmit(value: any) {
-      if (this.projectForm.invalid) {
+    if (this.projectForm.invalid) {
       this.projectForm.markAllAsTouched();
       return;
     }
-  
-    if(!this.selectedFile){
-      this.ToastrService.error("Add image" , "Error");
+
+    if (!this.selectedFile) {
+      this.ToastrService.error('Add image', 'Error');
       return;
     }
 
