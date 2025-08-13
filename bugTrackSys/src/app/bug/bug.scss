@@ -1,7 +1,32 @@
-.shadow{
-    box-shadow: 0px 0px 5px 1px rgb(200, 195, 195);
+.shadow {
+  box-shadow: 0px 0px 5px 1px rgb(200, 195, 195);
 }
-.close{
-    
-    color: #EB4C42;
+.close {
+  font-size: 15px;
+  height: 15px;
+  width: 15px;
+}
+
+.delete {
+  color: #eb4c42;
+}
+
+.color {
+  filter: brightness(0.5);
+}
+
+.danger {
+  border: 4px blac;
+  filter: brightness(0) saturate(100%) invert(51%) sepia(29%) saturate(5870%)
+    hue-rotate(324deg) brightness(98%) contrast(89%);
+}
+
+.primary {
+  filter: brightness(0) saturate(100%) invert(34%) sepia(52%) saturate(5999%)
+    hue-rotate(216deg) brightness(95%) contrast(93%);
+}
+
+.success {
+  filter: brightness(0) saturate(100%) invert(52%) sepia(57%) saturate(5109%)
+    hue-rotate(116deg) brightness(93%) contrast(83%);
 }

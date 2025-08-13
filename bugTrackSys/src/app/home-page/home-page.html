@@ -6,13 +6,11 @@
   <!-- selector for the user  -->
   <div class="w-full">
     <div
-      class="flex justify-start w-full lg:justify-end px-7 my-7 text-[18px] font-[500]"
+      class="flex justify-start w-full lg:justify-end px-7 my-7 text-[18px] font-semibold font-[500]"
     >
-      <span class="text-[#8692A6]"
+      <span class="text-grey cursor-pointer"
         >Already have an account?
-        <a class="text-[#007DFA] cursor-pointer" routerLink="/login"
-          >Sign In</a
-        ></span
+        <a class="text-blue" routerLink="/login">Sign In</a></span
       >
     </div>
 
@@ -20,14 +18,14 @@
       class="flex flex-col justify-center items-center w-full h-[80vh] lg:h-[88vh]"
     >
       <div
-        class="flex sm:w-fit md:w-full mx-7 my-5 lg:mx-0 lg:my-0 lg:pe-7 lg:pb-7 ps-0 sm:justify-center md:justify-start md:ms-22 lg:ms-0 lg:ms-0 lg:justify-center"
+        class="flex sm:w-fit md:w-full mx-7 lg:mx-0 lg:my-0 lg:pe-7 lg:pb-0 ps-0 sm:justify-center md:justify-start md:ms-22 lg:ms-0 lg:ms-0 lg:justify-center"
       >
         <div class="mt-22 sm:mt-0">
-          <h1 class="text-start text-[#2F3367] text-[28px] font-[700] pb-7">
+          <h1 class="text-start text-darkBlue text-[28px] font-[700] pb-7">
             Join Us!
           </h1>
           <p
-            class="text-[#8692A6] text-[16px] font-[400] text-start lg:mx-0 lg:w-[420px]"
+            class="text-grey text-[16px] font-[400] text-start lg:mx-0 leading-6 lg:w-[420px]"
           >
             To begin this journey, tell us what type of account you'd be
             opening.
@@ -37,47 +35,34 @@
 
       <!-- For manager -->
       <div
-        class="ms-12 lg:ms-0 mt-8 mb-10 cursor-pointer w-full lg:w-fit"
+        class="ms-2 lg:ms-0 mt-8 mb-10 shadow rounded-md :bg-lightBlue hover:border-2 hover:border-[#007DFA] cursor-pointer lg:w-fit"
         routerLink="/signup"
       >
         <div
           (mouseenter)="onManagerHover(true)"
           (mouseleave)="onManagerHover(false)"
-          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 shadow-lg h-[108px] flex justify-start lg:justify-center items-center"
+          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 h-[108px] flex justify-start lg:justify-center items-center"
         >
           <mat-card-content>
             <div class="flex justify-around align-center gap-4">
               <button
-                class="px-4 border-2 border-[#007DFA] rounded-full cursor-pointer"
-                [ngClass]="isManagerHovered ? 'bg-[#007DFA]' : 'bg-white'"
+                class="px-4 border-2 border-blue rounded-full cursor-pointer"
+                [ngClass]="isManagerHovered ? 'bg-blue' : 'bg-white'"
               >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M3.72039 12.8871C4.50179 12.1057 5.5616 11.6667 6.66667 11.6667H13.3333C14.4384 11.6667 15.4982 12.1057 16.2796 12.8871C17.061 13.6685 17.5 14.7283 17.5 15.8334V17.5001C17.5 17.9603 17.1269 18.3334 16.6667 18.3334C16.2064 18.3334 15.8333 17.9603 15.8333 17.5001V15.8334C15.8333 15.1704 15.5699 14.5345 15.1011 14.0656C14.6323 13.5968 13.9964 13.3334 13.3333 13.3334H6.66667C6.00363 13.3334 5.36774 13.5968 4.8989 14.0656C4.43006 14.5345 4.16667 15.1704 4.16667 15.8334V17.5001C4.16667 17.9603 3.79357 18.3334 3.33333 18.3334C2.8731 18.3334 2.5 17.9603 2.5 17.5001V15.8334C2.5 14.7283 2.93899 13.6685 3.72039 12.8871Z"
-                    [attr.fill]="isManagerHovered ? 'white' : '#007DFA'"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M10 3.33341C8.61933 3.33341 7.50004 4.4527 7.50004 5.83341C7.50004 7.21413 8.61933 8.33341 10 8.33341C11.3808 8.33341 12.5 7.21413 12.5 5.83341C12.5 4.4527 11.3808 3.33341 10 3.33341ZM5.83337 5.83341C5.83337 3.53223 7.69885 1.66675 10 1.66675C12.3012 1.66675 14.1667 3.53223 14.1667 5.83341C14.1667 8.1346 12.3012 10.0001 10 10.0001C7.69885 10.0001 5.83337 8.1346 5.83337 5.83341Z"
-                    [attr.fill]="isManagerHovered ? 'white' : '#007DFA'"
-                  />
-                </svg>
+                <img
+                  src="assets/ManagerIcon.svg"
+                  [ngClass]="
+                    isManagerHovered ? 'iconWhiteColor' : 'iconBlueColor'
+                  "
+                  alt=""
+                />
               </button>
 
               <div class="w-max-[200] lg:w-[20rem] ps-3">
-                <h1 class="text-[16px] font-[500] pb-1 text-[#2F3367]">
+                <h1 class="text-[16px] font-[500] pb-1 text-darkBlue">
                   Manager
                 </h1>
-                <p class="text-[14px] text-[#8692A6] p-0">
+                <p class="text-[14px] text-grey p-0">
                   Signup as a manager to manage the tasks and bugs
                 </p>
               </div>
@@ -86,21 +71,7 @@
                 *ngIf="isManagerHovered"
               >
                 <div class="h-7 flex items-center justify-center">
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="cursor-pointer"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M10.5893 3.57733C10.2639 3.25189 9.73622 3.25189 9.41079 3.57733C9.08535 3.90277 9.08535 4.4304 9.41079 4.75584L13.8215 9.16659H4.16671C3.70647 9.16659 3.33337 9.53968 3.33337 9.99992C3.33337 10.4602 3.70647 10.8333 4.16671 10.8333H13.8215L9.41079 15.244C9.08535 15.5694 9.08535 16.0971 9.41079 16.4225C9.73622 16.7479 10.2639 16.7479 10.5893 16.4225L16.4226 10.5892C16.7481 10.2637 16.7481 9.7361 16.4226 9.41066L10.5893 3.57733Z"
-                      fill="#007DFA"
-                    />
-                  </svg>
+                  <img src="assets/ArrowIcon.svg" alt="" srcset="" />
                 </div>
               </div>
             </div>
@@ -111,47 +82,34 @@
       <!-- For developer -->
 
       <div
-        class="ms-12 lg:ms-0 mb-10 cursor-pointer w-full lg:w-fit"
+        class="ms-2 lg:ms-0 mb-10 rounded-md shadow hover:bg-lightBlue hover:border-2 hover:border-[#007DFA] cursor-pointer lg:w-fit"
         routerLink="/signup"
       >
         <div
-          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 shadow-lg h-[108px] flex justify-start lg:justify-center items-center"
+          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 h-[108px] flex justify-start lg:justify-center items-center"
           (mouseenter)="onDeveloperHover(true)"
           (mouseleave)="onDeveloperHover(false)"
         >
           <mat-card-content>
             <div class="flex justify-around align-center gap-4">
               <button
-                class="px-4 text-[#007DFA] border-2 border-[#007DFA] rounded-full cursor-pointer hover:"
-                [ngClass]="isDeveloperHovered ? 'bg-[#007DFA]' : 'bg-white'"
+                class="px-4 text-blue border-2 border-blue rounded-full cursor-pointer hover:"
+                [ngClass]="isDeveloperHovered ? 'bg-blue' : 'bg-white'"
               >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M3.33337 6.66675C2.87314 6.66675 2.50004 7.03984 2.50004 7.50008V15.8334C2.50004 16.2937 2.87314 16.6667 3.33337 16.6667H16.6667C17.1269 16.6667 17.5 16.2937 17.5 15.8334V7.50008C17.5 7.03984 17.1269 6.66675 16.6667 6.66675H3.33337ZM0.833374 7.50008C0.833374 6.11937 1.95266 5.00008 3.33337 5.00008H16.6667C18.0474 5.00008 19.1667 6.11937 19.1667 7.50008V15.8334C19.1667 17.2141 18.0474 18.3334 16.6667 18.3334H3.33337C1.95266 18.3334 0.833374 17.2141 0.833374 15.8334V7.50008Z"
-                    [attr.fill]="isDeveloperHovered ? 'white' : '#007DFA'"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M6.56561 2.39898C7.03445 1.93014 7.67033 1.66675 8.33337 1.66675H11.6667C12.3297 1.66675 12.9656 1.93014 13.4345 2.39898C13.9033 2.86782 14.1667 3.50371 14.1667 4.16675V17.5001C14.1667 17.9603 13.7936 18.3334 13.3334 18.3334C12.8731 18.3334 12.5 17.9603 12.5 17.5001V4.16675C12.5 3.94573 12.4122 3.73377 12.256 3.57749C12.0997 3.42121 11.8877 3.33341 11.6667 3.33341H8.33337C8.11236 3.33341 7.9004 3.42121 7.74412 3.57749C7.58784 3.73377 7.50004 3.94573 7.50004 4.16675V17.5001C7.50004 17.9603 7.12694 18.3334 6.66671 18.3334C6.20647 18.3334 5.83337 17.9603 5.83337 17.5001V4.16675C5.83337 3.50371 6.09677 2.86782 6.56561 2.39898Z"
-                    [attr.fill]="isDeveloperHovered ? 'white' : '#007DFA'"
-                  />
-                </svg>
+                <img
+                  src="assets/Developer.svg"
+                  [ngClass]="
+                    isDeveloperHovered ? 'iconWhiteColor' : 'iconBlueColor'
+                  "
+                  alt=""
+                />
               </button>
 
               <div class="w-max-[200] lg:w-[20rem] ps-3">
-                <h1 class="text-[16px] font-[500] pb-1 text-[#2F3367]">
+                <h1 class="text-[16px] font-[500] pb-1 text-darkBlue">
                   Developer
                 </h1>
-                <p class="text-[14px] text-[#8692A6] p-0">
+                <p class="text-[14px] text-grey p-0">
                   Signup as a Developer to assign the relevant task to QA
                 </p>
               </div>
@@ -160,21 +118,7 @@
                   class="h-7 flex items-center justify-center"
                   *ngIf="isDeveloperHovered"
                 >
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="cursor-pointer"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M10.5893 3.57733C10.2639 3.25189 9.73622 3.25189 9.41079 3.57733C9.08535 3.90277 9.08535 4.4304 9.41079 4.75584L13.8215 9.16659H4.16671C3.70647 9.16659 3.33337 9.53968 3.33337 9.99992C3.33337 10.4602 3.70647 10.8333 4.16671 10.8333H13.8215L9.41079 15.244C9.08535 15.5694 9.08535 16.0971 9.41079 16.4225C9.73622 16.7479 10.2639 16.7479 10.5893 16.4225L16.4226 10.5892C16.7481 10.2637 16.7481 9.7361 16.4226 9.41066L10.5893 3.57733Z"
-                      fill="#007DFA"
-                    />
-                  </svg>
+                  <img src="assets/ArrowIcon.svg" alt="" srcset="" />
                 </div>
               </div>
             </div>
@@ -185,46 +129,30 @@
       <!-- For QA  -->
 
       <div
-        class="ms-12 lg:ms-0 mb-10 cursor-pointer w-full lg:w-fit"
+        class="ms-2 lg:ms-0 rounded-md mb-10 cursor-pointer shadow hover:bg-lightBlue hover:border-2 hover:border-[#007DFA] lg:w-fit"
         routerLink="/signup"
       >
         <div
-          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 shadow-lg h-[108px] flex justify-start lg:justify-center items-center"
+          class="w-[90vw] lg:w-[446px] px-4 lg:px-0 h-[108px] flex justify-start lg:justify-center items-center"
           (mouseenter)="onQAHover(true)"
           (mouseleave)="onQAHover(false)"
         >
           <mat-card-content>
             <div class="flex justify-around align-center gap-4">
               <button
-                class="px-4 text-[#007DFA] border-2 border-[#007DFA] rounded-full cursor-pointer hover:"
-                [ngClass]="isQAHovered ? 'bg-[#007DFA]' : 'bg-white'"
+                class="px-4 text-blue border-2 border-blue rounded-full cursor-pointer hover:"
+                [ngClass]="isQAHovered ? 'bg-blue' : 'bg-white'"
               >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 22 27"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clip-path="url(#clip0_955_188)">
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M10.4156 14.6273C10.6242 14.6712 10.8367 14.6933 11.0497 14.6932C11.6629 14.7057 12.2652 14.5263 12.7752 14.1791C12.918 14.0761 13.0542 13.9638 13.1828 13.8429L13.4136 13.6232C14.1512 12.9091 14.6818 12.3949 14.5783 11.1469C14.5722 11.0641 14.5926 10.9816 14.6365 10.9118C14.6898 10.8296 14.7728 10.7724 14.8675 10.7526C14.9621 10.7328 15.0606 10.7521 15.1412 10.8063C15.1838 10.8349 15.2294 10.8585 15.2771 10.8766C15.309 10.8891 15.3424 10.8972 15.3763 10.9008C15.4367 10.9008 15.4346 10.9271 15.4454 10.9183C15.4561 10.9096 15.4454 10.8854 15.4734 10.8217L15.8314 9.78016C15.8684 9.67222 15.8766 9.55621 15.8552 9.44398C15.8513 9.42814 15.8422 9.41415 15.8293 9.40443C15.7867 9.38768 15.7407 9.38238 15.6956 9.38905C15.5266 9.41114 15.3668 9.48033 15.234 9.589C15.1935 9.62035 15.1472 9.64295 15.0979 9.65542C15.0486 9.66789 14.9973 9.66996 14.9471 9.66151C14.899 9.65307 14.8531 9.63492 14.8119 9.60814C14.7708 9.58135 14.7353 9.54647 14.7076 9.50554C14.6799 9.46461 14.6605 9.41845 14.6505 9.36977C14.6405 9.32109 14.6402 9.27087 14.6495 9.22206C14.9126 7.65101 14.794 6.62928 14.4683 5.93714C14.2119 5.41515 13.7985 4.99021 13.2885 4.72425C12.5189 5.34774 11.5802 5.71584 10.5989 5.77894C9.83669 5.82737 9.10234 6.0889 8.47654 6.5348C8.11672 6.77113 7.84138 7.11945 7.69144 7.52797C7.55235 7.98309 7.54188 8.46892 7.66125 8.92982C7.67657 8.99581 7.67407 9.0648 7.65402 9.12946C7.63396 9.19413 7.59711 9.25206 7.54736 9.29711C7.4976 9.34216 7.43681 9.37266 7.37142 9.38536C7.30603 9.39807 7.23849 9.39251 7.17595 9.36927L6.91497 9.27259C6.63242 9.17152 6.42968 9.12098 6.3585 9.26161C6.31706 9.62855 6.33675 9.99998 6.41674 10.3602C6.44581 10.5507 6.54158 10.724 6.68635 10.848C6.72342 10.8685 6.76497 10.8791 6.80713 10.8788C6.88029 10.8774 6.95289 10.8656 7.02282 10.8436C7.05749 10.8312 7.0939 10.8245 7.13066 10.8239C7.17853 10.8227 7.22616 10.8311 7.27082 10.8487C7.31549 10.8663 7.35631 10.8927 7.39096 10.9264C7.42561 10.96 7.45342 11.0003 7.47278 11.045C7.49214 11.0896 7.50268 11.1376 7.5038 11.1864C7.53399 12.4608 8.09262 12.9442 8.77203 13.5463L9.0589 13.8034C9.44953 14.1728 9.91267 14.4537 10.4177 14.6273H10.4156ZM11.0001 22.1266C11.3302 22.1266 11.653 22.2263 11.9275 22.4132C12.2021 22.6001 12.4161 22.8657 12.5424 23.1765C12.6688 23.4872 12.7018 23.8292 12.6374 24.1591C12.573 24.489 12.414 24.792 12.1805 25.0298C11.9471 25.2677 11.6496 25.4297 11.3258 25.4953C11.0019 25.5609 10.6663 25.5272 10.3612 25.3985C10.0562 25.2698 9.79544 25.0518 9.61201 24.7721C9.42857 24.4925 9.33066 24.1636 9.33066 23.8273C9.33123 23.3764 9.5073 22.9442 9.82025 22.6254C10.1332 22.3065 10.5575 22.1272 11.0001 22.1266ZM13.6746 14.3834L13.8148 14.59C14.0305 14.9086 14.2699 15.2711 14.4942 15.5546C15.8293 16.3983 18.7626 16.6268 19.9101 17.2772C22.8305 18.9362 21.765 22.9638 21.9763 25.8641C21.9116 26.5497 21.5299 26.9408 20.7814 27.0001H19.9705L20.8591 20.1293C20.8798 20.0131 20.8759 19.8938 20.8476 19.7793C20.8192 19.6648 20.7671 19.5578 20.6948 19.4656C20.6224 19.3733 20.5315 19.298 20.4281 19.2445C20.3248 19.1911 20.2114 19.1609 20.0956 19.1559H11.3732C11.6471 17.1146 14.1016 17.1036 14.162 16.15C13.8513 15.7687 13.5632 15.3688 13.2993 14.9525L13.1979 14.7987C12.6172 15.245 11.9109 15.4893 11.1834 15.4952C10.2951 15.4649 9.44416 15.1235 8.77419 14.5285C8.61916 15.0655 8.40195 15.5818 8.12713 16.0665C8.10584 16.0952 8.08038 16.1204 8.05164 16.1412C8.15301 16.9806 10.9763 18.0529 11.1467 19.1647H2.04909C1.9349 19.1711 1.82333 19.202 1.7217 19.2554C1.62007 19.3088 1.53067 19.3835 1.45938 19.4746C1.38809 19.5657 1.33652 19.6711 1.30805 19.7839C1.27958 19.8968 1.27486 20.0145 1.29419 20.1293L2.18282 27.0001H1.36321C0.614778 26.9408 0.233013 26.5607 0.170464 25.8641C0.209288 22.788 -0.936006 19.079 2.23674 17.2772C3.39929 16.6181 6.39517 16.3983 7.70223 15.5194C7.91711 15.0473 8.09944 14.5605 8.24792 14.0626C7.52752 13.432 6.93007 12.8849 6.79635 11.6127C6.63297 11.611 6.47268 11.5672 6.33046 11.4852C6.1708 11.3789 6.03361 11.2411 5.92694 11.08C5.82027 10.9189 5.74627 10.7377 5.70929 10.547C5.60351 10.0751 5.58087 9.58778 5.64242 9.1078C5.64702 9.07697 5.65498 9.04675 5.66615 9.01771C5.81713 8.57826 6.03713 8.41786 6.31321 8.39149L6.23125 8.33656C6.11909 6.91713 6.44693 4.45399 4.93713 3.98817C7.80576 0.373668 11.1058 -1.58849 13.5883 1.61952C16.5324 1.77772 17.7381 6.48866 15.4777 8.56947L15.4669 8.65956C15.5252 8.64663 15.5843 8.63782 15.6438 8.63319C15.8267 8.61503 16.0109 8.65088 16.1744 8.73646C16.265 8.78486 16.3453 8.85118 16.4104 8.93154C16.4756 9.0119 16.5244 9.10469 16.554 9.20448C16.6212 9.45715 16.6153 9.72425 16.5367 9.97352L16.1636 11.0524C16.123 11.2227 16.0319 11.3762 15.9026 11.4918C15.7408 11.6114 15.5399 11.6626 15.3418 11.6347H15.3138C15.2685 12.8388 14.684 13.4057 13.9075 14.1571L13.6789 14.3768L13.666 14.39L13.6746 14.3834Z"
-                      [attr.fill]="isQAHovered ? 'white' : '#007DFA'"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_955_188">
-                      <rect width="22" height="27" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
+                <img
+                  src="assets/ManagerIcon.svg"
+                  [ngClass]="isQAHovered ? 'iconWhiteColor' : 'iconBlueColor'"
+                  alt=""
+                />
               </button>
 
               <div class="w-max-[200] lg:w-[20rem] ps-3">
-                <h1 class="text-[16px] font-[500] pb-1 text-[#2F3367]">QA</h1>
-                <p class="text-[14px] text-[#8692A6] p-0">
+                <h1 class="text-[16px] font-[500] pb-1 text-darkBlue">QA</h1>
+                <p class="text-[14px] text-grey p-0">
                   Signup as a QA to create the bugs and report in tasks
                 </p>
               </div>
@@ -233,21 +161,7 @@
                   class="h-7 flex items-center justify-center"
                   *ngIf="isQAHovered"
                 >
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="cursor-pointer"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M10.5893 3.57733C10.2639 3.25189 9.73622 3.25189 9.41079 3.57733C9.08535 3.90277 9.08535 4.4304 9.41079 4.75584L13.8215 9.16659H4.16671C3.70647 9.16659 3.33337 9.53968 3.33337 9.99992C3.33337 10.4602 3.70647 10.8333 4.16671 10.8333H13.8215L9.41079 15.244C9.08535 15.5694 9.08535 16.0971 9.41079 16.4225C9.73622 16.7479 10.2639 16.7479 10.5893 16.4225L16.4226 10.5892C16.7481 10.2637 16.7481 9.7361 16.4226 9.41066L10.5893 3.57733Z"
-                      fill="#007DFA"
-                    />
-                  </svg>
+                  <img src="assets/ArrowIcon.svg" alt="" srcset="" />
                 </div>
               </div>
             </div>

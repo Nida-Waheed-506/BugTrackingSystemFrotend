@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { response } from 'express';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +59,7 @@ export class Service {
       password: password,
     };
     this.http
-      .post('http://localhost:8000/login', reqBody, { withCredentials: true })
+      .post(`${environment.url}/login`, reqBody, { withCredentials: true })
       .subscribe({
         next: (response: any) => {
           this.loggedInUserInfo$.next(response.data);
@@ -73,14 +73,14 @@ export class Service {
   }
 
   getUserById(id: any) {
-    return this.http.get(`http://localhost:8000/user?id=${id}`, {
+    return this.http.get(`${environment.url}/user?id=${id}`, {
       withCredentials: true,
     });
   }
   // get top 5 users
 
   getTopUsers() {
-    return this.http.get('http://localhost:8000/users', {
+    return this.http.get(`${environment.url}/users`, {
       withCredentials: true,
     });
   }
@@ -88,16 +88,15 @@ export class Service {
   //  get users by name
   getUsersByName(searchingName: any) {
     console.log(searchingName);
-    return this.http.get(
-      `http://localhost:8000/users?search=${searchingName}`,
-      { withCredentials: true }
-    );
+    return this.http.get(`${environment.url}/users?search=${searchingName}`, {
+      withCredentials: true,
+    });
   }
   // user logout
 
   userLogout() {
     this.http
-      .post('http://localhost:8000/logout', '', { withCredentials: true })
+      .post(`${environment.url}/logout`, '', { withCredentials: true })
       .subscribe({
         next: (response: any) => {
           this.loggedInUserInfo$.next(null);
@@ -112,7 +111,7 @@ export class Service {
 
   //  check if user is authenticated
   checkAuth() {
-    return this.http.get('http://localhost:8000/auth', {
+    return this.http.get(`${environment.url}/auth`, {
       withCredentials: true,
     });
   }
@@ -120,7 +119,7 @@ export class Service {
   //  add the project
 
   addProject(formData: any) {
-    return this.http.post('http://localhost:8000/project', formData, {
+    return this.http.post(`${environment.url}/project`, formData, {
       withCredentials: true,
     });
   }
@@ -129,7 +128,7 @@ export class Service {
 
   getProjects(page: any, limit: any) {
     return this.http.get(
-      `http://localhost:8000/projects?page=${page + 1}&limit=${limit}`,
+      `${environment.url}/projects?page=${page + 1}&limit=${limit}`,
       { withCredentials: true }
     );
   }
@@ -139,7 +138,7 @@ export class Service {
   assignUserToProject(email: string, project_id: any) {
     const reqBody = { email };
     return this.http.post(
-      `http://localhost:8000/projects/${project_id}/assign`,
+      `${environment.url}/projects/${project_id}/assign`,
       reqBody,
       { withCredentials: true }
     );
@@ -149,14 +148,14 @@ export class Service {
 
   getTopDevelopers(project_id: any) {
     return this.http.get(
-      `http://localhost:8000/projects/${project_id}/users/developers`,
+      `${environment.url}/projects/${project_id}/users/developers`,
       { withCredentials: true }
     );
   }
 
   getDevByName(searchingName: any, project_id: any) {
     return this.http.get(
-      `http://localhost:8000/projects/${project_id}/users/developers?search=${searchingName}`,
+      `${environment.url}/projects/${project_id}/users/developers?search=${searchingName}`,
       { withCredentials: true }
     );
   }
@@ -166,20 +165,20 @@ export class Service {
       console.log(`${pair[0]}: ${pair[1]}`);
     }
 
-    return this.http.post('http://localhost:8000/bug', formData, {
+    return this.http.post(`${environment.url}/bug`, formData, {
       withCredentials: true,
     });
   }
 
   editBug(formData: any, bug_id: any) {
-    return this.http.patch(`http://localhost:8000/bugs/${bug_id}`, formData, {
+    return this.http.patch(`${environment.url}/bugs/${bug_id}`, formData, {
       withCredentials: true,
     });
   }
   deleteBug(bug_id: any, project_id: any) {
     const reqBody = { project_id };
     return this.http.delete(
-      `http://localhost:8000/bugs/${bug_id}?project_id=${project_id}`,
+      `${environment.url}/bugs/${bug_id}?project_id=${project_id}`,
       {
         withCredentials: true,
       }
@@ -187,7 +186,7 @@ export class Service {
   }
   getProjectBugs(project_id: any, page: any, limit: any) {
     return this.http.get(
-      `http://localhost:8000/bugs?project_id=${project_id}&page=${
+      `${environment.url}bugs?project_id=${project_id}&page=${
         page + 1
       }&limit=${limit}`,
       {
@@ -199,7 +198,7 @@ export class Service {
   changeStatus(project_id: any, status: any, bug_id: any) {
     const reqBody = { project_id, status };
     return this.http.patch(
-      `http://localhost:8000/bugs/${bug_id}/status`,
+      `${environment.url}/bugs/${bug_id}/status`,
       reqBody,
       {
         withCredentials: true,
@@ -208,23 +207,20 @@ export class Service {
   }
 
   isManagerBelongToProject(project_id: any) {
-    return this.http.get(`http://localhost:8000/projects/${project_id}`, {
+    return this.http.get(`${environment.url}/projects/${project_id}`, {
       withCredentials: true,
     });
   }
 
   isQABelongToProject(project_id: any) {
-    return this.http.get(`http://localhost:8000/bugs/${project_id}`, {
+    return this.http.get(`${environment.url}/bugs/${project_id}`, {
       withCredentials: true,
     });
   }
 
-  isQABelongToBug(project_id:any , bug_id:any){
-    
- return this.http.get(`http://localhost:8000/bugs/${bug_id}/${project_id}`, {
+  isQABelongToBug(project_id: any, bug_id: any) {
+    return this.http.get(`${environment.url}/bugs/${bug_id}/${project_id}`, {
       withCredentials: true,
     });
   }
-
-
 }

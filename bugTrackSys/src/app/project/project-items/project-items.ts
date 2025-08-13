@@ -60,7 +60,7 @@ export class ProjectItems {
         });
      
         this.totalProjects.emit(response.data[0]);
-        this.projectDetails = response.data[projects];
+        this.projectDetails = projects;
         this.Service.projectGetByApi$.next(projects);
 
         //  this.ToastrService.success(response.message , "Success");

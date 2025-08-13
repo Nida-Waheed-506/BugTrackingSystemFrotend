@@ -23,9 +23,14 @@
         >
           {{ projectDetail.projectDes }}
         </p>
-        <p class="text-[13px] font-[400] pt-3 text-[#87888C]">
-          <!-- Task Done: <span class="text-[#000000] font-[500]"> {{projectDetails?.completedTasksCount}}/{{projectDetails?.projectTotalTasks}}</span> -->
+        <p class="text-[13px] font-[400] pt-3  text-[#87888C]" *ngIf="projectDetail?.projectTotalTasks !== 0">
+          Task Done: <span class="text-[#000000] font-[500]"> {{projectDetail?.completedTasksCount}}/{{projectDetail?.projectTotalTasks}}</span>
         </p>
+
+         <p class="text-[13px] font-[400] pt-3  text-[#87888C]" *ngIf="projectDetail?.projectTotalTasks === 0">
+           <span class="text-[#D80D0DFF] font-[500]">  Has No Task</span>
+        </p>
+        
       </div>
     </a>
   </div>

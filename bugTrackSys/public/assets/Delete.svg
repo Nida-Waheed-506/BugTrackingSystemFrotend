@@ -1,0 +1,55 @@
+ <svg
+                    width="15"
+                    height="14"
+                    viewBox="0 0 15 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clip-path="url(#clip0_955_1794)">
+                      <path
+                        d="M1.48596 3.67627H13.2294"
+                        stroke="#EB4C42"
+                        stroke-width="0.978619"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M2.9541 3.67627H11.7617V12.4838C11.7617 12.7434 11.6585 12.9923 11.475 13.1758C11.2915 13.3593 11.0426 13.4625 10.7831 13.4625H3.93272C3.67317 13.4625 3.42426 13.3593 3.24073 13.1758C3.05721 12.9923 2.9541 12.7434 2.9541 12.4838V3.67627Z"
+                        stroke="#EB4C42"
+                        stroke-width="0.978619"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M4.91125 3.67609V3.18678C4.91125 2.53792 5.16901 1.91562 5.62783 1.45681C6.08665 0.997995 6.70894 0.740234 7.3578 0.740234C8.00667 0.740234 8.62896 0.997995 9.08778 1.45681C9.54659 1.91562 9.80435 2.53792 9.80435 3.18678V3.67609"
+                        stroke="#EB4C42"
+                        stroke-width="0.978619"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M5.88977 6.61328V10.5293"
+                        stroke="#EB4C42"
+                        stroke-width="0.978619"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M8.82544 6.61328V10.5293"
+                        stroke="#EB4C42"
+                        stroke-width="0.978619"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_955_1794">
+                        <rect
+                          width="13.7007"
+                          height="13.7007"
+                          fill="white"
+                          transform="translate(0.50708 0.250977)"
+                        />
+                      </clipPath>
+                    </defs>
+                  </svg>

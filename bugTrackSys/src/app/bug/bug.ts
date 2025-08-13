@@ -14,7 +14,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
+ 
 // ...................imports ends ............................
 
 @Component({
@@ -182,12 +182,13 @@ export class Bug {
 
   // get the selected id of bug and show the UI for choosing bug status
   showChangeStatus(chosenBug: any) {
-    console.log(chosenBug);
+ 
     this.chosenBug = chosenBug;
   }
 
   // choose status get and update
   choosenStatus(id: any, status: any) {
+    
     console.log(id, status);
     this.Service.changeStatus(this.project_id, status, id).subscribe({
       next: (response: any) => {
@@ -200,24 +201,33 @@ export class Bug {
           }
           return bug;
         });
+        this.chosenBug = '';
       },
       error: (err) => {
         console.log(err);
+        this.chosenBug = '';
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
-    this.chosenBug = '';
+   
   }
 
+  // close the change status
+  closeChangeStatus(){
+    
+      this.chosenBug = '';
+  }
   // delete bug 
   deleteBug(bug_id: any) {
     console.log(bug_id, this.project_id);
     this.Service.deleteBug(bug_id, this.project_id).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
+        this.chosenBug = '';
       },
       error: (err) => {
         this.ToastrService.error(err.error.error, 'Error');
+        this.chosenBug = '';
       },
     });
     this.chosenBug = '';
