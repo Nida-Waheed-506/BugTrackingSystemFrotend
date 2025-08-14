@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import {
   FormControl,
@@ -13,10 +14,10 @@ import {
 } from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Service } from '../../../services/service';
+import { BugService } from '../../../services/bug/bug';
+import { ProjectService } from '../../../services/project/project';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
-
 
 // .................................... imports ends ............................
 
@@ -31,11 +32,8 @@ import { debounceTime } from 'rxjs';
   templateUrl: './dev-select.html',
   styleUrl: './dev-select.scss',
 })
-
-
-export class DevSelect {
-
-  // component variable 
+export class DevSelect implements OnInit {
+  // component variable
 
   searchName = new FormControl('');
   devs: any[] = [];
@@ -43,13 +41,18 @@ export class DevSelect {
   @Input() toppingsData: [] = [];
 
   toppings = new FormControl<{ id: number; name: string }[]>(
-    [],Validators.required
+    [],
+    Validators.required
   );
   @Output() selectedIds = new EventEmitter<any | number[]>();
 
   // constructor
 
-  constructor(private Service: Service, private ToastrService: ToastrService) {}
+  constructor(
+    private bug_service: BugService,
+    private project_service: ProjectService,
+    private ToastrService: ToastrService
+  ) {}
   @ViewChild(MatSelect) matSelect!: MatSelect;
 
   ngOnInit() {
@@ -62,7 +65,7 @@ export class DevSelect {
     // when no focus no search developer
 
     if (this.toppingsData.length === 0) {
-      this.Service.getTopDevelopers(this.projectId).subscribe({
+      this.project_service.getTopDevelopers(this.projectId).subscribe({
         next: (response: any) => {
           this.devs = response.data.map((user: any) => ({
             id: user.id,
@@ -80,7 +83,7 @@ export class DevSelect {
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
       next: (value) => {
         if (value?.trim() === '') {
-          this.Service.getTopDevelopers(this.projectId).subscribe({
+          this.project_service.getTopDevelopers(this.projectId).subscribe({
             next: (response: any) => {
               const res = response.data.map((user: any) => ({
                 id: user.id,
@@ -99,7 +102,7 @@ export class DevSelect {
           });
         } else {
           // when input is enterd in search developer field
-          this.Service.getDevByName(value, this.projectId).subscribe({
+          this.project_service.getDevByName(value, this.projectId).subscribe({
             next: (response: any) => {
               const res = response.data.map((user: any) => ({
                 id: user.id,
@@ -132,19 +135,16 @@ export class DevSelect {
     // send developes back to add bug component
 
     this.toppings.valueChanges.subscribe((selected) => {
-      console.log(selected);
       const ids = selected?.map((dev) => dev.id);
 
       this.selectedIds.emit(ids);
-
-     
     });
   }
 
   // when focus the input this execute to search the top developers
   onFocus() {
     if (!this.searchName.value) {
-      this.Service.getTopDevelopers(this.projectId).subscribe({
+      this.project_service.getTopDevelopers(this.projectId).subscribe({
         next: (response: any) => {
           const res = response.data.map((user: any) => ({
             id: user.id,
@@ -166,6 +166,4 @@ export class DevSelect {
       });
     }
   }
-
-
 }

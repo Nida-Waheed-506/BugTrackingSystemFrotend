@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "eslint.config.mjs"
+    // Add any other configuration files or utility scripts that ESLint needs to process
+  ]
+}

@@ -8,7 +8,7 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
-import { Service } from '../services/service';
+import { User } from '../services/user/user';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,20 +30,19 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './login.scss',
 })
 export class Login {
-  hide: boolean = true;
+  hide = true;
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private Service: Service) {}
+  constructor(private user_service: User) {}
   onSubmitSignInForm(val: any) {
-    console.log(val);
     if (this.signInForm.invalid) {
       this.signInForm.markAllAsTouched();
       return;
     }
-    this.Service.getUser(val.email, val.password);
+    this.user_service.getUser(val.email, val.password);
   }
 }

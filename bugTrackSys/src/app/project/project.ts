@@ -1,19 +1,15 @@
-import { Component } from '@angular/core';
-import { Navbar } from '../shared/navbar/navbar';
-import { ProjectItems } from './project-items/project-items';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ProjectAdd } from './project-add/project-add';
-import { Service } from '../services/service';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
-import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { PageEvent } from '@angular/material/paginator';
-import { BehaviorSubject } from 'rxjs';
-
+import { ProjectService } from '../services/project/project';
+import { User } from '../services/user/user';
+import { Navbar } from '../shared/navbar/navbar';
+import { ProjectAdd } from './project-add/project-add';
+import { ProjectItems } from './project-items/project-items';
 // ..............................imports ends ..................................
-
 
 @Component({
   selector: 'app-project',
@@ -21,83 +17,67 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './project.html',
   styleUrl: './project.scss',
 })
-
-export class Project {
-
+export class Project implements OnInit {
   // component variable
 
   loggedInUser: any | null = null;
   searchControl = new FormControl('');
   originalProjects: any[] = [];
   currentPageNumber: any = 0;
-  limit : any ;
+  limit: any;
   totalRecords: any = 0;
-  isManager: boolean = false;
+  isManager = false;
 
   // constructor
 
   constructor(
     public dialog: MatDialog,
-    private Service: Service,
+    private project_service: ProjectService,
+    private user_service: User,
     private ToasterService: ToastrService
   ) {}
 
   ngOnInit() {
+    this.project_service.projectsShownLimit.subscribe((value) => {
+      this.limit = value;
+    });
 
-     this.Service.limitt.subscribe((value)=>{
-      
-       this.limit = value;
-
-     });
-
- 
     // get the logged in user
 
-    this.loggedInUser = this.Service.loggedInUserInfo$.pipe((user) => {
+    this.loggedInUser = this.user_service.loggedInUserInfo$.pipe((user) => {
       return user;
     });
 
-
     // logged in users type check
-    this.Service.loggedInUserInfo$.subscribe((user) => {
-      
+    this.user_service.loggedInUserInfo$.subscribe((user) => {
       if (user.user_type !== 'manager') this.isManager = true;
     });
 
-   
- //  get projects 
-    this.Service.projectGetByApi$.subscribe((projects) => {
-      
+    //  get projects
+    this.project_service.projects$.subscribe((projects) => {
       if (projects.length > 0) {
         this.originalProjects = [...projects];
-        this.Service.projectsInfo$.next(projects);
+        this.project_service.projectsInfo$.next(projects);
       }
-      // console.log(this.originalProjects);
     });
 
- // when filter by name the project.
+    // when filter by name the project.
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
       .subscribe((keyword) => {
-        console.log(this.originalProjects);
         if (!keyword || keyword.trim() === '') {
-          this.Service.projectsInfo$.next(this.originalProjects);
-          console.log(this.Service.projectsInfo$);
+          this.project_service.projectsInfo$.next(this.originalProjects);
         } else {
-         
-          // console.log(this.originalProjects);
           const filteredProjects = this.originalProjects.filter((project) => {
             return project.projectName
               .toLowerCase()
               .includes(keyword.toLowerCase());
           });
-          console.log(filteredProjects);
-          this.Service.projectsInfo$.next(filteredProjects);
+
+          this.project_service.projectsInfo$.next(filteredProjects);
         }
       });
   }
-
-
 
   receiveDataFromChild(totProjects: string) {
     this.totalRecords = totProjects;
@@ -107,28 +87,29 @@ export class Project {
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
-    this.Service.limitt.next(event.pageSize || 1);
+    this.project_service.projectsShownLimit.next(event.pageSize || 1);
     this.totalRecords = event.length;
   }
 
   // sort by name
   onClickSortByName() {
-    const sortedProjects = [...this.Service.projectsInfo$.getValue()].sort(
-      (a, b) => a.projectName.localeCompare(b.projectName)
-    );
+    const sortedProjects = [
+      ...this.project_service.projectsInfo$.getValue(),
+    ].sort((a, b) => a.projectName.localeCompare(b.projectName));
 
-    this.Service.projectsInfo$.next(sortedProjects);
+    this.project_service.projectsInfo$.next(sortedProjects);
   }
   // sory by date
 
   onClickSoryByDate() {
-    const sortedProjects = [...this.Service.projectsInfo$.getValue()].sort(
+    const sortedProjects = [
+      ...this.project_service.projectsInfo$.getValue(),
+    ].sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
 
-    console.log(sortedProjects);
-    this.Service.projectsInfo$.next(sortedProjects);
+    this.project_service.projectsInfo$.next(sortedProjects);
   }
 
   // Project add dialog
@@ -142,6 +123,4 @@ export class Project {
       console.log(`Dialog result: ${result}`);
     });
   }
-
-
 }

@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { Service } from '../../services/service';
+import { ProjectService } from '../../services/project/project';
+import { User } from '../../services/user/user';
 import { CommonModule } from '@angular/common';
 import { debounceTime } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -11,16 +12,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 // ....................... imports ends here..............................
 
-
 @Component({
   selector: 'app-assigned-project-members',
   imports: [ReactiveFormsModule, CommonModule, MatIconModule],
   templateUrl: './assigned-project-members.html',
   styleUrl: './assigned-project-members.scss',
 })
-
-export class AssignedProjectMembers {
-
+export class AssignedProjectMembers implements OnInit {
   // component variable
 
   searchName = new FormControl('');
@@ -29,13 +27,12 @@ export class AssignedProjectMembers {
   selectedUserName = '';
   selectedUserEmail = '';
 
+  // constructor
 
-  // constructor 
-
-  
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialog_Data: any,
-    private Service: Service,
+    private project_service: ProjectService,
+    private user_service: User,
     private ToastrService: ToastrService,
     public dialogRef: MatDialogRef<AssignedProjectMembers>
   ) {
@@ -43,7 +40,6 @@ export class AssignedProjectMembers {
   }
 
   ngOnInit() {
-
     // when search the name  of users and remove the name
 
     this.searchName.valueChanges.pipe(debounceTime(300)).subscribe({
@@ -51,17 +47,14 @@ export class AssignedProjectMembers {
         this.selectedUserName = '';
         this.selectedUserEmail = '';
         if (value?.trim() === '')
-          this.Service.getTopUsers().subscribe({
+          this.user_service.getTopUsers().subscribe({
             next: (response: any) => {
-              console.log(response);
               this.users = response.data;
             },
           });
         else {
-          this.Service.getUsersByName(value).subscribe({
+          this.user_service.getUsersByName(value).subscribe({
             next: (response: any) => {
-              console.log(response);
-              // console.log(response.data[0]);
               this.users = response.data;
             },
           });
@@ -73,9 +66,8 @@ export class AssignedProjectMembers {
   // when input is focused show top 5 users
   onFocus() {
     if (!this.searchName.value) {
-      this.Service.getTopUsers().subscribe({
+      this.user_service.getTopUsers().subscribe({
         next: (response: any) => {
-          console.log(response.data[0]);
           this.users = response.data;
         },
       });
@@ -95,17 +87,16 @@ export class AssignedProjectMembers {
     this.users = [];
 
     if (this.selectedUserEmail.trim() !== '') {
-      this.Service.assignUserToProject(
-        this.selectedUserEmail,
-        this.projectId
-      ).subscribe({
-        next: (response: any) => {
-          this.ToastrService.success(response.message, 'Success');
-        },
-        error: (err: any) => {
-          this.ToastrService.error(err.error.error, 'Error');
-        },
-      });
+      this.project_service
+        .assignUserToProject(this.selectedUserEmail, this.projectId)
+        .subscribe({
+          next: (response: any) => {
+            this.ToastrService.success(response.message, 'Success');
+          },
+          error: (err: any) => {
+            this.ToastrService.error(err.error.error, 'Error');
+          },
+        });
     } else {
       this.ToastrService.error('Choose User first', 'Error');
     }

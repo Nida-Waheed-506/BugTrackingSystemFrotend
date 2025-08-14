@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Service } from '../services/service';
+import { User } from '../services/user/user';
 
 // +++++++++++++++++++++++++ imports end here +++++++++++++++++++++++++++++++++++++
 
@@ -23,29 +23,29 @@ import { Service } from '../services/service';
   styleUrl: './home-page.scss',
 })
 export class HomePage {
-  isManagerHovered: boolean = false;
+  isManagerHovered = false;
   isDeveloperHovered = false;
   isQAHovered = false;
 
-  constructor(private Service: Service) {}
+  constructor(private user_service: User) {}
 
   // managerHover
   onManagerHover(isManagerHovered: boolean) {
     this.isManagerHovered = isManagerHovered;
-    this.Service.user_type = 'manager';
+    this.user_service.user_type = 'manager';
   }
 
   // developer Hover
 
   onDeveloperHover(isDeveloperHovered: boolean) {
     this.isDeveloperHovered = isDeveloperHovered;
-    this.Service.user_type = 'developer';
+    this.user_service.user_type = 'developer';
   }
 
   // QA hover
 
   onQAHover(isQAHovered: boolean) {
     this.isQAHovered = isQAHovered;
-    this.Service.user_type = 'QA';
+    this.user_service.user_type = 'QA';
   }
 }

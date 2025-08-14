@@ -8,12 +8,10 @@ import {
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { Service } from '../../services/service';
+import { ProjectService } from '../../services/project/project';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 // ........................... imports ends ....................................
-
-
 
 @Component({
   selector: 'app-project-add',
@@ -22,7 +20,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './project-add.scss',
 })
 export class ProjectAdd {
-
   // component variable
 
   selectedFile: File | '' = '';
@@ -42,7 +39,7 @@ export class ProjectAdd {
   // constructor
   constructor(
     private ToastrService: ToastrService,
-    private Service: Service,
+    private project_service: ProjectService,
     public dialogRef: MatDialogRef<ProjectAdd>
   ) {}
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -94,13 +91,11 @@ export class ProjectAdd {
       return;
     }
 
-    console.log(this.selectedFile);
-
     const formData = new FormData();
     formData.append('projectName', value.projectName);
     formData.append('projectDes', value.projectDes);
     formData.append('image', this.selectedFile);
-    this.Service.addProject(formData).subscribe({
+    this.project_service.addProject(formData).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
         this.dialogRef.close('Add project dialog close');

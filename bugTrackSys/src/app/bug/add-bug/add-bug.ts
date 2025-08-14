@@ -1,4 +1,10 @@
-import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Inject,
+  ViewChild,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -11,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Service } from '../../services/service';
+import { BugService } from '../../services/bug/bug';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DevSelect } from './dev-select/dev-select';
 
@@ -34,12 +40,8 @@ import { DevSelect } from './dev-select/dev-select';
   templateUrl: './add-bug.html',
   styleUrl: './add-bug.scss',
 })
-
-
-export class AddBug {
-
-
-// Component variable
+export class AddBug implements OnInit {
+  // Component variable
 
   selectedFile: File | '' = '';
   preview = '';
@@ -49,12 +51,11 @@ export class AddBug {
   users: any[] = [];
   selectedUserName = '';
   selectedUserId = '';
-  dialogTitle: String = '';
-  dialogBtn: String = '';
+  dialogTitle = '';
+  dialogBtn = '';
 
   bugForm: FormGroup;
   developers: [] = [];
-
 
   // constructore
 
@@ -62,9 +63,8 @@ export class AddBug {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddBug>,
     private ToastrService: ToastrService,
-    private Service: Service
+    private bug_service: BugService
   ) {
-
     //  initialize component variable with task value if edit form
 
     this.dialogTitle = this.data.dialogTitle;
@@ -114,7 +114,6 @@ export class AddBug {
         type: new FormControl('', Validators.required),
       });
     }
-
   }
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -122,7 +121,6 @@ export class AddBug {
 
   getIds(value: any[]) {
     this.developerAddedToBug = value;
-    console.log(this.developerAddedToBug);
   }
 
   openImageSelectionDialog(): void {
@@ -143,7 +141,6 @@ export class AddBug {
 
         reader.onload = (e: any) => {
           this.preview = e.target.result;
-          console.log(this.preview);
 
           this.ToastrService.success('Image uploaded successfully', 'Success');
         };
@@ -182,26 +179,22 @@ export class AddBug {
     formData.append('project_id', this.data.projectId);
 
     if (this.dialogBtn === 'Add') {
-      this.Service.createBug(formData).subscribe({
+      this.bug_service.createBug(formData).subscribe({
         next: (response: any) => {
           this.ToastrService.success(response.message, 'Success');
           this.dialogRef.close('Add bug dialog close');
         },
         error: (err) => {
-          console.log(err);
           this.ToastrService.error(err.error.error, 'Error');
         },
       });
     } else {
-      console.log('hello');
-      this.Service.editBug(formData, this.data.bugDetail.id).subscribe({
+      this.bug_service.editBug(formData, this.data.bugDetail.id).subscribe({
         next: (response: any) => {
-          console.log('..Edit bug', response);
           this.ToastrService.success(response.message, 'Success');
           this.dialogRef.close('Add bug dialog close');
         },
         error: (err: any) => {
-          console.log(err);
           this.ToastrService.error(err.error.error, 'Error');
         },
       });

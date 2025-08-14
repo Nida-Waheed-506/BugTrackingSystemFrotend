@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Navbar } from '../shared/navbar/navbar';
 import { MatDialog } from '@angular/material/dialog';
 import { AssignedProjectMembers } from './assigned-project-members/assigned-project-members';
 import { AddBug } from './add-bug/add-bug';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Router } from '@angular/router';
-import { Service } from '../services/service';
+import { BugService } from '../services/bug/bug';
+import { ProjectService } from '../services/project/project';
+import { User } from '../services/user/user';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { debounceTime, lastValueFrom } from 'rxjs';
@@ -14,7 +16,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
- 
+
 // ...................imports ends ............................
 
 @Component({
@@ -29,12 +31,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   templateUrl: './bug.html',
   styleUrl: './bug.scss',
 })
-export class Bug {
-
+export class Bug implements OnInit {
   // component variable
 
   project_id: string | null = null;
-  projectName: string = '';
+  projectName = '';
   bugDetails: any[] = [];
   bugDetailsFromApi: any[] = [];
   isChangeStatus: any = false;
@@ -46,29 +47,28 @@ export class Bug {
   assignBtn = false;
   addTask = false;
 
-
-  // constructor 
+  // constructor
 
   constructor(
     private ToastrService: ToastrService,
-    private Service: Service,
+    private bug_service: BugService,
+    private project_service: ProjectService,
+    private user_service: User,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
-
     // get the limit of bugs
 
-    this.Service.limitBug.subscribe((value)=>{
+    this.bug_service.bugShownLimit.subscribe((value) => {
       this.limitt = value;
-    })
+    });
 
     // to get the path params
 
     this.route.paramMap.subscribe((params: ParamMap) => {
-     
       this.project_id = params.get('project_id');
     });
 
@@ -84,21 +84,19 @@ export class Bug {
 
     //  check valid manager or is manager
 
-    this.Service.isManagerBelongToProject(this.project_id).subscribe({
+    this.project_service.isManagerBelongToProject(this.project_id).subscribe({
       next: (res: any) => {},
       error: (err: any) => {
         this.assignBtn = true;
-        console.log(err);
       },
     });
 
     //  check valid QA and is QA
 
-    this.Service.isQABelongToProject(this.project_id).subscribe({
+    this.project_service.isQABelongToProject(this.project_id).subscribe({
       next: (res: any) => {},
       error: (err: any) => {
         this.addTask = true;
-        console.log(err);
       },
     });
 
@@ -118,63 +116,55 @@ export class Bug {
       });
   }
 
+  private getBugs(limit: number) {
+    this.bug_service
+      .getProjectBugs(this.project_id, this.currentPageNumber, limit)
+      .subscribe({
+        next: (response: any) => {
+          this.totalRecords = response.data.count;
 
-  private getBugs(limit:number){
+          const bugs = response.data.rows.sort((a: any, b: any) =>
+            a.id.toString().localeCompare(b.id.toString())
+          );
 
-    this.Service.getProjectBugs(
-      this.project_id,
-      this.currentPageNumber,
-      limit
-    ).subscribe({
-      next: (response: any) => {
-        console.log('ALl bugs', response);
-        this.totalRecords = response.data.count;
-
-        const bugs = response.data.rows.sort((a: any, b: any) =>
-          a.id.toString().localeCompare(b.id.toString())
-        );
-
-        Promise.all(
-          bugs.map(async (bug: any) => {
-            const developerNames: string[] = [];
-            const developersDetail: any[] = [];
-            for (const devId of bug.developer_id) {
-              try {
-                const userRes: any = await lastValueFrom(
-                  this.Service.getUserById(devId)
-                );
-                developersDetail.push(userRes.data);
-                developerNames.push(userRes.data.name);
-                console.log(developerNames);
-                console.log(developersDetail);
-              } catch (error) {
-                console.error(error);
+          Promise.all(
+            bugs.map(async (bug: any) => {
+              const developerNames: string[] = [];
+              const developersDetail: any[] = [];
+              for (const devId of bug.developer_id) {
+                try {
+                  const userRes: any = await lastValueFrom(
+                    this.user_service.getUserById(devId)
+                  );
+                  developersDetail.push(userRes.data);
+                  developerNames.push(userRes.data.name);
+                } catch (error) {
+                  console.error(error);
+                }
               }
-            }
 
-            return {
-              ...bug,
-              developerNames: developerNames.join(' - '),
-              developersDetail: developersDetail,
-            };
-          })
-        ).then((bugDet) => {
-          this.bugDetailsFromApi = bugDet;
-          this.bugDetails = bugDet;
-        });
-      },
-      error: (err: any) => {
-        console.log(err);
-        this.ToastrService.error(err.error.error, 'Error');
-      },
-    });
+              return {
+                ...bug,
+                developerNames: developerNames.join(' - '),
+                developersDetail: developersDetail,
+              };
+            })
+          ).then((bugDet) => {
+            this.bugDetailsFromApi = bugDet;
+            this.bugDetails = bugDet;
+          });
+        },
+        error: (err: any) => {
+          this.ToastrService.error(err.error.error, 'Error');
+        },
+      });
   }
 
   // page number get for pagination and get bugs
 
   onPageChange(event: PageEvent): void {
     this.currentPageNumber = event.pageIndex;
-    this.Service.limitBug.next(event.pageSize || 1);
+    this.bug_service.bugShownLimit.next(event.pageSize || 1);
     this.totalRecords = event.length;
 
     this.getBugs(event.pageSize);
@@ -182,15 +172,12 @@ export class Bug {
 
   // get the selected id of bug and show the UI for choosing bug status
   showChangeStatus(chosenBug: any) {
- 
     this.chosenBug = chosenBug;
   }
 
   // choose status get and update
   choosenStatus(id: any, status: any) {
-    
-    console.log(id, status);
-    this.Service.changeStatus(this.project_id, status, id).subscribe({
+    this.bug_service.changeStatus(this.project_id, status, id).subscribe({
       next: (response: any) => {
         this.bugDetails = this.bugDetails.map((bug) => {
           if (bug.id === id && bug.status !== status) {
@@ -204,23 +191,19 @@ export class Bug {
         this.chosenBug = '';
       },
       error: (err) => {
-        console.log(err);
         this.chosenBug = '';
         this.ToastrService.error(err.error.error, 'Error');
       },
     });
-   
   }
 
   // close the change status
-  closeChangeStatus(){
-    
-      this.chosenBug = '';
+  closeChangeStatus() {
+    this.chosenBug = '';
   }
-  // delete bug 
+  // delete bug
   deleteBug(bug_id: any) {
-    console.log(bug_id, this.project_id);
-    this.Service.deleteBug(bug_id, this.project_id).subscribe({
+    this.bug_service.deleteBug(bug_id, this.project_id).subscribe({
       next: (response: any) => {
         this.ToastrService.success(response.message, 'Success');
         this.chosenBug = '';
@@ -235,8 +218,6 @@ export class Bug {
 
   // add member to Project either QA or developer
   openAddMembersToProjectDialog() {
-    console.log(this.assignBtn, '..........');
-
     const dialogRef = this.dialog.open(AssignedProjectMembers, {
       backdropClass: 'popup',
       autoFocus: false,
@@ -269,10 +250,8 @@ export class Bug {
 
   // edit bug dialog
   openEditBugDialog(bug: any) {
-    this.Service.isQABelongToBug(this.project_id, bug.id).subscribe({
+    this.bug_service.isQABelongToBug(this.project_id, bug.id).subscribe({
       next: (res: any) => {
-        console.log(res);
-
         const dialogRef = this.dialog.open(AddBug, {
           backdropClass: 'popup',
           autoFocus: false,

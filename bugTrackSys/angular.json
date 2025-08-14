@@ -31,7 +31,7 @@
             ],
             "styles": [
               "src/styles.scss",
-               "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -95,15 +95,25 @@
             ],
             "styles": [
               "src/styles.scss"
-              
             ]
-            
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "9d1ad4cb-585e-4a8a-b7c7-8ad6f3381b0c"
+    "analytics": "9d1ad4cb-585e-4a8a-b7c7-8ad6f3381b0c",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }

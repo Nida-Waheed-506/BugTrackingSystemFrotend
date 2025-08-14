@@ -34,7 +34,7 @@
               (projectForm.get('projectName')?.dirty ||
                 projectForm.get('projectName')?.touched)
             "
-            class="text-red-500 text-sm"
+            class="text-red-500 text-sm w-60"
           >
             Project name cannot be more than 20 characters long
           </p>
@@ -43,7 +43,7 @@
               projectForm.get('projectName')?.hasError('required') &&
               projectForm.get('projectName')?.touched
             "
-            class="text-red-500 text-sm"
+            class="text-red-500 text-sm w-60"
           >
             Project name is required
           </p>
@@ -74,7 +74,7 @@
               (projectForm.get('projectDes')?.dirty ||
                 projectForm.get('projectName')?.touched)
             "
-            class="text-red-500 text-sm"
+            class="text-red-500 text-sm w-60"
           >
             Bug description cannot be less than 60 characters
           </p>
@@ -83,7 +83,7 @@
               projectForm.get('projectDes')?.hasError('required') &&
               projectForm.get('projectDes')?.touched
             "
-            class="text-red-500 text-sm"
+            class="text-red-500 text-sm w-60"
           >
             Project description is required
           </p>
